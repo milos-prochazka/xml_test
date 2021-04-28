@@ -344,7 +344,7 @@ void main(List<String> arguments)
       '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><BOdy><!-- komentar --> Hello &amp; a&#768; world! <hr><a href="www.html5rocks.com">HTML5 rocks!</a><h1>HEAD1');
   htmlDoc.body!.children.insert(1,Element.tag('br'));
   print(htmlDoc.outerHtml);
-  print('----------------------------------------------');
+  print('----s------------------------------------------');
 
   var nd = XNode.fromHtmlDocument(htmlDoc);
 

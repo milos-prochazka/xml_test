@@ -86,14 +86,14 @@ class XNode
     Document toHtmlDocument()
     {
         var node = _buildHtmlNode();
-        if (node is Document) 
+        if (node is Document)
         {
             return node as Document;
         }
         else
         {
             var result = Document();
-            if (node != null)            
+            if (node != null)
             {
                 result.append(node);
             }
@@ -108,7 +108,7 @@ class XNode
         switch(type)
         {
             case ELEMENT:
-              node = Element.tag(name);              
+              node = Element.tag(name);
               break;
 
             case TEXT:
@@ -310,7 +310,7 @@ class XNode
 
     }
 
-    static String? _emptyNull(String? value)    
+    static String? _emptyNull(String? value)
     {
         if (value != null)
         {
@@ -344,7 +344,7 @@ void main(List<String> arguments)
       '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><BOdy><!-- komentar --> Hello &amp; a&#768; world! <hr><a href="www.html5rocks.com">HTML5 rocks!</a><h1>HEAD1');
   htmlDoc.body!.children.insert(1,Element.tag('br'));
   print(htmlDoc.outerHtml);
-  print('----------------------------------------------');
+  print('----s------------------------------------------');
 
   var nd = XNode.fromHtmlDocument(htmlDoc);
 
