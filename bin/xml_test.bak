@@ -86,14 +86,14 @@ class XNode
     Document toHtmlDocument()
     {
         var node = _buildHtmlNode();
-        if (node is Document)
+        if (node is Document) 
         {
             return node as Document;
         }
         else
         {
             var result = Document();
-            if (node != null)
+            if (node != null)            
             {
                 result.append(node);
             }
@@ -108,7 +108,7 @@ class XNode
         switch(type)
         {
             case ELEMENT:
-              node = Element.tag(name);
+              node = Element.tag(name);              
               break;
 
             case TEXT:
@@ -310,7 +310,7 @@ class XNode
 
     }
 
-    static String? _emptyNull(String? value)
+    static String? _emptyNull(String? value)    
     {
         if (value != null)
         {
