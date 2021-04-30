@@ -1,12 +1,12 @@
 /// Converts an instance to the requested nullable type
 /// - Returns an object of the desired type, or null if type conversion is not possible
-T? toNullableType<T>(Object instance) 
+T? toNullableType<T>(Object instance)
 {
-    if (instance is T) 
+    if (instance is T)
     {
         return instance as T;
-    } 
-    else 
+    }
+    else
     {
         return null;
     }
@@ -44,17 +44,17 @@ const whiteCharacters = <int>
 };
 
 /// Returns true if the string is contains only whitespace characters or the string is null
-bool isBlankOrNull(String? value) 
+bool isBlankOrNull(String? value)
 {
-    if (value == null) 
+    if (value == null)
     {
         return true;
-    } 
-    else 
+    }
+    else
     {
-        for (var i = 0; i < value.length; i++) 
+        for (var i = 0; i < value.length; i++)
         {
-            if (!whiteCharacters.contains(value.codeUnitAt(i))) 
+            if (!whiteCharacters.contains(value.codeUnitAt(i)))
             {
                 return false;
             }

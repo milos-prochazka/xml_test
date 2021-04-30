@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:xml/xml.dart';
 import 'package:xml_test/xml/xnode.dart';
 
-class Epub 
+class Epub
 {
     // Epub files dictionary
     var files = <String,ArchiveFile>{};
@@ -14,27 +14,30 @@ class Epub
     // Manifest dictionary
     var manifest = <String,ManifestItem>{};
 
-    Epub(Archive archive) 
+    // Spine List
+    var spineList = <ManifestItem>[];
+
+    Epub(Archive archive)
     {
         _loadArchive(archive);
     }
 
-    void _loadArchive(Archive archive) 
+    void _loadArchive(Archive archive)
     {
-        for (final file in archive) 
+        for (final file in archive)
         {
             final filename = file.name;
             files[filename] = file;
 
-            if (file.isFile) 
+            if (file.isFile)
             {
 
-                if (filename.endsWith('.opf')) 
+                if (filename.endsWith('.opf'))
                 {
                     var strText = utf8.decode(file.content as List<int>, allowMalformed: true);
                     _loadOpf(strText);
                 }
-            } 
+            }
         }
     }
 
@@ -55,6 +58,19 @@ class Epub
             }
 
             print (manfestItem.toString());
+        }
+
+        // Load spine
+        var spineNodes = opf.getChildren(['package','spine'],childNames:  {'itemref'});
+
+        for (var itemref in spineNodes)
+        {
+            var idref = itemref.attributes['idref'];
+
+            if (idref != null && manifest.containsKey(idref))
+            {
+                spineList.add(manifest[idref]!);
+            }
         }
     }
 }
