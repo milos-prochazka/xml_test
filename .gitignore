@@ -10,3 +10,4 @@ doc/api/
 
 # Test files and directories
 out/
+*.bak

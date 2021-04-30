@@ -1,9 +1,11 @@
-
 import 'package:xml/xml.dart';
 import 'package:html/parser.dart' as html;
 import 'package:html/dom.dart';
 
-class XNode
+// ignore_for_file: omit_local_variable_types
+// ignore_for_file: unnecessary_cast
+
+class XNode 
 {
     static const TEXT_NAME = r'$TEXT$';
     static const COMMENT_NAME = r'$COMMENT$';
@@ -21,34 +23,33 @@ class XNode
     static const DECLARATION = 6;
     static const CDATA = 7;
 
-    var type       = UNKNOWN;
-    var name       = '';
-    var text       = '';
-    var children   = <XNode>[];
-    var attributes = <String,String>{};
+    var type = UNKNOWN;
+    var name = '';
+    var text = '';
+    var children = <XNode>[];
+    var attributes = <String, String>{};
 
-
-    XNode.fromXmlNode(XmlNode node)
+    XNode.fromXmlNode(XmlNode node) 
     {
         _fromXmlNode(node);
     }
 
-    XNode.fromXmlDocument(XmlDocument document)
+    XNode.fromXmlDocument(XmlDocument document) 
     {
         _fromXmlNode(document.root);
     }
 
-    XNode.fromHtmlDocument(Document document)
+    XNode.fromHtmlDocument(Document document) 
     {
         _fromHtmlNode(document);
     }
 
-    XNode.fromHtmlNode(Node node)
+    XNode.fromHtmlNode(Node node) 
     {
         _fromHtmlNode(node);
     }
 
-    XmlDocument toXmlDocument()
+    XmlDocument toXmlDocument() 
     {
         var builder = XmlBuilder();
         _buildXmlNode(builder);
@@ -56,17 +57,17 @@ class XNode
         return builder.buildDocument();
     }
 
-    Document toHtmlDocument()
+    Document toHtmlDocument() 
     {
         var node = _buildHtmlNode();
-        if (node is Document)
+        if (node is Document) 
         {
             return node as Document;
-        }
-        else
+        } 
+        else 
         {
             var result = Document();
-            if (node != null)
+            if (node != null) 
             {
                 result.append(node);
             }
@@ -74,42 +75,75 @@ class XNode
         }
     }
 
-    Node? _buildHtmlNode()
+    List<XNode> getChildren(List<String> childPath,{Set<String>? childNames})
+    {
+        var result = <XNode>[];
+        var parentNode = _findNode(childPath);
+
+        if (parentNode != null)
+        {
+            for(var child in parentNode.children)
+            {
+                if (childNames == null || childNames.contains(child.name))
+                {
+                    result.add(child);
+                }
+            }
+        }
+
+        return result; 
+    }
+
+    XNode? _findNode(List<String> childPath)
+    {
+        XNode? node = this;
+
+        for (int i=0; i<childPath.length; i++)
+        {
+            var name = childPath[i];
+
+            node = node!.children.firstWhere((element) => element.name == name);
+        }
+        return node;
+    }
+
+    
+    Node? _buildHtmlNode() 
     {
         Node? node;
 
-        switch(type)
+        switch (type) 
         {
             case ELEMENT:
-              node = Element.tag(name);
-              break;
+                node = Element.tag(name);
+                break;
 
             case TEXT:
             case CDATA:
-              node = Text(text);
-              break;
+                node = Text(text);
+                break;
 
             case COMMENT:
-              node = Comment(text);
-              break;
+                node = Comment(text);
+                break;
 
             case DOCUMENT:
-              node = Document();
-              break;
+                node = Document();
+                break;
 
             case DOCTYPE:
-              node = DocumentType(_emptyNull(text), _emptyNull(attributes['publicId']) , _emptyNull(attributes['systemId']));
-              break;
+                node = DocumentType(_emptyNull(text), _emptyNull(attributes['publicId']), _emptyNull(attributes['systemId']));
+                break;
         }
 
-        if (node != null)
+        if (node != null) 
         {
             node.attributes.addAll(attributes);
 
-            for(var child in children)
+            for (var child in children) 
             {
                 var childNode = child._buildHtmlNode();
-                if (childNode != null)
+                if (childNode != null) 
                 {
                     node.append(childNode);
                 }
@@ -119,48 +153,48 @@ class XNode
         return node;
     }
 
-    void _buildXmlNode(XmlBuilder builder)
+    void _buildXmlNode(XmlBuilder builder) 
     {
-        var buildChild= ()
+        var buildChild = () 
         {
-          for (var attribute in attributes.entries)
-          {
-              builder.attribute(attribute.key, attribute.value);
-          }
+            for (var attribute in attributes.entries) 
+            {
+                builder.attribute(attribute.key, attribute.value);
+            }
 
-          for(var childNode in children)
-          {
-              childNode._buildXmlNode(builder);
-          }
+            for (var childNode in children) 
+            {
+                childNode._buildXmlNode(builder);
+            }
         };
 
-        switch (type)
+        switch (type) 
         {
             case ELEMENT:
-              builder.element(name,nest: buildChild);
-              break;
+                builder.element(name, nest: buildChild);
+                break;
             case TEXT:
-              builder.text(text);
-              break;
+                builder.text(text);
+                break;
             case COMMENT:
-              builder.comment(text);
-              break;
+                builder.comment(text);
+                break;
             case DOCTYPE:
             case DECLARATION:
-              builder.declaration(attributes: attributes);
-              break;
+                builder.declaration(attributes: attributes);
+                break;
             case CDATA:
-              builder.cdata(text);
-              break;
+                builder.cdata(text);
+                break;
             case DOCUMENT:
-              buildChild();
-              break;
+                buildChild();
+                break;
         }
     }
 
-    void _fromHtmlNode(Node node)
+    void _fromHtmlNode(Node node) 
     {
-        switch (node.nodeType)
+        switch (node.nodeType) 
         {
             case Node.ELEMENT_NODE:
                 type = ELEMENT;
@@ -188,7 +222,7 @@ class XNode
                 var docType = node as DocumentType;
                 type = DOCTYPE;
                 name = DOCTYPE_NAME;
-                text = docType.name?? '';
+                text = docType.name ?? '';
                 attributes['publicId'] = docType.publicId ?? '';
                 attributes['systemId'] = docType.systemId ?? '';
                 break;
@@ -198,103 +232,99 @@ class XNode
                 break;
         }
 
-        if (type != UNKNOWN)
+        if (type != UNKNOWN) 
         {
-            for(var attribute in node.attributes.entries)
+            for (var attribute in node.attributes.entries) 
             {
                 this.attributes[attribute.key.toString()] = attribute.value;
             }
 
-            for(var childNode in node.nodes)
+            for (var childNode in node.nodes) 
             {
-                children.add ( XNode.fromHtmlNode( childNode));
+                children.add(XNode.fromHtmlNode(childNode));
             }
         }
     }
 
-    void _fromXmlNode(XmlNode node)
+    void _fromXmlNode(XmlNode node) 
     {
-        if (node is XmlElement)
+        if (node is XmlElement) 
         {
             var element = node as XmlElement;
             name = element.name.local;
             type = ELEMENT;
-        }
-        else if (node is XmlText)
+        } 
+        else if (node is XmlText) 
         {
             var txt = node as XmlText;
             name = TEXT_NAME;
             text = txt.text;
             type = TEXT;
-        }
-        else if (node is XmlComment)
+        } 
+        else if (node is XmlComment) 
         {
             var comment = node as XmlComment;
             name = COMMENT_NAME;
             text = comment.text;
             type = COMMENT;
-        }
-        else if (node is XmlDocument)
+        } 
+        else if (node is XmlDocument) 
         {
             name = DOCUMENT_NAME;
             type = DOCUMENT;
-        }
-        else if (node is XmlDeclaration)
+        } 
+        else if (node is XmlDeclaration) 
         {
             name = DECLARATION_NAME;
             type = DECLARATION;
-        }
-        else if (node is XmlCDATA)
+        } 
+        else if (node is XmlCDATA) 
         {
             var cdata = node as XmlCDATA;
             name = CDATA_NAME;
             text = cdata.text;
             type = CDATA;
-        }
-        else if (node is XmlDoctype)
+        } 
+        else if (node is XmlDoctype) 
         {
             var doctype = node as XmlDoctype;
             name = DOCTYPE_NAME;
             text = doctype.text;
             type = DOCTYPE;
-        }
-        else
+        } 
+        else 
         {
             type = UNKNOWN;
         }
 
-
-        if (type != UNKNOWN)
+        if (type != UNKNOWN) 
         {
-          for (var attribute in node.attributes)
-          {
-              attributes[attribute.name.local] = attribute.value;
-          }
+            for (var attribute in node.attributes) 
+            {
+                attributes[attribute.name.local] = attribute.value;
+            }
 
-          for(var child in node.children)
-          {
-              var childNode = XNode.fromXmlNode(child);
-              if (childNode.type != UNKNOWN)
-              {
-                  children.add(childNode);
-              }
-          }
+            for (var child in node.children) 
+            {
+                var childNode = XNode.fromXmlNode(child);
+                if (childNode.type != UNKNOWN) 
+                {
+                    children.add(childNode);
+                }
+            }
         }
-
     }
 
-    static String? _emptyNull(String? value)
+    static String? _emptyNull(String? value) 
     {
-        if (value != null)
+        if (value != null) 
         {
-            if (value.isEmpty)
+            if (value.isEmpty) 
             {
-              value = null;
+                value = null;
             }
         }
 
         return value;
     }
-
-
 }
