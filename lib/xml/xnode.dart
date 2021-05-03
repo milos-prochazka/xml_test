@@ -32,7 +32,7 @@ class XNode implements InterfaceToDynamic
     var attributes = <String, String>{};
     var linkedData = <String, dynamic>{};
 
-    
+
     /// Map to convert blank html characters to spaces
     /// - Converts blank characters to a space (0x20) or null (0x0) to remove characters
     static final htmlSpacesConversionMap = <int,int>
@@ -132,7 +132,7 @@ class XNode implements InterfaceToDynamic
                 // TODO: Dodelat pro jine nez body
                 var document = XNode(
                     type: DOCUMENT,name: DOCTYPE_NAME,
-                    children: 
+                    children:
                     [
                         XNode(type:ELEMENT,name: 'html', children: [node]),
                     ]);
@@ -200,7 +200,7 @@ class XNode implements InterfaceToDynamic
                 }
             }
 
-            result['linkedData'] = linkedMap; 
+            result['linkedData'] = linkedMap;
         }
 
         return result;
@@ -224,7 +224,7 @@ class XNode implements InterfaceToDynamic
                   case 0:
                     break;
                   default:
-                    chars.add(conv);                
+                    chars.add(conv);
                     break;
               }
           }
@@ -257,7 +257,7 @@ class XNode implements InterfaceToDynamic
                 }
             }
         }
-    }  
+    }
 
     XNode? _findNode(List<String> childPath)
     {
@@ -271,7 +271,7 @@ class XNode implements InterfaceToDynamic
 
             if (node == _nullNode)
             {
-                return null;              
+                return null;
             }
         }
 

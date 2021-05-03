@@ -9,6 +9,7 @@ import 'package:csslib/parser.dart' as css;
 import 'package:csslib/visitor.dart';
 
 import 'package:xml/xml.dart';
+import 'package:xml_test/epub/CssDecode.dart';
 import 'package:xml_test/xml/xnode.dart';
 
 class Epub
@@ -235,7 +236,7 @@ class ManifestItem
                 var strText = utf8.decode(bytes);
                 _xmlNode = XNode.fromXmlDocument(XmlDocument.parse(strText));
             }
-            else 
+            else
             {
                 _xmlNode = XNode();
             }
@@ -260,15 +261,13 @@ class ManifestItem
                 ..writeAsBytesSync(utf8.encode(debug));
 
 
-            stylesheet.visit(_TreeVisit());
-            ;
+            var cs = CssDecode(strText);
 
-            
-            
+
             var jj = qq.span;
-            
+
             print(jj.toString());
-            
+
             var brk = 1;
         }
 
@@ -300,39 +299,4 @@ class NavigationPoint
     {
         return 'id:$id file:$file reference:$reference';
     }
-}
-
-class _TreeVisit extends Visitor
-{
-    /*@override
-  dynamic visitCssComment(CssComment node) 
-  {
-      var brk = 1;
-  }
-
-    @override
-  void visitExpressions(Expressions node) 
-  {
-  }
-
-   @override
-  dynamic visitLiteralTerm(LiteralTerm node) 
-  {
-      var brk = 1;
-  }*/
-
-@override
-  void visitIdentifier(Identifier node) 
-  {
-    print ('Identifier: ${node.name}');
-    super.visitIdentifier(node);
-  }
-
-  @override
-  void visitLengthTerm(LengthTerm node) 
-  {
-    print('Length:${node.value} ${node.unitToString()}');
-    super.visitLengthTerm(node);
-  }
-
 }

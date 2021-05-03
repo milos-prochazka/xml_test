@@ -130,7 +130,7 @@ void main(List<String> arguments)
 
     var epub = Epub(archive);
     //epub.bigDocument.comressHtmlText(nested: true,removeBlankText: true,truncate: true);
-    
+
     var doc = epub.bigDocument.toHtmlDocument().outerHtml;
     var data = utf8.encode(doc);
     File('out/bigdocument.html')
