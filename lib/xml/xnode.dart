@@ -1,11 +1,12 @@
 import 'package:xml/xml.dart';
 import 'package:html/parser.dart' as html;
 import 'package:html/dom.dart';
+import 'package:xml_test/common.dart';
 
 // ignore_for_file: omit_local_variable_types
 // ignore_for_file: unnecessary_cast
 
-class XNode
+class XNode implements InterfaceToDynamic
 {
     static const TEXT_NAME = r'$TEXT$';
     static const COMMENT_NAME = r'$COMMENT$';
@@ -23,11 +24,66 @@ class XNode
     static const DECLARATION = 6;
     static const CDATA = 7;
 
+
     var type = UNKNOWN;
     var name = '';
     var text = '';
     var children = <XNode>[];
     var attributes = <String, String>{};
+    var linkedData = <String, dynamic>{};
+
+    
+    /// Map to convert blank html characters to spaces
+    /// - Converts blank characters to a space (0x20) or null (0x0) to remove characters
+    static final htmlSpacesConversionMap = <int,int>
+              { 0x9:0x20,0xa:0x00,0xb:0x00,0xc:0x00,0xd:0x00};
+
+    XNode({int? type, String? name, Map<String,String>? attributes, List<XNode>? children })
+    {
+        if (type!=null)
+        {
+            this.type = type;
+        }
+        if (name != null)
+        {
+            this.name = name;
+        }
+
+        if (attributes != null)
+        {
+          for(var attr in attributes.entries)
+          {
+              this.attributes[attr.key] = attr.value;
+          }
+        }
+
+        if (children != null)
+        {
+          for (var child in children)
+          {
+              this.children.add(child);
+          }
+        }
+    }
+
+    XNode.document()
+    {
+        type = DOCUMENT;
+        name = DOCTYPE_NAME;
+    }
+
+    XNode.body()
+    {
+        type = ELEMENT;
+        name = 'body';
+    }
+
+    XNode.comment(this.text)
+    {
+        type = COMMENT;
+        name = COMMENT_NAME;
+    }
+
 
     XNode.fromXmlNode(XmlNode node)
     {
@@ -59,20 +115,34 @@ class XNode
 
     Document toHtmlDocument()
     {
-        var node = _buildHtmlNode();
-        if (node is Document)
+        XNode node = this;
+
+        switch(node.type)
         {
-            return node as Document;
+            case DOCUMENT:
+            case DOCTYPE:
+                // TODO: Proverit doctype
+                break;
+
+            case UNKNOWN:
+                node = XNode.document();
+                break;
+
+            default:
+                // TODO: Dodelat pro jine nez body
+                var document = XNode(
+                    type: DOCUMENT,name: DOCTYPE_NAME,
+                    children: 
+                    [
+                        XNode(type:ELEMENT,name: 'html', children: [node]),
+                    ]);
+                node = document;
+                break;
         }
-        else
-        {
-            var result = Document();
-            if (node != null)
-            {
-                result.append(node);
-            }
-            return result;
-        }
+
+
+        return node._buildHtmlNode() as Document;
+
     }
 
     List<XNode> getChildren(List<String> childPath,{Set<String>? childNames})
@@ -94,16 +164,117 @@ class XNode
         return result;
     }
 
+    @override
+    dynamic toDynamic(bool embeded)
+    {
+        var attr = <String,String>{};
+
+        for(var item in attributes.entries)
+        {
+            attr[item.key] = item.value;
+        }
+
+        var chlist = <dynamic>[];
+        for(var item in children)
+        {
+            chlist.add(item.toDynamic(embeded));
+        }
+
+        var result = <String,dynamic>
+        {
+            'type': type,
+            'name': name,
+            'text': text,
+            'attributes' : attr,
+            'children' : chlist
+        };
+
+        if (embeded)
+        {
+            var linkedMap = <String,dynamic>{};
+            for(var item in linkedData.entries)
+            {
+                if (item.value is InterfaceToDynamic)
+                {
+                    linkedMap[item.key] = (item.value as InterfaceToDynamic).toDynamic(embeded);
+                }
+            }
+
+            result['linkedData'] = linkedMap; 
+        }
+
+        return result;
+    }
+
+    void comressHtmlText({bool nested=false, bool truncate=false, bool removeBlankText=false})
+    {
+        if (type==TEXT && text != '')
+        {
+          var codeUnits = text.codeUnits;
+          var chars = <int>[];
+
+          for (var ch in codeUnits)
+          {
+              var conv = htmlSpacesConversionMap[ch] ?? -1;
+              switch (conv)
+              {
+                  case -1:
+                    chars.add(ch);
+                    break;
+                  case 0:
+                    break;
+                  default:
+                    chars.add(conv);                
+                    break;
+              }
+          }
+
+          int start = 0;
+          int end = chars.length;
+
+          if (truncate)
+          {
+              while (start<end && chars[start] == 0x20) start++;
+              while (end>start && chars[end-1] == 0x20) end--;
+          }
+
+          text = (end>start) ? String.fromCharCodes(chars,start,end) : '';
+        }
+
+        if (nested)
+        {
+            for(int i=0; i<children.length; )
+            {
+                var child = children[i];
+                child.comressHtmlText(nested: nested, truncate: truncate, removeBlankText: removeBlankText);
+                if (removeBlankText && child.type == TEXT && child.text == '')
+                {
+                    children.removeAt(i);
+                }
+                else
+                {
+                    i++;
+                }
+            }
+        }
+    }  
+
     XNode? _findNode(List<String> childPath)
     {
-        XNode? node = this;
+        XNode node = this;
 
         for (int i=0; i<childPath.length; i++)
         {
             var name = childPath[i];
 
-            node = node!.children.firstWhere((element) => element.name == name);
+            node = node.children.firstWhere((element) => element.name == name,orElse: () => _nullNode);
+
+            if (node == _nullNode)
+            {
+                return null;              
+            }
         }
+
         return node;
     }
 
@@ -134,6 +305,7 @@ class XNode
             case DOCTYPE:
                 node = DocumentType(_emptyNull(text), _emptyNull(attributes['publicId']), _emptyNull(attributes['systemId']));
                 break;
+
         }
 
         if (node != null)
@@ -327,4 +499,11 @@ class XNode
 
         return value;
     }
+
+    static final _nullNode = XNode();
+}
+
+abstract class InterfaceToDynamic
+{
+    dynamic toDynamic(bool embeded);
 }

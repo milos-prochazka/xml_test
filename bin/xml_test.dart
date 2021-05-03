@@ -129,6 +129,13 @@ void main(List<String> arguments)
     final archive = ZipDecoder().decodeBytes(bytes);
 
     var epub = Epub(archive);
+    //epub.bigDocument.comressHtmlText(nested: true,removeBlankText: true,truncate: true);
+    
+    var doc = epub.bigDocument.toHtmlDocument().outerHtml;
+    var data = utf8.encode(doc);
+    File('out/bigdocument.html')
+      ..createSync(recursive: true)
+      ..writeAsBytesSync(data);
 
     // Extract the contents of the Zip archive to disk.
     for (final file in archive)

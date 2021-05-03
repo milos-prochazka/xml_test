@@ -64,4 +64,11 @@ bool isBlankOrNull(String? value)
     }
 }
 
-extension StringFunctions on String {}
+extension StringFunctions on String 
+{
+    List<int> copyToCodeUnits()
+    {
+        return List<int>.from(codeUnits);
+    }
+
+}
