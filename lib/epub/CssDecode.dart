@@ -16,23 +16,46 @@ class CssDecode extends Visitor
         stylesheet.visit(this);
     }
 
-  @override
-  void visitRuleSet(RuleSet node) 
-  {
-//#debug
-      print ('Ruleset');
-//#end
+    @override
+    void visitRuleSet(RuleSet node)
+    {
+  //#debug
+        print ('Ruleset');
+  //#end
 
-      if (_treeStack.isNotEmpty)
-      {
-          throw Exception('Tree stack must be empty');
-      }  
+        if (_treeStack.isNotEmpty)
+        {
+            throw Exception('Tree stack must be empty');
+        }
 
-      _treeStack.add(CssRuleSet(this,_treeStack));
-      super.visitRuleSet(node);
-      _treeStack.removeLast();
+        _treeStack.add(CssRuleSet(this,_treeStack));
+        super.visitRuleSet(node);
+        _treeStack.removeLast();
 
+    }
+
+    @override
+    void visitSelectorGroup(SelectorGroup node)
+    {
+  //#debug
+        print ('SelectorGroup');
+  //#end
+
+        super.visitSelectorGroup(node);
+    }
+
+    @override
+    void visitSimpleSelectorSequence(SimpleSelectorSequence node)
+    {
+  //#debug
+        var s = node.span!.text;
+        print ('SimpleSelectorSequence $s');
+  //#end
+
+        super.visitSimpleSelectorSequence(node);
   }
+
+
 
     @override
     void visitIdentifier(Identifier node)
@@ -40,6 +63,7 @@ class CssDecode extends Visitor
 //#debug
       print ('Identifier: ${node.name}');
 //#end
+
       super.visitIdentifier(node);
     }
 
@@ -49,6 +73,7 @@ class CssDecode extends Visitor
 //#debug
       print('  Length:${node.value} ${node.unitToString()}');
 //#end
+
       super.visitLengthTerm(node);
     }
 
@@ -58,6 +83,7 @@ class CssDecode extends Visitor
 //#debug
       print('  Length:${node.value} em');
 //#end
+
       super.visitEmTerm(node);
     }
 
@@ -67,6 +93,7 @@ class CssDecode extends Visitor
 //#debug
       print('  Length:${node.value}');
 //#end
+
       super.visitNumberTerm(node);
     }
 
@@ -76,6 +103,7 @@ class CssDecode extends Visitor
 //#debug
       print('  Literal:${node.text}');
 //#end
+
       super.visitLiteralTerm(node);
     }
 
@@ -85,6 +113,7 @@ class CssDecode extends Visitor
 //#debug
       print('  Function:${node.text}');
 //#end
+
       super.visitFunctionTerm(node);
     }
 
@@ -96,7 +125,7 @@ class CssTreeItem
 {
     late final Queue<CssTreeItem> _treeStack;
     late final CssDecode decoder;
-    
+
     CssTreeItem(this.decoder,this._treeStack);
 
     void insert(Object child)
@@ -120,5 +149,5 @@ class CssTreeItem
 class CssRuleSet extends CssTreeItem
 {
     CssRuleSet(CssDecode decoder,Queue<CssTreeItem> treeStack) : super(decoder,treeStack);
-    
+
 }
