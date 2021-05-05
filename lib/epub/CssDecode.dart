@@ -38,10 +38,14 @@ class CssDecode extends Visitor
     void visitSelectorGroup(SelectorGroup node)
     {
   //#debug
-        print ('SelectorGroup');
+        print ('SelectorGroup ${node.span!.text}');
   //#end
 
+        var selector = CssSelector(this, _treeStack);
+        _treeStack.last.insert(selector);
+        _treeStack.add(selector);
         super.visitSelectorGroup(node);
+        _treeStack.removeLast();
     }
 
     @override
@@ -117,7 +121,14 @@ class CssDecode extends Visitor
       super.visitFunctionTerm(node);
     }
 
-
+    @override
+    void visitSelector(Selector node)
+    {
+//#debug
+      print('  Selector:${node.span!.text}');
+//#end
+      super.visitSelector(node);
+    }
 }
 
 
@@ -148,6 +159,29 @@ class CssTreeItem
 
 class CssRuleSet extends CssTreeItem
 {
+    var selectors = <CssSelector>[];
+
+
     CssRuleSet(CssDecode decoder,Queue<CssTreeItem> treeStack) : super(decoder,treeStack);
+
+    @override
+    void insert(Object child)
+    {
+        selectors.add(child as CssSelector);
+    }
+}
+
+class CssSelector extends CssTreeItem
+{
+    var simpleSelectors = <CssSimpleSelector>[];
+
+    CssSelector(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+}
+
+class CssSimpleSelector
+{
+    String text ='';
+    int    type = 0;
+    int    combinator = 0;
 
 }
