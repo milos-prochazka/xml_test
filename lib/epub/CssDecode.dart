@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:csslib/parser.dart' as css;
 import 'package:csslib/visitor.dart';
 
+// ignore_for_file: unnecessary_cast
 
 class CssDecode extends Visitor
 {
@@ -55,10 +56,44 @@ class CssDecode extends Visitor
         var s = node.span!.text;
         print ('SimpleSelectorSequence $s');
   //#end
-
+        _treeStack.last.insert(node);
         super.visitSimpleSelectorSequence(node);
   }
 
+    @override
+    void visitClassSelector(ClassSelector node)
+    {
+//#debug
+      print('Class Selector');
+//#end
+
+        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_CLASS;
+        super.visitClassSelector(node);
+    }
+
+    @override
+
+    void visitIdSelector(IdSelector node)
+    {
+//#debug
+        print('Id Selector');
+//#end
+
+        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ID;
+        super.visitIdSelector(node);
+    }
+
+
+  @override
+  void visitElementSelector(ElementSelector node)
+  {
+//#debug
+        print('Element Selector');
+//#end
+
+        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ELEMENT;
+        super.visitElementSelector(node);
+  }
 
 
     @override
@@ -67,7 +102,7 @@ class CssDecode extends Visitor
 //#debug
       print ('Identifier: ${node.name}');
 //#end
-
+      _treeStack.last.insert(node);
       super.visitIdentifier(node);
     }
 
@@ -80,6 +115,8 @@ class CssDecode extends Visitor
 
       super.visitLengthTerm(node);
     }
+
+
 
     @override
     void visitEmTerm(EmTerm node)
@@ -173,15 +210,66 @@ class CssRuleSet extends CssTreeItem
 
 class CssSelector extends CssTreeItem
 {
-    var simpleSelectors = <CssSimpleSelector>[];
+    CssSimpleSelector? first;
 
     CssSelector(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+
+    @override
+    void insert(Object child)
+    {
+        if (child is SimpleSelectorSequence)
+        {
+          var selector = CssSimpleSelector();
+          var node = child as SimpleSelectorSequence;
+
+          if (node.isCombinatorDescendant)
+          {
+              selector.type = CssSimpleSelector.COMBINATOR_DESCENDANT;
+          }
+          else if (node.isCombinatorGreater)
+          {
+              selector.type = CssSimpleSelector.COMBINATOR_GREATER;
+          }
+          else if (node.isCombinatorPlus)
+          {
+              selector.type = CssSimpleSelector.COMBINATOR_PLUS;
+          }
+          else if (node.isCombinatorTilde)
+          {
+              selector.type = CssSimpleSelector.COMBINATOR_TILDE;
+          }
+          else
+          {
+              selector.type = CssSimpleSelector.COMBINATOR_NONE;
+          }
+
+          selector.next = first;
+          first = selector;
+        }
+        else if (child is Identifier)
+        {
+            first!.text = (child as Identifier).name;
+        }
+    }
 }
 
 class CssSimpleSelector
 {
+    static const COMBINATOR_NONE = 0;
+    static const COMBINATOR_DESCENDANT = 1;
+    static const COMBINATOR_PLUS = 2;
+    static const COMBINATOR_GREATER = 3;
+    static const COMBINATOR_TILDE = 4;
+
+    static const SELECTOR_ELEMENT = 0;
+    static const SELECTOR_ID = 0;
+    static const SELECTOR_CLASS = 1;
+    static const SELECTOR_NAMESPACE = 2;
+
+    CssSimpleSelector? next;
     String text ='';
-    int    type = 0;
-    int    combinator = 0;
+    int    type = SELECTOR_ELEMENT;
+    int    combinator = COMBINATOR_NONE;
+
 
 }
