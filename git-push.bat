@@ -2,7 +2,7 @@ if .%1.==.. goto syntax
 dart-prep --enable-all .\
 git add --all
 git commit --all -m %1
-git push --all
+git push --all --force
 pause
 git gc
 git gc --aggressive
