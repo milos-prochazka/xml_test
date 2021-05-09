@@ -253,7 +253,7 @@ class ManifestItem
         if (mime.contains('css'))
         {
             //var strText = utf8.decode(bytes).replaceAll('1em', '3.3mm');
-            var strText = 'h1,p.prvni.druha) { color: rgba(255, 255, 255, 1); }';
+            var strText = 'h1,p.prvni.druha { color: red; }';
             var stylesheet = css.parse(strText);
             var qq = stylesheet.topLevels[0];
             var debug = stylesheet.toDebugString();
@@ -262,12 +262,13 @@ class ManifestItem
                 ..writeAsBytesSync(utf8.encode(debug));
 
 
-            var cs = CssDecode(strText);
-
-
             var jj = qq.span;
 
             print(jj.toString());
+
+            var cs = CssDecode(strText);
+
+
 
             var brk = 1;
         }

@@ -95,6 +95,18 @@ class CssDecode extends Visitor
         super.visitElementSelector(node);
   }
 
+  @override
+  void visitDeclaration(Declaration node) 
+  {
+//#debug
+        print('Declaration');
+//#end
+
+        _treeStack.add(CssDeclaration(this, _treeStack));
+        super.visitDeclaration(node);
+        _treeStack.removeLast();    
+  }
+
 
     @override
     void visitIdentifier(Identifier node)
@@ -249,6 +261,27 @@ class CssSelector extends CssTreeItem
         else if (child is Identifier)
         {
             first!.text = (child as Identifier).name;
+        }
+    }
+}
+
+class CssDeclaration extends CssTreeItem
+{
+    late CssRuleSet _ruleSet;
+    String name = '';
+
+    CssDeclaration(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    {
+        _ruleSet = treeStack.last as CssRuleSet;    
+    }
+
+    @override
+    void insert(Object child)
+    {
+        
+        if (child is Identifier)
+        {
+            name = (child as Identifier).name;
         }
     }
 }
