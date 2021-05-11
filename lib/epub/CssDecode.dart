@@ -96,7 +96,7 @@ class CssDecode extends Visitor
   }
 
   @override
-  void visitDeclaration(Declaration node) 
+  void visitDeclaration(Declaration node)
   {
 //#debug
         print('Declaration');
@@ -104,7 +104,7 @@ class CssDecode extends Visitor
 
         _treeStack.add(CssDeclaration(this, _treeStack));
         super.visitDeclaration(node);
-        _treeStack.removeLast();    
+        _treeStack.removeLast();
   }
 
 
@@ -147,6 +147,7 @@ class CssDecode extends Visitor
       print('  Length:${node.value}');
 //#end
 
+      _treeStack.last.insert(node);
       super.visitNumberTerm(node);
     }
 
@@ -157,8 +158,54 @@ class CssDecode extends Visitor
       print('  Literal:${node.text}');
 //#end
 
+      _treeStack.last.insert(node);
       super.visitLiteralTerm(node);
     }
+
+    @override
+    void visitHexColorTerm(HexColorTerm node)
+    {
+      var t = node.text;
+
+      switch (t.length)
+      {
+          case 3:
+            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+'ff';
+            break;
+          case 4:
+            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+
+                t.substring(3,4)+t.substring(3,4);
+            break;
+          case 6:
+            t = t+'ff';
+            break;
+          case 8:
+            break;
+          default:
+            t = '000000ff';
+      }
+
+      node.text = t;
+
+//#debug
+      print('  HexColor:${node.text}');
+//#end
+
+      _treeStack.last.insert(node);
+      super.visitHexColorTerm(node);
+    }
+
+
+    @override
+    void visitUnitTerm(UnitTerm node)
+    {
+//#debug
+        print('  Unit:${node.text} ${node.unitToString()}');
+//#end
+
+        super.visitUnitTerm(node);
+    }
+
 
     @override
     void visitFunctionTerm(FunctionTerm node)
@@ -178,7 +225,11 @@ class CssDecode extends Visitor
 //#end
       super.visitSelector(node);
     }
+
+
+
 }
+
 
 
 class CssTreeItem
@@ -272,13 +323,13 @@ class CssDeclaration extends CssTreeItem
 
     CssDeclaration(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
     {
-        _ruleSet = treeStack.last as CssRuleSet;    
+        _ruleSet = treeStack.last as CssRuleSet;
     }
 
     @override
     void insert(Object child)
     {
-        
+
         if (child is Identifier)
         {
             name = (child as Identifier).name;
