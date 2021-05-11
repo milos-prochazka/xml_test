@@ -125,7 +125,7 @@ class CssDecode extends Visitor
       print('  Length:${node.value} ${node.unitToString()}');
 //#end
 
-      super.visitLengthTerm(node);
+      //super.visitLengthTerm(node);
     }
 
 
@@ -134,10 +134,11 @@ class CssDecode extends Visitor
     void visitEmTerm(EmTerm node)
     {
 //#debug
-      print('  Length:${node.value} em');
+        print('  Length:${node.value} em');
 //#end
 
-      super.visitEmTerm(node);
+        _treeStack.last.insert(CssNumber.fromEmTherm(node));
+        //super.visitEmTerm(node);
     }
 
     @override
@@ -147,7 +148,7 @@ class CssDecode extends Visitor
       print('  Length:${node.value}');
 //#end
 
-      _treeStack.last.insert(node);
+      _treeStack.last.insert(CssValue.fromNode(node));
       super.visitNumberTerm(node);
     }
 
@@ -158,40 +159,20 @@ class CssDecode extends Visitor
       print('  Literal:${node.text}');
 //#end
 
-      _treeStack.last.insert(node);
+      _treeStack.last.insert(CssValue.fromNode(node));
       super.visitLiteralTerm(node);
     }
 
     @override
     void visitHexColorTerm(HexColorTerm node)
     {
-      var t = node.text;
 
-      switch (t.length)
-      {
-          case 3:
-            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+'ff';
-            break;
-          case 4:
-            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+
-                t.substring(3,4)+t.substring(3,4);
-            break;
-          case 6:
-            t = t+'ff';
-            break;
-          case 8:
-            break;
-          default:
-            t = '000000ff';
-      }
-
-      node.text = t;
 
 //#debug
       print('  HexColor:${node.text}');
 //#end
 
-      _treeStack.last.insert(node);
+      _treeStack.last.insert(CssColor.fromHex(node.text));
       super.visitHexColorTerm(node);
     }
 
@@ -211,10 +192,13 @@ class CssDecode extends Visitor
     void visitFunctionTerm(FunctionTerm node)
     {
 //#debug
-      print('  Function:${node.text}');
+        print('  Function:${node.text}');
 //#end
 
-      super.visitFunctionTerm(node);
+        _treeStack.add(CssFunction(this, _treeStack));
+        super.visitFunctionTerm(node);
+        _treeStack.removeLast();
+
     }
 
     @override
@@ -223,6 +207,7 @@ class CssDecode extends Visitor
 //#debug
       print('  Selector:${node.span!.text}');
 //#end
+
       super.visitSelector(node);
     }
 
@@ -320,6 +305,7 @@ class CssDeclaration extends CssTreeItem
 {
     late CssRuleSet _ruleSet;
     String name = '';
+    var values = <CssValue>[];
 
     CssDeclaration(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
     {
@@ -334,7 +320,149 @@ class CssDeclaration extends CssTreeItem
         {
             name = (child as Identifier).name;
         }
+        else if (child is CssValue)
+        {
+            values.add(child as CssValue);
+        }
     }
+}
+
+class CssFunction extends CssTreeItem
+{
+    String name = '';
+    var params = <CssValue>[];
+
+    CssFunction(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+
+    @override
+    void insert(Object child)
+    {
+        if (name == '')
+        {
+            name = (child is CssLiteral) ? (child as CssLiteral).text : '???';
+        }
+        else
+        {
+            params.add(child as CssValue);
+        }
+    }
+}
+
+class CssValue
+{
+    static CssValue fromNode(Object node)
+    {
+        if (node is NumberTerm)
+        {
+            return CssNumber.fromNumberTherm(node as NumberTerm);
+        }
+        else if (node is LiteralTerm)
+        {
+            var literal = node as LiteralTerm;
+
+            switch (literal.text)
+            {
+                case 'inherited':
+                    return CssInherited();
+                default:
+                    return CssLiteral(literal.text);
+            }
+        }
+
+        return CssValue();
+    }
+
+}
+
+class CssNumber extends CssValue
+{
+      double value = 0.0;
+      String unit = '';
+
+      CssNumber.fromNumberTherm(NumberTerm number)
+      {
+          try
+          {
+              var val = double.tryParse(number.text);
+              if (val != null)
+              {
+                  this.value = val;
+              }
+          }
+          catch (ex)
+          {
+              value = 0.0;
+          }
+      }
+
+      CssNumber.fromEmTherm(EmTerm number)
+      {
+          try
+          {
+              var val = double.tryParse(number.text);
+              if (val != null)
+              {
+                  this.value = val;
+              }
+          }
+          catch (ex)
+          {
+              value = 0.0;
+          }
+
+          unit  = 'em';
+      }
+}
+
+class CssInherited extends CssValue
+{
+
+}
+
+class CssLiteral extends CssValue
+{
+    var text;
+
+    CssLiteral(this.text);
+}
+
+
+class CssColor extends CssValue
+{
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+    int alpha = 255;
+
+    CssColor.fromHex(String hexColor)
+    {
+      var t = hexColor;
+
+      switch (t.length)
+      {
+          case 3:
+            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+'ff';
+            break;
+          case 4:
+            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+
+                t.substring(3,4)+t.substring(3,4);
+            break;
+          case 6:
+            t = t+'ff';
+            break;
+          case 8:
+            break;
+          default:
+            t = '000000ff';
+      }
+
+        red = int.parse(t.substring(0,2),radix: 16);
+        green = int.parse(t.substring(2,4),radix: 16);
+        blue = int.parse(t.substring(4,6),radix: 16);
+        alpha =  int.parse(t.substring(6,8),radix: 16);
+    }
+
+
 }
 
 class CssSimpleSelector
