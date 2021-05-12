@@ -6,8 +6,12 @@ import 'package:csslib/visitor.dart';
 
 // ignore_for_file: unnecessary_cast
 
+typedef CssFunctionHandler = CssValue? Function (CssFunction function);
+
 class CssDecode extends Visitor
 {
+    static final functions = <String,CssFunctionHandler>
+    { 'rgb':_rgbFunction};
     final _treeStack = Queue<CssTreeItem>();
 
     CssDecode(String cssText)
@@ -195,9 +199,26 @@ class CssDecode extends Visitor
         print('  Function:${node.text}');
 //#end
 
-        _treeStack.add(CssFunction(this, _treeStack));
+        var cssFunction = CssFunction(this, _treeStack);
+
+        _treeStack.add(cssFunction);
         super.visitFunctionTerm(node);
         _treeStack.removeLast();
+
+        var name = cssFunction.name.toLowerCase();
+
+        if (functions.containsKey(name))
+        {
+            var f = functions[name];
+
+            var result = ( f != null ) ?f(cssFunction) : null;
+
+            if (result != null)
+            {
+                _treeStack.last.insert(result);
+            }
+        }
+
 
     }
 
@@ -412,6 +433,12 @@ class CssNumber extends CssValue
 
           unit  = 'em';
       }
+
+
+      double valueSat(double min, double max)
+      {
+          return value<min ? min : value>max ? max : value;
+      }
 }
 
 class CssInherited extends CssValue
@@ -421,7 +448,7 @@ class CssInherited extends CssValue
 
 class CssLiteral extends CssValue
 {
-    var text;
+    String text;
 
     CssLiteral(this.text);
 }
@@ -433,6 +460,8 @@ class CssColor extends CssValue
     int green = 0;
     int blue = 0;
     int alpha = 255;
+
+    CssColor.fromRgba(this.red,this.green,this.blue,this.alpha);
 
     CssColor.fromHex(String hexColor)
     {
@@ -484,4 +513,12 @@ class CssSimpleSelector
     int    combinator = COMBINATOR_NONE;
 
 
+}
+
+CssValue? _rgbFunction (CssFunction function)
+{
+    return CssColor.fromRgba((function.params[0] as CssNumber).value as int,
+                             (function.params[1] as CssNumber).value as int,
+                             (function.params[2] as CssNumber).value as int,
+                             255);
 }
