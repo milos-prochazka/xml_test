@@ -13,12 +13,26 @@ class CssDecode extends Visitor
     static final functions = <String,CssFunctionHandler>
     { 'rgb':_rgbFunction};
     final _treeStack = Queue<CssTreeItem>();
+    final rules = <CssRuleSet>[];
 
     CssDecode(String cssText)
     {
         var stylesheet = css.parse(cssText);
 
         stylesheet.visit(this);
+    }
+
+    @override
+    String toString()
+    {
+        final builder = StringBuffer();
+
+        for(var rule in rules)
+        {
+            builder.write(rule.toString());
+        }
+
+        return builder.toString();
     }
 
     @override
@@ -33,11 +47,14 @@ class CssDecode extends Visitor
             throw Exception('Tree stack must be empty');
         }
 
-        _treeStack.add(CssRuleSet(this,_treeStack));
+        final ruleSet = CssRuleSet(this,_treeStack);
+        _treeStack.add(ruleSet);
+        rules.add(ruleSet);
         super.visitRuleSet(node);
         _treeStack.removeLast();
 
     }
+
 
     @override
     void visitSelectorGroup(SelectorGroup node)
@@ -275,6 +292,20 @@ class CssRuleSet extends CssTreeItem
     {
         selectors.add(child as CssSelector);
     }
+
+    @override
+    String toString()
+    {
+        final builder = StringBuffer();
+
+        for(var selector in selectors)
+        {
+            builder.write(selector.toString());
+        }
+
+        return builder.toString();
+    }
+
 }
 
 class CssSelector extends CssTreeItem
@@ -320,6 +351,32 @@ class CssSelector extends CssTreeItem
             first!.text = (child as Identifier).name;
         }
     }
+
+    @override
+    String toString()
+    {
+        final builder = StringBuffer();
+
+        var selector = first;
+        var firstSelector = true;
+
+        while(selector != null)
+        {
+            if (!firstSelector)
+            {
+                builder.write(',');
+            }
+
+            firstSelector = false;
+
+            builder.write(selector.toString());
+
+            selector = selector.next;
+        }
+
+        return builder.toString();
+    }
+
 }
 
 class CssDeclaration extends CssTreeItem
@@ -439,6 +496,11 @@ class CssNumber extends CssValue
       {
           return value<min ? min : value>max ? max : value;
       }
+
+      int valueInt(int min,int max)
+      {
+          return valueSat(min.toDouble(),max.toDouble()).toInt();
+      }
 }
 
 class CssInherited extends CssValue
@@ -513,12 +575,48 @@ class CssSimpleSelector
     int    combinator = COMBINATOR_NONE;
 
 
+    @override
+    String toString()
+    {
+        var comb = '';
+        var tp = '';
+
+        switch (combinator)
+        {
+            case COMBINATOR_DESCENDANT:
+              comb = ' ';
+              break;
+            case COMBINATOR_PLUS:
+              comb = '+';
+              break;
+            case COMBINATOR_GREATER:
+              comb = '>';
+              break;
+            case COMBINATOR_TILDE:
+              comb = '~';
+              break;
+        }
+
+        switch(type)
+        {
+            case SELECTOR_ID:
+              tp = '#';
+              break;
+            case SELECTOR_CLASS:
+              tp = '.';
+              break;
+        }
+
+        return '$comb$tp$text';
+    }
+
+
 }
 
 CssValue? _rgbFunction (CssFunction function)
 {
-    return CssColor.fromRgba((function.params[0] as CssNumber).value as int,
-                             (function.params[1] as CssNumber).value as int,
-                             (function.params[2] as CssNumber).value as int,
+    return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
+                             (function.params[1] as CssNumber).valueInt(0,255),
+                             (function.params[2] as CssNumber).valueInt(0,255),
                              255);
 }

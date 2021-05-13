@@ -267,6 +267,7 @@ class ManifestItem
             print(jj.toString());
 
             var cs = CssDecode(strText);
+            print (cs.toString());
 
 
 
