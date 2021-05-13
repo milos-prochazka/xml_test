@@ -358,16 +358,9 @@ class CssSelector extends CssTreeItem
         final builder = StringBuffer();
 
         var selector = first;
-        var firstSelector = true;
 
         while(selector != null)
         {
-            if (!firstSelector)
-            {
-                builder.write(',');
-            }
-
-            firstSelector = false;
 
             builder.write(selector.toString());
 
