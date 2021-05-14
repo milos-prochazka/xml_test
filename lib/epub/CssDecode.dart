@@ -63,12 +63,27 @@ class CssDecode extends Visitor
         print ('SelectorGroup ${node.span!.text}');
   //#end
 
+        super.visitSelectorGroup(node);
+    }
+
+
+    @override
+    void visitSelector(Selector node)
+    {
+  //#debug
+      print('  Selector:${node.span!.text}');
+  //#end
+
         var selector = CssSelector(this, _treeStack);
         _treeStack.last.insert(selector);
         _treeStack.add(selector);
-        super.visitSelectorGroup(node);
+
+        super.visitSelector(node);
+
         _treeStack.removeLast();
-    }
+
+  }
+
 
     @override
     void visitSimpleSelectorSequence(SimpleSelectorSequence node)
@@ -123,7 +138,9 @@ class CssDecode extends Visitor
         print('Declaration');
 //#end
 
-        _treeStack.add(CssDeclaration(this, _treeStack));
+        var declaration = CssDeclaration(this, _treeStack);
+        _treeStack.last.insert(declaration);
+        _treeStack.add(declaration);
         super.visitDeclaration(node);
         _treeStack.removeLast();
   }
@@ -239,17 +256,6 @@ class CssDecode extends Visitor
 
     }
 
-    @override
-    void visitSelector(Selector node)
-    {
-//#debug
-      print('  Selector:${node.span!.text}');
-//#end
-
-      super.visitSelector(node);
-    }
-
-
 
 }
 
@@ -283,6 +289,7 @@ class CssTreeItem
 class CssRuleSet extends CssTreeItem
 {
     var selectors = <CssSelector>[];
+    var declarations = <CssDeclaration>[];
 
 
     CssRuleSet(CssDecode decoder,Queue<CssTreeItem> treeStack) : super(decoder,treeStack);
@@ -290,18 +297,42 @@ class CssRuleSet extends CssTreeItem
     @override
     void insert(Object child)
     {
-        selectors.add(child as CssSelector);
+        if (child is CssSelector)
+        {
+          selectors.add(child as CssSelector);
+        }
+        else if (child is CssDeclaration)
+        {
+          declarations.add(child as CssDeclaration);
+        }
     }
 
     @override
     String toString()
     {
         final builder = StringBuffer();
+        var firstSelector = true;
 
         for(var selector in selectors)
         {
+            if (!firstSelector)
+            {
+                builder.write(',');
+            }
+
+            firstSelector = false;
             builder.write(selector.toString());
         }
+
+        builder.write('{\r\n');
+        for (var declaration in declarations)
+        {
+            builder.write('   ');
+            builder.write(declaration.toString());
+            builder.write(';\r\n');
+        }
+        builder.write('}\r\n');
+
 
         return builder.toString();
     }
@@ -311,6 +342,7 @@ class CssRuleSet extends CssTreeItem
 class CssSelector extends CssTreeItem
 {
     CssSimpleSelector? first;
+    var selectors = <CssSimpleSelector>[];
 
     CssSelector(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
 
@@ -345,6 +377,7 @@ class CssSelector extends CssTreeItem
 
           selector.next = first;
           first = selector;
+          selectors.add(selector);
         }
         else if (child is Identifier)
         {
@@ -357,14 +390,9 @@ class CssSelector extends CssTreeItem
     {
         final builder = StringBuffer();
 
-        var selector = first;
-
-        while(selector != null)
+        for (var selector in selectors)
         {
-
             builder.write(selector.toString());
-
-            selector = selector.next;
         }
 
         return builder.toString();
@@ -395,6 +423,27 @@ class CssDeclaration extends CssTreeItem
         {
             values.add(child as CssValue);
         }
+    }
+
+    @override
+    String toString()
+    {
+        var builder = new StringBuffer();
+        builder.write(name);
+        builder.write(': ');
+        var first = true;
+
+        for (var value in values)
+        {
+            if (!first)
+            {
+                builder.write(' ');
+            }
+            first = false;
+            builder.write(value.toString());
+        }
+
+        return builder.toString();
     }
 }
 
@@ -558,9 +607,8 @@ class CssSimpleSelector
     static const COMBINATOR_TILDE = 4;
 
     static const SELECTOR_ELEMENT = 0;
-    static const SELECTOR_ID = 0;
-    static const SELECTOR_CLASS = 1;
-    static const SELECTOR_NAMESPACE = 2;
+    static const SELECTOR_ID = 1;
+    static const SELECTOR_CLASS = 2;
 
     CssSimpleSelector? next;
     String text ='';
