@@ -90,13 +90,30 @@ class CssDecode extends Visitor
     @override
     void visitSimpleSelectorSequence(SimpleSelectorSequence node)
     {
-  //#debug
+//#debug
         var s = node.span!.text;
         print ('SimpleSelectorSequence $s');
-  //#end
+//#end
         _treeStack.last.insert(node);
         super.visitSimpleSelectorSequence(node);
-  }
+    }
+
+    @override
+    void visitAttributeSelector(AttributeSelector node) 
+    {
+//#debug      
+      print('AttributeSelector');
+//#end
+      super.visitAttributeSelector(node);
+
+      _treeStack.last.insert(node);
+//#debug
+      final tokenStr = node.matchOperatorAsTokenString();
+      final value = node.valueToString();
+      print('operator: ${node.matchOperator()} ($tokenStr)');
+      print('value $value');
+//#end    
+    }
 
     @override
     void visitClassSelector(ClassSelector node)
@@ -387,6 +404,11 @@ class CssSelector extends CssTreeItem
         {
             first!.text = (child as Identifier).name;
         }
+        else if (child is AttributeSelector)
+        {
+
+            selectors.last.setOperation(child as AttributeSelector);
+        }
     }
 
     @override
@@ -651,12 +673,57 @@ class CssSimpleSelector
     static const SELECTOR_ELEMENT = 0;
     static const SELECTOR_ID = 1;
     static const SELECTOR_CLASS = 2;
+    static const SELECTOR_ATTRIBUTE = 3;
+
+    static const OPERATION_NONE = 0;
+    static const OPERATION_EQUAL = 1;
+    static const OPERATION_INCLUDES = 2;
+    static const OPERATION_DASH_MATCH = 2;
+    static const OPERATION_PREFIX_MATCH = 3;
+    static const OPERATION_SUFFIX_MATCH = 4;
+    static const OPERATION_SUBSTRING_MATCH = 5;
+
 
     CssSimpleSelector? next;
     String text ='';
     int    type = SELECTOR_ELEMENT;
     int    combinator = COMBINATOR_NONE;
+    int    operation = OPERATION_NONE;
+    String operationString =  '';
+    String value = '';
 
+    void setOperation(AttributeSelector selector)
+    {
+        operationString = selector.matchOperator() ?? '';;
+        value = selector.valueToString();
+
+        type = SELECTOR_ATTRIBUTE;
+
+        switch (operationString)
+        {
+            case '=':
+              operation = OPERATION_EQUAL;
+              break;
+            case  '~=':
+              operation = OPERATION_INCLUDES;
+              break;
+            case  '|=':
+              operation = OPERATION_DASH_MATCH;
+              break;
+            case  '^=':
+              operation = OPERATION_PREFIX_MATCH;
+              break;
+            case  '\$=':
+              operation = OPERATION_SUFFIX_MATCH;
+              break;
+            case  '*=':
+              operation = OPERATION_SUBSTRING_MATCH;
+              break;
+            default:
+              operation = OPERATION_NONE;
+              operationString = '';
+        }
+    }
 
     @override
     String toString()
@@ -690,7 +757,14 @@ class CssSimpleSelector
               break;
         }
 
-        return '$comb$tp$text';
+        switch (type)
+        {
+            case SELECTOR_ATTRIBUTE:
+              return (operation == OPERATION_NONE) ? '[$text]' : '[$text$operationString$value]';
+
+            default:
+              return '$comb$tp$text';
+        }
     }
 
 
