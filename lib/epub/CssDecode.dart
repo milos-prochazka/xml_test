@@ -3,8 +3,10 @@ import 'dart:collection';
 
 import 'package:csslib/parser.dart' as css;
 import 'package:csslib/visitor.dart';
+import 'package:xml_test/common.dart';
 
 // ignore_for_file: unnecessary_cast
+// ignore_for_file: unnecessary_this
 
 typedef CssFunctionHandler = CssValue? Function (CssFunction function);
 
@@ -163,6 +165,7 @@ class CssDecode extends Visitor
       print('  Length:${node.value} ${node.unitToString()}');
 //#end
 
+      _treeStack.last.insert(CssNumber.fromUnitTherm(node));
       //super.visitLengthTerm(node);
     }
 
@@ -222,6 +225,7 @@ class CssDecode extends Visitor
         print('  Unit:${node.text} ${node.unitToString()}');
 //#end
 
+        _treeStack.last.insert(CssNumber.fromUnitTherm(node));
         super.visitUnitTerm(node);
     }
 
@@ -239,7 +243,7 @@ class CssDecode extends Visitor
         super.visitFunctionTerm(node);
         _treeStack.removeLast();
 
-        var name = cssFunction.name.toLowerCase();
+        var name = cssFunction.name;
 
         if (functions.containsKey(name))
         {
@@ -428,7 +432,7 @@ class CssDeclaration extends CssTreeItem
     @override
     String toString()
     {
-        var builder = new StringBuffer();
+        var builder = StringBuffer();
         builder.write(name);
         builder.write(': ');
         var first = true;
@@ -459,7 +463,7 @@ class CssFunction extends CssTreeItem
     {
         if (name == '')
         {
-            name = (child is CssLiteral) ? (child as CssLiteral).text : '???';
+            name = (child is CssLiteral) ? (child as CssLiteral).text.toLowerCase() : '???';
         }
         else
         {
@@ -515,6 +519,12 @@ class CssNumber extends CssValue
           }
       }
 
+      CssNumber.fromUnitTherm(UnitTerm unit)
+      {
+          this.value = dynamicToDouble(unit.value);
+          this.unit = unit.unitToString() ?? '';
+      }
+
       CssNumber.fromEmTherm(EmTerm number)
       {
           try
@@ -543,6 +553,17 @@ class CssNumber extends CssValue
       {
           return valueSat(min.toDouble(),max.toDouble()).toInt();
       }
+
+      String valueString()
+      {
+          return (value == value.ceil()) ? value.toStringAsFixed(0) : value.toString();
+      }
+
+      @override
+      String toString()
+      {
+          return '${valueString()}$unit';
+      }
 }
 
 class CssInherited extends CssValue
@@ -555,6 +576,12 @@ class CssLiteral extends CssValue
     String text;
 
     CssLiteral(this.text);
+
+    @override
+    String toString()
+    {
+        return text;
+    }
 }
 
 
@@ -595,6 +622,21 @@ class CssColor extends CssValue
         alpha =  int.parse(t.substring(6,8),radix: 16);
     }
 
+    @override
+    String toString()
+    {
+        var result = '#'
+            + red.toRadixString(16).padLeft(2,'0')
+            + green.toRadixString(16).padLeft(2,'0')
+            + blue.toRadixString(16).padLeft(2,'0');
+
+        if (alpha != 0xff) 
+        {
+            result += alpha.toRadixString(16).padLeft(2,'0');
+        }
+
+        return result;
+    }
 
 }
 

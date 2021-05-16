@@ -64,6 +64,25 @@ bool isBlankOrNull(String? value)
     }
 }
 
+double dynamicToDouble(dynamic value,[double defValue=0.0])
+{
+    if (value is double)
+    {
+        return value;
+    }
+    else if (value is int)
+    {
+        return value.toDouble();
+    }
+    else
+    {
+        var res = double.tryParse(value.toString().trim());
+        
+        return res ?? defValue;            
+        
+    }
+}
+
 extension StringFunctions on String
 {
     List<int> copyToCodeUnits()

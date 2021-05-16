@@ -253,7 +253,8 @@ class ManifestItem
         if (mime.contains('css'))
         {
             // var strText = utf8.decode(bytes).replaceAll('1em', '3.3mm');
-            var strText = 'h1,p.prvni.druha { color: rgb(12em,30,233,555,333); } div { animation: mymove 5s infinite; } ';
+            //var strText = 'h1,p.prvni.druha { color: rgb(12em,30,233,555,333); } div { animation: mymove 5s infinite; text-shadow: 2px 2px 5px red; } ';
+            var strText = ' div { animation: mymove 5s infinite;  } ';
             var stylesheet = css.parse(strText);
             var qq = stylesheet.topLevels[0];
             var debug = stylesheet.toDebugString();
