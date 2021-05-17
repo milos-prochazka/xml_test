@@ -99,9 +99,9 @@ class CssDecode extends Visitor
     }
 
     @override
-    void visitAttributeSelector(AttributeSelector node) 
+    void visitAttributeSelector(AttributeSelector node)
     {
-//#debug      
+//#debug
       print('AttributeSelector');
 //#end
       super.visitAttributeSelector(node);
@@ -112,7 +112,7 @@ class CssDecode extends Visitor
       final value = node.valueToString();
       print('operator: ${node.matchOperator()} ($tokenStr)');
       print('value $value');
-//#end    
+//#end
     }
 
     @override
@@ -126,8 +126,29 @@ class CssDecode extends Visitor
         super.visitClassSelector(node);
     }
 
-    @override
 
+    @override
+    void visitPseudoClassSelector(PseudoClassSelector node)
+    {
+//#debug
+      print('Pseudo Class Selector');
+//#end
+        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_CLASS;
+        super.visitPseudoClassSelector(node);
+    }
+
+    @override
+    void visitPseudoElementSelector(PseudoElementSelector node)
+    {
+//#debug
+      print('Pseudo Element Selector');
+//#end
+        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_ELEMENT;
+        super.visitPseudoElementSelector(node);
+    }
+
+
+    @override
     void visitIdSelector(IdSelector node)
     {
 //#debug
@@ -652,7 +673,7 @@ class CssColor extends CssValue
             + green.toRadixString(16).padLeft(2,'0')
             + blue.toRadixString(16).padLeft(2,'0');
 
-        if (alpha != 0xff) 
+        if (alpha != 0xff)
         {
             result += alpha.toRadixString(16).padLeft(2,'0');
         }
@@ -674,6 +695,8 @@ class CssSimpleSelector
     static const SELECTOR_ID = 1;
     static const SELECTOR_CLASS = 2;
     static const SELECTOR_ATTRIBUTE = 3;
+    static const SELECTOR_PSEUDO_CLASS = 4;
+    static const SELECTOR_PSEUDO_ELEMENT = 5;
 
     static const OPERATION_NONE = 0;
     static const OPERATION_EQUAL = 1;
@@ -754,6 +777,12 @@ class CssSimpleSelector
               break;
             case SELECTOR_CLASS:
               tp = '.';
+              break;
+            case SELECTOR_PSEUDO_CLASS:
+              tp = ':';
+              break;
+            case SELECTOR_PSEUDO_ELEMENT:
+              tp = '::';
               break;
         }
 

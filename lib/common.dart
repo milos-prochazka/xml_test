@@ -77,9 +77,9 @@ double dynamicToDouble(dynamic value,[double defValue=0.0])
     else
     {
         var res = double.tryParse(value.toString().trim());
-        
-        return res ?? defValue;            
-        
+
+        return res ?? defValue;
+
     }
 }
 
