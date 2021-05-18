@@ -125,8 +125,6 @@ void main(List<String> arguments)
 {
     final bytes = File('test.epub').readAsBytesSync();
 
-    var x = dynamicToDouble('E=123.7e56');
-
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
 

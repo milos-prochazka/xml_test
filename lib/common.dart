@@ -64,8 +64,14 @@ bool isBlankOrNull(String? value)
     }
 }
 
-var numberFromText = RegExp(r'(\-?\d+([\.\,]\d+)?([eE]\-?\d+)?)|(\-?[\.\,]?\d+)'); 
+/// Regular expression for match a double number in the text
+var numberFromText = RegExp(r'(\-?\d+(\.\d+)?([eE]\-?\d+)?)|(\-?\.?\d+)'); 
 
+/// Converts dynamic to double
+/// - double returns double
+/// - int returns int converted to double
+/// - string parse to a double or use [numberFromText] for a match number.
+/// - returns defNumber if it fails.
 double dynamicToDouble(dynamic value,[double defValue=0.0])
 {
     if (value is double)
@@ -103,7 +109,6 @@ double dynamicToDouble(dynamic value,[double defValue=0.0])
         }
 
         return res ?? defValue;
-
     }
 }
 
