@@ -64,6 +64,8 @@ bool isBlankOrNull(String? value)
     }
 }
 
+var numberFromText = RegExp(r'(\-?\d+([\.\,]\d+)?([eE]\-?\d+)?)|(\-?[\.\,]?\d+)'); 
+
 double dynamicToDouble(dynamic value,[double defValue=0.0])
 {
     if (value is double)
@@ -76,7 +78,29 @@ double dynamicToDouble(dynamic value,[double defValue=0.0])
     }
     else
     {
-        var res = double.tryParse(value.toString().trim());
+        var valStr = value.toString().trim().replaceAll(',', '.');
+        var res = double.tryParse(valStr);
+
+        if (res == null)
+        {
+            var match = numberFromText.firstMatch(valStr);
+            if (match != null)
+            {
+                valStr = match.input.substring(match.start,match.end);
+
+                if (valStr.startsWith('.')) 
+                {
+                  valStr = '0'+valStr;
+                }
+
+                if (valStr.startsWith('-.')) 
+                {
+                  valStr = '-0'+valStr.substring(1);
+                }
+              
+                res = double.tryParse(valStr);
+            }
+        }
 
         return res ?? defValue;
 
