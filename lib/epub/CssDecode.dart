@@ -267,6 +267,18 @@ class CssDecode extends Visitor
         super.visitUnitTerm(node);
     }
 
+    @override
+    void visitOperatorComma(OperatorComma node)
+    {
+//#debug
+        print('  Operator comma');
+//#end
+
+        _treeStack.last.insert(CssValue.fromNode(node));
+        super.visitOperatorComma(node);
+    }
+
+
 
     @override
     void visitFunctionTerm(FunctionTerm node)
@@ -535,6 +547,10 @@ class CssValue
                     return CssLiteral(literal.text);
             }
         }
+        else if (node is OperatorComma)
+        {
+            return CssOperatorComma();
+        }
 
         return CssValue();
     }
@@ -797,6 +813,15 @@ class CssSimpleSelector
     }
 
 
+}
+
+class CssOperatorComma extends CssValue
+{
+    @override
+    String toString()
+    {
+        return ',';
+    }
 }
 
 CssValue? _rgbFunction (CssFunction function)

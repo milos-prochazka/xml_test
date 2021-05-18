@@ -255,6 +255,10 @@ class ManifestItem
             // var strText = utf8.decode(bytes).replaceAll('1em', '3.3mm');
             //var strText = 'h1,p.prvni.druha { color: rgb(12em,30,233,555,333); } div { animation: mymove 5s infinite; text-shadow: 2px 2px 5px red; } ';
             var strText = '''
+h1 {
+  text-shadow: 2px 2px 5px #FF0000,-2px -2px 5px #00FF00;
+}
+
 input:checked {
   height: 50px;
 }
