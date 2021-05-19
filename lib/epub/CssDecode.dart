@@ -17,6 +17,7 @@ class CssDecode extends Visitor
     final _treeStack = Queue<CssTreeItem>();
     final rules = <CssRuleSet>[];
 
+
     CssDecode(String cssText)
     {
         var stylesheet = css.parse(cssText);
@@ -306,10 +307,23 @@ class CssDecode extends Visitor
                 _treeStack.last.insert(result);
             }
         }
-
-
     }
 
+
+    @override
+    dynamic visitFontFaceDirective(FontFaceDirective node)
+    {
+//#debug
+        print('Font face');
+//#end
+        final fontFace = CssFontFace(this,_treeStack);
+        _treeStack.add(fontFace);
+        rules.add(fontFace);
+
+        super.visitFontFaceDirective(node);
+
+        _treeStack.removeLast();
+    }
 
 }
 
@@ -389,6 +403,17 @@ class CssRuleSet extends CssTreeItem
 
 
         return builder.toString();
+    }
+
+}
+
+class CssFontFace extends CssRuleSet
+{
+    CssFontFace(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    {
+        final selector = CssSelector(decoder, treeStack);
+        selector.selectors.add(CssSimpleSelector.asFontFace());
+        this.selectors.add(selector);
     }
 
 }
@@ -713,6 +738,7 @@ class CssSimpleSelector
     static const SELECTOR_ATTRIBUTE = 3;
     static const SELECTOR_PSEUDO_CLASS = 4;
     static const SELECTOR_PSEUDO_ELEMENT = 5;
+    static const SELECTOR_FONT_FACE = 6;
 
     static const OPERATION_NONE = 0;
     static const OPERATION_EQUAL = 1;
@@ -730,6 +756,14 @@ class CssSimpleSelector
     int    operation = OPERATION_NONE;
     String operationString =  '';
     String value = '';
+
+    CssSimpleSelector();
+
+    CssSimpleSelector.asFontFace()
+    {
+        text = '@font_face';
+        type = SELECTOR_FONT_FACE;
+    }
 
     void setOperation(AttributeSelector selector)
     {
