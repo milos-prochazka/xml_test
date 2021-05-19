@@ -255,11 +255,9 @@ class ManifestItem
             // var strText = utf8.decode(bytes).replaceAll('1em', '3.3mm');
             //var strText = 'h1,p.prvni.druha { color: rgb(12em,30,233,555,333); } div { animation: mymove 5s infinite; text-shadow: 2px 2px 5px red; } ';
             var strText = '''
-input:checked {
-  height: 50px;
-}
-p::after {
-  content: " - Remember this";
+@font-face {
+  font-family: myFirstFont;
+  src: url(sansation_light.woff);
 }
 ''';
             var stylesheet = css.parse(strText);
