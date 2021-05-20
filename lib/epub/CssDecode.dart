@@ -15,7 +15,10 @@ class CssDecode extends Visitor
 {
     static final functions = <String,CssFunctionHandler>
     { 'rgb':_rgbFunction,
-      'rgba':_rgbaFunction};
+      'rgba':_rgbaFunction,
+      'hsl': _hslaFunction,
+      'hsla': _hslaFunction,
+    };
     final _treeStack = Queue<CssTreeItem>();
     final rules = <CssRuleSet>[];
 
@@ -678,9 +681,12 @@ class CssColor extends CssValue
     int blue = 0;
     int alpha = 255;
 
-    CssColor.fromRgba(this.red,this.green,this.blue,this.alpha)
+    CssColor.fromRgba(int red,int green,int blue,int alpha)
     {
-        this.red = saturateInt
+        this.red = saturateInt(red,0,255);
+        this.green = saturateInt(green,0,255);
+        this.blue = saturateInt(blue,0,255);
+        this.alpha = saturateInt(alpha,0,255);
     }
 
     CssColor.fromHex(String hexColor)
@@ -865,26 +871,65 @@ class CssOperatorComma extends CssValue
 
 CssValue? _rgbFunction (CssFunction function)
 {
-    return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
-                             (function.params[1] as CssNumber).valueInt(0,255),
-                             (function.params[2] as CssNumber).valueInt(0,255),
-                             255);
+    try
+    {
+      return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
+                              (function.params[1] as CssNumber).valueInt(0,255),
+                              (function.params[2] as CssNumber).valueInt(0,255),
+                              255);
+    }
+    catch (e)
+    {
+        return CssColor.fromRgba(0, 0, 0, 255);
+    }
 }
 
 CssValue? _rgbaFunction (CssFunction function)
 {
-    return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
-                             (function.params[1] as CssNumber).valueInt(0,255),
-                             (function.params[2] as CssNumber).valueInt(0,255),
-                             ((function.params[2] as CssNumber).valueSat(0,1)*255).toInt());
+    try
+    {
+      return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
+                              (function.params[1] as CssNumber).valueInt(0,255),
+                              (function.params[2] as CssNumber).valueInt(0,255),
+                              ((function.params[3] as CssNumber).valueSat(0,1)*255).toInt());
+    }
+    catch (e)
+    {
+        return CssColor.fromRgba(0, 0, 0, 255);
+    }
 }
 
+CssValue? _hslaFunction (CssFunction function)
+{
+    try
+    {
+        double a = 1.0;
+
+        if (function.params.length>=4)
+        {
+            a = (function.params[3] as CssNumber).valueSat(0,1);
+        }   
+
+      return _hslaToRgba((function.params[0] as CssNumber).value,
+                         (function.params[1] as CssNumber).value,
+                         (function.params[2] as CssNumber).value,
+                         a);
+    }
+    catch (e)
+    {
+        return CssColor.fromRgba(0, 0, 0, 255);
+    }
+}
 
 CssValue? _hslaToRgba(double h,double s,double l,double a)
 {
     var r = 0;
     var g = 0;
     var b = 0;
+
+    h = saturate(h,0,360);
+    s = saturate(s,0,1);
+    l = saturate(s,0,1);
 
     if (s == 0)
     {
