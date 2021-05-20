@@ -7,13 +7,15 @@ import 'package:xml_test/common.dart';
 
 // ignore_for_file: unnecessary_cast
 // ignore_for_file: unnecessary_this
+// ignore_for_file: omit_local_variable_types
 
 typedef CssFunctionHandler = CssValue? Function (CssFunction function);
 
 class CssDecode extends Visitor
 {
     static final functions = <String,CssFunctionHandler>
-    { 'rgb':_rgbFunction};
+    { 'rgb':_rgbFunction,
+      'rgba':_rgbaFunction};
     final _treeStack = Queue<CssTreeItem>();
     final rules = <CssRuleSet>[];
 
@@ -676,7 +678,10 @@ class CssColor extends CssValue
     int blue = 0;
     int alpha = 255;
 
-    CssColor.fromRgba(this.red,this.green,this.blue,this.alpha);
+    CssColor.fromRgba(this.red,this.green,this.blue,this.alpha)
+    {
+        this.red = saturateInt
+    }
 
     CssColor.fromHex(String hexColor)
     {
@@ -864,4 +869,69 @@ CssValue? _rgbFunction (CssFunction function)
                              (function.params[1] as CssNumber).valueInt(0,255),
                              (function.params[2] as CssNumber).valueInt(0,255),
                              255);
+}
+
+CssValue? _rgbaFunction (CssFunction function)
+{
+    return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
+                             (function.params[1] as CssNumber).valueInt(0,255),
+                             (function.params[2] as CssNumber).valueInt(0,255),
+                             ((function.params[2] as CssNumber).valueSat(0,1)*255).toInt());
+}
+
+
+CssValue? _hslaToRgba(double h,double s,double l,double a)
+{
+    var r = 0;
+    var g = 0;
+    var b = 0;
+
+    if (s == 0)
+    {
+        r = g = b = (l * 255).toInt();
+    }
+    else
+    {
+        double v1, v2;
+        double hue = h / 360;
+
+        v2 = (l < 0.5) ? (l * (1 + s)) : ((l + s) - (l * s));
+        v1 = 2 * l - v2;
+
+        r = (255 * _hueToRGB(v1, v2, hue + (1.0 / 3))).toInt();
+        g = (255 * _hueToRGB(v1, v2, hue)).toInt();
+        b = (255 * _hueToRGB(v1, v2, hue - (1.0 / 3))).toInt();
+    }
+
+    return CssColor.fromRgba(r, g, b, (a*255).toInt());
+}
+
+double _hueToRGB(double v1, double v2, double vH)
+{
+	if (vH < 0) 
+  {
+	  vH += 1;
+	}
+
+	if (vH > 1) 
+  {
+	  vH -= 1;
+	}
+
+	if ((6 * vH) < 1) 
+  {
+	  return (v1 + (v2 - v1) * 6 * vH);
+	}
+	else if ((2 * vH) < 1)
+  {
+	  return v2;
+	}
+  else if ((3 * vH) < 2) 
+  {
+	  return (v1 + (v2 - v1) * ((2.0 / 3) - vH) * 6);
+	}
+  else
+  {
+	  return v1;
+  }
 }
