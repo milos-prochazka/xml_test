@@ -4,9 +4,9 @@ git add --all
 git commit --all -m %1
 git push --all --force
 pause
-git gc
-git gc --aggressive
-git prune
+rem git gc
+rem git gc --aggressive
+rem git prune
 goto end
 :syntax
 @echo Syntax: git-push "message"

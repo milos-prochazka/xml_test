@@ -2,6 +2,7 @@ import 'package:xml/xml.dart';
 import 'package:html/parser.dart' as html;
 import 'package:html/dom.dart';
 import 'package:xml_test/common.dart';
+import 'package:xml_test/epub/BookDocument.dart';
 import 'package:xml_test/epub/epub.dart';
 import 'package:xml_test/xml/xnode.dart';
 
@@ -128,10 +129,12 @@ void main(List<String> arguments)
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
 
-    var epub = Epub(archive);
-    //epub.bigDocument.comressHtmlText(nested: true,removeBlankText: true,truncate: true);
+    var epub = BookDocument(archive);
+    epub.bigDocument.comressHtmlText(nested: true,removeBlankText: true,truncate: true);
+    //var doc = epub.bigDocument.toHtmlDocument().outerHtml;
+    epub.makeDocument();
+    var doc = epub.bookDocument.toHtmlDocument().outerHtml;
 
-    var doc = epub.bigDocument.toHtmlDocument().outerHtml;
     var data = utf8.encode(doc);
     File('out/bigdocument.html')
       ..createSync(recursive: true)

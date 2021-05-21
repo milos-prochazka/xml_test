@@ -908,7 +908,7 @@ CssValue? _hslaFunction (CssFunction function)
         if (function.params.length>=4)
         {
             a = (function.params[3] as CssNumber).valueSat(0,1);
-        }   
+        }
 
       return _hslaToRgba((function.params[0] as CssNumber).value,
                          (function.params[1] as CssNumber).value,
@@ -953,17 +953,17 @@ CssValue? _hslaToRgba(double h,double s,double l,double a)
 
 double _hueToRGB(double v1, double v2, double vH)
 {
-	if (vH < 0) 
+	if (vH < 0)
   {
 	  vH += 1;
 	}
 
-	if (vH > 1) 
+	if (vH > 1)
   {
 	  vH -= 1;
 	}
 
-	if ((6 * vH) < 1) 
+	if ((6 * vH) < 1)
   {
 	  return (v1 + (v2 - v1) * 6 * vH);
 	}
@@ -971,7 +971,7 @@ double _hueToRGB(double v1, double v2, double vH)
   {
 	  return v2;
 	}
-  else if ((3 * vH) < 2) 
+  else if ((3 * vH) < 2)
   {
 	  return (v1 + (v2 - v1) * ((2.0 / 3) - vH) * 6);
 	}

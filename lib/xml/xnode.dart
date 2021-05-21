@@ -84,6 +84,12 @@ class XNode implements InterfaceToDynamic
         name = COMMENT_NAME;
     }
 
+    XNode.text(this.text)
+    {
+        type = TEXT;
+        name = TEXT_NAME;
+    }
+
 
     XNode.fromXmlNode(XmlNode node)
     {

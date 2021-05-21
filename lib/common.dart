@@ -65,7 +65,7 @@ bool isBlankOrNull(String? value)
 }
 
 /// Regular expression for match a double number in the text
-var numberFromText = RegExp(r'(\-?\d+(\.\d+)?([eE]\-?\d+)?)|(\-?\.?\d+)'); 
+var numberFromText = RegExp(r'(\-?\d+(\.\d+)?([eE]\-?\d+)?)|(\-?\.?\d+)');
 
 /// Converts dynamic to double
 /// - double returns double
@@ -94,16 +94,16 @@ double dynamicToDouble(dynamic value,[double defValue=0.0])
             {
                 valStr = match.input.substring(match.start,match.end);
 
-                if (valStr.startsWith('.')) 
+                if (valStr.startsWith('.'))
                 {
                   valStr = '0'+valStr;
                 }
 
-                if (valStr.startsWith('-.')) 
+                if (valStr.startsWith('-.'))
                 {
                   valStr = '-0'+valStr.substring(1);
                 }
-              
+
                 res = double.tryParse(valStr);
             }
         }
