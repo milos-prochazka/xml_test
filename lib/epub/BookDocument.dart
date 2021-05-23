@@ -5,10 +5,21 @@ import 'package:xml_test/common.dart';
 
 class BookDocument extends Epub
 {
-      // Big docucument (merged documents)
+    /// Book docucument 
     var bookDocument = XNode.body();
     var textWriter = StringBuffer();
+    var textClass = '';
 
+    static final tagDef = 
+    { 
+        'div' : _TagDef('div',_TagDef.BLOCK_TAG),
+        'p' :   _TagDef('p',_TagDef.BLOCK_TAG),
+        'h1' :  _TagDef('h1',_TagDef.BLOCK_TAG),
+        'h2' :  _TagDef('h2',_TagDef.BLOCK_TAG),
+        'h3' :  _TagDef('h3',_TagDef.BLOCK_TAG),
+        'h4' :  _TagDef('h4',_TagDef.BLOCK_TAG),
+        'li':   _TagDef('li'),
+    };
 
     BookDocument(Archive archive) : super(archive);
 
@@ -16,6 +27,7 @@ class BookDocument extends Epub
     {
         bookDocument = XNode.body();
         textWriter.clear();
+        textClass = '';
 
         for (var tag in bigDocument.children)
         {
@@ -35,40 +47,80 @@ class BookDocument extends Epub
                 break;
 
             case XNode.ELEMENT:
-              switch (node.name)
-              {
-                  case 'div':
-                  case 'p':
-                    if (textWriter.isNotEmpty)
+
+                var  tag = tagDef[node.name];
+
+                if (tag == null)
+                {
+                    for (var child in node.children)
                     {
-                        var para = XNode(type:XNode.ELEMENT,name:'p',
-                                        children: [XNode.text(textWriter.toString().trim())]);
-                        bookDocument.children.add(para);
-                        textWriter.clear();
+                        _makeTag(child);
                     }
+
+                }
+                else
+                {
+                    _writeTag(tag.isBlockTag);
 
                     for (var child in node.children)
                     {
                         _makeTag(child);
                     }
 
-                    if (textWriter.isNotEmpty)
-                    {
-                         var para = XNode(type:XNode.ELEMENT,name:'p',
-                                        children: [XNode.text(textWriter.toString().trim())]);
-                        bookDocument.children.add(para);
-                        textWriter.clear();
-                    }
-                    break;
+                    _writeTag(tag.isBlockTag);
 
-                  default:
-                    for (var child in node.children)
-                    {
-                        _makeTag(child);
-                    }
-                    break;
-              }
+
+                }
+
         }
     }
 
+    void _writeTag(bool block)
+    {
+        if (textWriter.isNotEmpty)
+        {
+            XNode para;
+            if (block || bookDocument.children.isEmpty)
+            {
+                para = XNode(type:XNode.ELEMENT,name:'div');
+                bookDocument.children.add(para);
+            }
+            else
+            {
+                para = bookDocument.children.last;
+            }
+
+            var span = XNode(type:XNode.ELEMENT,name:'span',
+                            children: [XNode.text(textWriter.toString().trim())]);
+            para.children.add(span);
+            textWriter.clear();
+        }
+
+    }
 }
+
+class _TagDef
+{
+    static const INLINE_TAG   = 0;
+    static const BLOCK_TAG    = 1;
+
+    final String name;
+    final int type;
+
+    _TagDef(this.name,[this.type = INLINE_TAG]);
+
+    XNode getXNode()
+    {
+        switch (type)
+        {
+            case BLOCK_TAG:
+                return XNode(name: name, type: XNode.ELEMENT);
+
+            default:
+                return XNode(name: 'span', type: XNode.ELEMENT, attributes: { 'class' : name});
+        }
+    }
+
+    bool get isBlockTag => type == BLOCK_TAG;
+}
+
