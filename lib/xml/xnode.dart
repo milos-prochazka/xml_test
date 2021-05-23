@@ -31,6 +31,7 @@ class XNode implements InterfaceToDynamic
     var children = <XNode>[];
     var attributes = <String, String>{};
     var linkedData = <String, dynamic>{};
+ 
 
 
     /// Map to convert blank html characters to spaces
@@ -509,7 +510,70 @@ class XNode implements InterfaceToDynamic
     static final _nullNode = XNode();
 }
 
+/// The XNode tree representation.
+class TreeNode
+{
+    TreeNode? parent;
+    TreeNode? firstChild;
+    TreeNode? lastChild;
+    TreeNode? prev;
+    TreeNode? next;
+
+    late XNode    node;
+
+    TreeNode()
+    {
+        node = XNode();
+    }
+
+
+    TreeNode.fromXNode(this.node)
+    {
+        TreeNode? _prevChild;
+
+        for (var child in node.children)
+        {
+            final  _treeChild = TreeNode.fromXNode(child);
+            _treeChild.parent = this;
+
+            if (_prevChild == null)
+            {
+                firstChild = _treeChild;
+            } 
+            else
+            {
+                _prevChild.next = _treeChild;
+                _treeChild.prev = _prevChild;
+            }
+
+            lastChild = _treeChild;
+            _prevChild = _treeChild;
+        }
+    }
+
+    /// Adds a child TreeNode 
+    void addChild(TreeNode treeNode)
+    {
+        treeNode.parent = this;
+            treeNode.next = null;
+
+        if (firstChild == null)
+        {   // First child
+            firstChild = treeNode;
+            lastChild = treeNode;
+            treeNode.prev = null;
+        }
+        else
+        {   // Second and other children.
+            lastChild!.next = treeNode;
+            treeNode.prev = lastChild;
+            lastChild = treeNode;
+        }
+    }
+}
+
 abstract class InterfaceToDynamic
 {
     dynamic toDynamic(bool embeded);
 }
+
