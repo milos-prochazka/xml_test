@@ -258,9 +258,6 @@ q:before {
  q:after {
   content: close-quote;
 }
-q.customized:before {
-  content: "- ";
-}
 s {
   text-decoration: line-through;
 }

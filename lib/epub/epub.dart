@@ -12,6 +12,8 @@ import 'package:xml/xml.dart';
 import 'package:xml_test/epub/CssDecode.dart';
 import 'package:xml_test/xml/xnode.dart';
 
+import 'DefaultCss.dart';
+
 class Epub
 {
     // Epub files dictionary
@@ -260,7 +262,7 @@ class ManifestItem
   src: url(sansation_light.woff);
 }
 ''';
-            var stylesheet = css.parse(strText);
+            var stylesheet = css.parse(defautCSS);
             var qq = stylesheet.topLevels[0];
             var debug = stylesheet.toDebugString();
             File('out/list${file.name}')
@@ -272,8 +274,11 @@ class ManifestItem
 
             print(jj.toString());
 
-            var cs = CssDecode(strText);
-            print (cs.toString());
+            var cs = CssDecode(defautCSS);
+            //print (cs.toString());
+            File('out/decoded.css')
+                ..createSync(recursive: true)
+                ..writeAsBytesSync(utf8.encode(cs.toString()));
 
 
 
