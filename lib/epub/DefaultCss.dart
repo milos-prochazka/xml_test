@@ -1,11 +1,11 @@
 
 const String defautCSS = r'''
-a:link, a:visited { 
+a:link, a:visited {
   color: red;
   text-decoration: underline;
   cursor: auto;
 }
-a:link:active, a:visited:active { 
+a:link:active, a:visited:active {
   color: blue;
 }
 address {
@@ -14,10 +14,10 @@ address {
 }
 area {
   display: none;
-}	
+}
 article {
   display: block;
-}	
+}
 aside {
   display: block;
 }
@@ -83,7 +83,7 @@ dt {
 em {
   font-style: italic;
 }
-fieldset { 
+fieldset {
   display: block;
   margin-left: 2px;
   margin-right: 2px;
@@ -282,7 +282,7 @@ strike {
 strong {
   font-weight: bold;
 }
-style	{ 
+style	{
   display: none;
 }
 sub {
@@ -302,7 +302,7 @@ table {
   border-spacing: 2px;
   border-color: gray;
 }
-tbody {	
+tbody {
   display: table-row-group;
   vertical-align: middle;
   border-color: inherit;
