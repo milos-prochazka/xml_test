@@ -5,13 +5,13 @@ import 'package:xml_test/common.dart';
 
 class BookDocument extends Epub
 {
-    /// Book docucument 
+    /// Book docucument
     var bookDocument = XNode.body();
     var textWriter = StringBuffer();
     var textClass = '';
 
-    static final tagDef = 
-    { 
+    static final tagDef =
+    {
         'div' : _TagDef('div',_TagDef.BLOCK_TAG),
         'p' :   _TagDef('p',_TagDef.BLOCK_TAG),
         'h1' :  _TagDef('h1',_TagDef.BLOCK_TAG),
@@ -123,4 +123,3 @@ class _TagDef
 
     bool get isBlockTag => type == BLOCK_TAG;
 }
-

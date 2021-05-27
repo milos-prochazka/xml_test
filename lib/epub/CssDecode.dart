@@ -689,6 +689,15 @@ class CssColor extends CssValue
         this.alpha = saturateInt(alpha,0,255);
     }
 
+    CssColor.fromRgbaInt(int color)
+    {
+        this.red = 0xff & (color>>24);
+        this.green = 0xff & (color>>16);
+        this.blue = 0xff & (color>>8);
+        this.alpha = 0xff & color;
+    }
+
+
     CssColor.fromHex(String hexColor)
     {
       var t = hexColor;
@@ -733,6 +742,11 @@ class CssColor extends CssValue
         return result;
     }
 
+    int get rgbaInt
+    {
+        return ((red&0xff)<<24)|((green&0xff)<<16)|((blue&0xff)<<8)|(alpha&0xff);
+    }
+
 }
 
 class CssSimpleSelector
@@ -774,6 +788,23 @@ class CssSimpleSelector
     {
         text = '@font_face';
         type = SELECTOR_FONT_FACE;
+    }
+
+    int specificity()
+    {
+        switch (type)
+        {
+            case SELECTOR_ID:
+              return 100;
+
+            case SELECTOR_CLASS:
+            case SELECTOR_PSEUDO_CLASS:
+            case SELECTOR_ATTRIBUTE:
+              return 10;
+
+            default:
+              return 1;
+        }
     }
 
     void setOperation(AttributeSelector selector)

@@ -31,7 +31,7 @@ class XNode implements InterfaceToDynamic
     var children = <XNode>[];
     var attributes = <String, String>{};
     var linkedData = <String, dynamic>{};
- 
+
 
 
     /// Map to convert blank html characters to spaces
@@ -539,7 +539,7 @@ class TreeNode
             if (_prevChild == null)
             {
                 firstChild = _treeChild;
-            } 
+            }
             else
             {
                 _prevChild.next = _treeChild;
@@ -551,7 +551,7 @@ class TreeNode
         }
     }
 
-    /// Adds a child TreeNode 
+    /// Adds a child TreeNode
     void addChild(TreeNode treeNode)
     {
         treeNode.parent = this;
@@ -576,4 +576,3 @@ abstract class InterfaceToDynamic
 {
     dynamic toDynamic(bool embeded);
 }
-
