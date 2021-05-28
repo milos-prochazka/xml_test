@@ -130,7 +130,6 @@ void main(List<String> arguments)
     //final path = p.join(p.dirname("OPS/s026-Chapter-023.xhtml"),"../page_styles.css");
     //print(path);
     //final pathComp = p.split(path);
-    print(relativePathFromFile('OPS/QAQA/s026-Chapter-023.xhtml', '../page_styles.css'));
 
 
     // Decode the Zip file

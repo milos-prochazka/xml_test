@@ -13,6 +13,7 @@ import 'package:xml_test/epub/CssDocument.dart';
 import 'package:xml_test/xml/xnode.dart';
 import 'package:xml_test/common.dart';
 
+import 'CssDocument.dart';
 import 'DefaultCss.dart';
 
 class Epub
@@ -20,8 +21,12 @@ class Epub
     // Epub files dictionary
     var files = <String,ArchiveFile>{};
 
-    // Manifest dictionary
+    // Manifest dictionary, index Id
     var manifest = <String,ManifestItem>{};
+
+    // Manifest dictionary, index href
+    var manifestHref = <String,ManifestItem>{};
+
 
     // Spine List
     var spineList = <ManifestItem>[];
@@ -47,10 +52,15 @@ class Epub
     {
         for (final file in archive)
         {
+            print (file.name);
+            if (file.name.contains('page_styles.css'))
+            {
+                var brk = 1;
+            }
             final filename = file.name;
             files[filename] = file;
 
-            if (file.isFile)
+            /*if (file.isFile)
             {
 
                 if (filename.endsWith('.opf'))
@@ -59,12 +69,24 @@ class Epub
                     _loadOpf(strText);
                 }
 
+            }*/
+        }
+
+        for (var file in files.values)
+        {
+            if (file.isFile)
+            {
+                if (file.name.endsWith('.opf'))
+                {
+                    var strText = utf8.decode(file.content as List<int>, allowMalformed: true);
+                    _loadOpf(strText);
+                }
             }
         }
 
         for(var cs in manifest.values)
         {
-            cs.$$$();
+            cs.$$$(this);
         }
 
         _loadDocumentFiles();
@@ -87,6 +109,7 @@ class Epub
             if (manfestItem.valid)
             {
                 manifest[manfestItem.id] = manfestItem;
+                manifestHref [manfestItem.href] = manfestItem;
             }
 
             print (manfestItem.toString());
@@ -176,6 +199,7 @@ class ManifestItem
 
     XNode? _xmlNode;
     List<int>? _bytes;
+    CssDocument? _cssDocument;
 
     bool valid = false;
 
@@ -186,6 +210,11 @@ class ManifestItem
         final _href = item.attributes['href'];
         final _id = item.attributes['id'];
         final _media_type = item.attributes['media-type'] ?? '';
+
+        if (_href!.contains("page_styles"))
+        {
+            var brk = 1;
+        }
 
         if (_href != null && _id != null)
         {
@@ -251,6 +280,22 @@ class ManifestItem
         return _xmlNode as XNode;
     }
 
+    CssDocument? get CSS
+    {
+        var mime = mimeTypes;
+
+        if (_cssDocument == null)
+        {
+            if (mime.contains('css'))
+            {
+                _cssDocument = CssDocument(utf8.decode(bytes));
+            }
+        }
+
+        return _cssDocument;
+
+    }
+
     List<CssDocument> getCssDocuments(Epub epub)
     {
         final result = <CssDocument>[];
@@ -262,14 +307,19 @@ class ManifestItem
 
     void _addCSS(XNode node, List<CssDocument>cssList,Epub epub)
     {
-        if (node.name == 'link' && 
+        if (node.name == 'link' &&
             (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css')))
         {
-            var cssManifest = epub.manifest[FileUtils.relativePathFromFile(href, node.attributes['href']!)];
+            var cssPath = FileUtils.relativePathFromFile(href, node.attributes['href']!);
+            var cssManifest = epub.manifestHref[cssPath];
 
             if (cssManifest != null)
             {
-                
+                var doc = cssManifest.CSS;
+                if (doc != null)
+                {
+                    cssList.add(doc);
+                }
             }
         }
         else
@@ -281,7 +331,7 @@ class ManifestItem
         }
     }
 
-    void $$$ ()
+    void $$$ (Epub epub)
     {
         var mime = mimeTypes;
 
@@ -302,7 +352,6 @@ class ManifestItem
                 ..createSync(recursive: true)
                 ..writeAsBytesSync(utf8.encode(debug));
 
-
             var jj = qq.span;
 
             print(jj.toString());
@@ -313,9 +362,12 @@ class ManifestItem
                 ..createSync(recursive: true)
                 ..writeAsBytesSync(utf8.encode(cs.toString()));
 
-
-
             var brk = 1;
+        }
+        else if (mime.contains('html')||mime.contains('xhtml'))
+        {
+            var styles = getCssDocuments(epub);
+            styles = styles;
         }
 
     }
