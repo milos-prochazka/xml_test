@@ -10,4 +10,5 @@ rem git prune
 goto end
 :syntax
 @echo Syntax: git-push "message"
+3333
 :end
