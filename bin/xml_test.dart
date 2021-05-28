@@ -5,7 +5,6 @@ import 'package:xml_test/common.dart';
 import 'package:xml_test/epub/BookDocument.dart';
 import 'package:xml_test/epub/epub.dart';
 import 'package:xml_test/xml/xnode.dart';
-import 'package:path/path.dart' as p;
 
 import 'dart:io';
 import 'package:archive/archive.dart';
@@ -123,31 +122,6 @@ void test1(List<String> arguments)
     print('----------------------------------------------');
 }
 
-/// Path combination
-///
-/// Returns a path that is a combination of an absolutely specified file ([filePath]) path
-/// and a relative path ([relativePath])
-String relativePathFromFile(String filePath,String relativePath)
-{
-    final path = p.join(p.dirname(filePath),relativePath);
-    final pathComp = p.split(path);
-    final filteredPath = <String>[];
-
-    for(var comp in pathComp)
-    {
-        if (comp == '..' && filteredPath.isNotEmpty)
-        {
-            filteredPath.removeLast();
-        }
-        else if (comp != '.')
-        {
-            filteredPath.add(comp);
-        }
-    }
-
-    return p.joinAll(filteredPath);
-
-}
 
 void main(List<String> arguments)
 {

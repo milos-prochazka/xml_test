@@ -11,7 +11,7 @@ import 'package:xml_test/common.dart';
 
 typedef CssFunctionHandler = CssValue? Function (CssFunction function);
 
-class CssDecode extends Visitor
+class CssDocument extends Visitor
 {
     static final functions = <String,CssFunctionHandler>
     { 'rgb':_rgbFunction,
@@ -23,7 +23,7 @@ class CssDecode extends Visitor
     final rules = <CssRuleSet>[];
 
 
-    CssDecode(String cssText)
+    CssDocument(String cssText)
     {
         var stylesheet = css.parse(cssText);
 
@@ -337,7 +337,7 @@ class CssDecode extends Visitor
 class CssTreeItem
 {
     late final Queue<CssTreeItem> _treeStack;
-    late final CssDecode decoder;
+    late final CssDocument decoder;
 
     CssTreeItem(this.decoder,this._treeStack);
 
@@ -365,7 +365,7 @@ class CssRuleSet extends CssTreeItem
     var declarations = <CssDeclaration>[];
 
 
-    CssRuleSet(CssDecode decoder,Queue<CssTreeItem> treeStack) : super(decoder,treeStack);
+    CssRuleSet(CssDocument decoder,Queue<CssTreeItem> treeStack) : super(decoder,treeStack);
 
     @override
     void insert(Object child)
@@ -414,7 +414,7 @@ class CssRuleSet extends CssTreeItem
 
 class CssFontFace extends CssRuleSet
 {
-    CssFontFace(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    CssFontFace(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
     {
         final selector = CssSelector(decoder, treeStack);
         selector.selectors.add(CssSimpleSelector.asFontFace());
@@ -428,7 +428,7 @@ class CssSelector extends CssTreeItem
     CssSimpleSelector? first;
     var selectors = <CssSimpleSelector>[];
 
-    CssSelector(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+    CssSelector(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
 
     @override
     void insert(Object child)
@@ -495,7 +495,7 @@ class CssDeclaration extends CssTreeItem
     String name = '';
     var values = <CssValue>[];
 
-    CssDeclaration(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    CssDeclaration(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
     {
         _ruleSet = treeStack.last as CssRuleSet;
     }
@@ -541,7 +541,7 @@ class CssFunction extends CssTreeItem
     String name = '';
     var params = <CssValue>[];
 
-    CssFunction(CssDecode decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+    CssFunction(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
 
     @override
     void insert(Object child)

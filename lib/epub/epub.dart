@@ -9,8 +9,9 @@ import 'package:csslib/parser.dart' as css;
 import 'package:csslib/visitor.dart';
 
 import 'package:xml/xml.dart';
-import 'package:xml_test/epub/CssDecode.dart';
+import 'package:xml_test/epub/CssDocument.dart';
 import 'package:xml_test/xml/xnode.dart';
+import 'package:xml_test/common.dart';
 
 import 'DefaultCss.dart';
 
@@ -125,6 +126,8 @@ class Epub
             documents.add(node);
         }
     }
+
+
 
     void _navigation(String docId,XNode node,bool firstNode)
     {
@@ -248,6 +251,36 @@ class ManifestItem
         return _xmlNode as XNode;
     }
 
+    List<CssDocument> getCssDocuments(Epub epub)
+    {
+        final result = <CssDocument>[];
+
+        _addCSS(xmlNode, result, epub);
+
+        return result;
+    }
+
+    void _addCSS(XNode node, List<CssDocument>cssList,Epub epub)
+    {
+        if (node.name == 'link' && 
+            (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css')))
+        {
+            var cssManifest = epub.manifest[FileUtils.relativePathFromFile(href, node.attributes['href']!)];
+
+            if (cssManifest != null)
+            {
+                
+            }
+        }
+        else
+        {
+            for (final child in node.children)
+            {
+                _addCSS(child, cssList, epub);
+            }
+        }
+    }
+
     void $$$ ()
     {
         var mime = mimeTypes;
@@ -274,7 +307,7 @@ class ManifestItem
 
             print(jj.toString());
 
-            var cs = CssDecode(defautCSS);
+            var cs = CssDocument(defautCSS);
             //print (cs.toString());
             File('out/decoded.css')
                 ..createSync(recursive: true)

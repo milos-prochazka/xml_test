@@ -1,3 +1,6 @@
+import 'package:path/path.dart' as p;
+import 'package:path/path.dart' as p;
+
 /// Converts an instance to the requested nullable type
 /// - Returns an object of the desired type, or null if type conversion is not possible
 T? toNullableType<T>(Object instance)
@@ -141,6 +144,36 @@ int saturateInt(int value, int min, int max)
     else
     {
         return value;
+    }
+}
+
+
+class FileUtils
+{
+    /// Path combination
+    ///
+    /// Returns a path that is a combination of an absolutely specified file ([filePath]) path
+    /// and a relative path ([relativePath])
+    static String relativePathFromFile(String filePath,String relativePath)
+    {
+        final path = p.join(p.dirname(filePath),relativePath);
+        final pathComp = p.split(path);
+        final filteredPath = <String>[];
+
+        for(var comp in pathComp)
+        {
+            if (comp == '..' && filteredPath.isNotEmpty)
+            {
+                filteredPath.removeLast();
+            }
+            else if (comp != '.')
+            {
+                filteredPath.add(comp);
+            }
+        }
+
+        return p.joinAll(filteredPath);
+
     }
 }
 

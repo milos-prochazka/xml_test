@@ -171,6 +171,14 @@ class XNode implements InterfaceToDynamic
         return result;
     }
 
+    bool attributeContains(String name,String pattern,[bool caseSensitive=false])
+    {
+        final attrText = attributes[name];
+
+        return (attrText == null) ? false :
+               caseSensitive ? attrText.contains(pattern) : attrText.toLowerCase().contains(pattern.toLowerCase());
+    }
+
     @override
     dynamic toDynamic(bool embeded)
     {
