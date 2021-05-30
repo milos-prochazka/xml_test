@@ -340,12 +340,28 @@ class ManifestItem
             // var strText = utf8.decode(bytes).replaceAll('1em', '3.3mm');
             //var strText = 'h1,p.prvni.druha { color: rgb(12em,30,233,555,333); } div { animation: mymove 5s infinite; text-shadow: 2px 2px 5px red; } ';
             var strText = '''
+@keyframes mymove {
+  from {top: 0px;}
+  to {top: 200px;}
+}
+@page {
+    margin-bottom: 5pt;
+    margin-top: 5pt
+    }
+@charset "UTF-8";
 @font-face {
-  font-family: myFirstFont;
-  src: url(sansation_light.woff);
+    font-family: "DejaVuSerifCondensed";
+    font-weight: normal;
+    font-style: normal;
+    src: url(OPS/fonts/DejaVuSerifCondensed.ttf)
+    }
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
 }
 ''';
-            var stylesheet = css.parse(defautCSS);
+            var stylesheet = css.parse(strText);
             var qq = stylesheet.topLevels[0];
             var debug = stylesheet.toDebugString();
             File('out/list${file.name}')
@@ -356,7 +372,8 @@ class ManifestItem
 
             print(jj.toString());
 
-            var cs = CssDocument(defautCSS);
+            print ('--------------------------------------------');
+            var cs = CssDocument(strText);
             //print (cs.toString());
             File('out/decoded.css')
                 ..createSync(recursive: true)

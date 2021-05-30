@@ -330,6 +330,38 @@ class CssDocument extends Visitor
         _treeStack.removeLast();
     }
 
+    @override
+  void visitPageDirective(PageDirective node) {
+//#debug
+        print('Page');
+//#end
+
+        final page = CssPage(this,_treeStack);
+        _treeStack.add(page);
+        rules.add(page);
+
+        super.visitPageDirective(node);
+
+        _treeStack.removeLast();
+
+  }
+
+  @override
+  void visitMediaDirective(MediaDirective node) 
+  {
+//#debug
+      print('Media  (ignored)');
+//#end
+  }
+
+  @override
+  void visitKeyFrameDirective(KeyFrameDirective node) 
+  {
+//#debug
+      print('Keyframes  (ignored)');
+//#end
+  }
+
 }
 
 
@@ -418,6 +450,17 @@ class CssFontFace extends CssRuleSet
     {
         final selector = CssSelector(decoder, treeStack);
         selector.selectors.add(CssSimpleSelector.asFontFace());
+        this.selectors.add(selector);
+    }
+
+}
+
+class CssPage extends CssRuleSet
+{
+    CssPage(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    {
+        final selector = CssSelector(decoder, treeStack);
+        selector.selectors.add(CssSimpleSelector.asPage());
         this.selectors.add(selector);
     }
 
@@ -764,6 +807,7 @@ class CssSimpleSelector
     static const SELECTOR_PSEUDO_CLASS = 4;
     static const SELECTOR_PSEUDO_ELEMENT = 5;
     static const SELECTOR_FONT_FACE = 6;
+    static const SELECTOR_PAGE = 7;
 
     static const OPERATION_NONE = 0;
     static const OPERATION_EQUAL = 1;
@@ -786,8 +830,14 @@ class CssSimpleSelector
 
     CssSimpleSelector.asFontFace()
     {
-        text = '@font_face';
+        text = '@font-face';
         type = SELECTOR_FONT_FACE;
+    }
+
+    CssSimpleSelector.asPage()
+    {
+        text = '@page';
+        type = SELECTOR_PAGE;
     }
 
     int specificity()
