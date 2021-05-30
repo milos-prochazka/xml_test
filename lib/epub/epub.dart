@@ -16,38 +16,41 @@ import 'package:xml_test/common.dart';
 import 'CssDocument.dart';
 import 'DefaultCss.dart';
 
+/// Loading and working with epub files
 class Epub
 {
-    // Epub files dictionary
+    /// Dictionary of files in the archive
     var files = <String,ArchiveFile>{};
 
-    // Manifest dictionary, index Id
+    /// Manifest dictionary, index Id (from .opf file)
     var manifest = <String,ManifestItem>{};
 
-    // Manifest dictionary, index href
+    /// Manifest dictionary, index href (from .opf file)
     var manifestHref = <String,ManifestItem>{};
 
 
-    // Spine List
+    // Spine List (from .opf file)
     var spineList = <ManifestItem>[];
 
-    // Document List
+    // Document List (HTML/XHTML from .opf file)
     var documents = <XNode>[];
 
-    // Big docucument (merged documents)
+    /// Big docucument (merged documents)
     var bigDocument = XNode.body();
 
-    // Navigation points (short names)
+    /// Navigation points (short names)
     var shortNavigation = <String,NavigationPoint>{};
 
-    // Navigation points (long names)
+    /// Navigation points (long names)
     var longNavigation = <String,NavigationPoint>{};
 
+    /// Constructor (form [Archive])
     Epub(Archive archive)
     {
         _loadArchive(archive);
     }
 
+    /// Load the archive contents
     void _loadArchive(Archive archive)
     {
         for (final file in archive)
@@ -60,16 +63,6 @@ class Epub
             final filename = file.name;
             files[filename] = file;
 
-            /*if (file.isFile)
-            {
-
-                if (filename.endsWith('.opf'))
-                {
-                    var strText = utf8.decode(file.content as List<int>, allowMalformed: true);
-                    _loadOpf(strText);
-                }
-
-            }*/
         }
 
         for (var file in files.values)
@@ -84,11 +77,13 @@ class Epub
             }
         }
 
+//#debug
+// Test code
         for(var cs in manifest.values)
         {
             cs.$$$(this);
         }
-
+//#end
         _loadDocumentFiles();
     }
 

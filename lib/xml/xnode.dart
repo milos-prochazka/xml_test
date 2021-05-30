@@ -6,7 +6,7 @@ import 'package:xml_test/common.dart';
 // ignore_for_file: omit_local_variable_types
 // ignore_for_file: unnecessary_cast
 
-class XNode implements InterfaceToDynamic
+class XNode implements InterfaceToDynamic , ICloneable<XNode> 
 {
     static const TEXT_NAME = r'$TEXT$';
     static const COMMENT_NAME = r'$COMMENT$';
@@ -15,13 +15,21 @@ class XNode implements InterfaceToDynamic
     static const DECLARATION_NAME = r'$XML$';
     static const CDATA_NAME = r'$CDATA$';
 
-    static const UNKNOWN = 0;
+    /// Unknown node type
+    static const UNKNOWN = 0;   
+    /// Text node type      
     static const TEXT = 1;
+    /// Element node type <div>     
     static const ELEMENT = 2;
+    /// Comment node type <!-- -->     
     static const COMMENT = 3;
+    /// Doctype node type <!DOCTYPE>     
     static const DOCTYPE = 4;
+    /// Document node type     
     static const DOCUMENT = 5;
+    /// document declaration node type     
     static const DECLARATION = 6;
+    /// CDATA node type     
     static const CDATA = 7;
 
 
@@ -39,7 +47,13 @@ class XNode implements InterfaceToDynamic
     static final htmlSpacesConversionMap = <int,int>
               { 0x9:0x20,0xa:0x00,0xb:0x00,0xc:0x00,0xd:0x00};
 
-    XNode({int? type, String? name, Map<String,String>? attributes, List<XNode>? children })
+    /// Constructor
+    /// [type] - Node type eg. TEXT, ELEMENT
+    /// [name] - Node name eg. div
+    /// [text] - Node text 
+    /// [attributes] - Map of attributes <element attr1='val1'  attr2='val2' ... >
+    /// [children] - List of child nodes
+    XNode({int? type, String? name, String? text, Map<String,String>? attributes, List<XNode>? children })
     {
         if (type!=null)
         {
@@ -48,6 +62,10 @@ class XNode implements InterfaceToDynamic
         if (name != null)
         {
             this.name = name;
+        }
+        if (text != null)
+        {
+            this.text = text;
         }
 
         if (attributes != null)
@@ -67,18 +85,21 @@ class XNode implements InterfaceToDynamic
         }
     }
 
+    /// Constructor [DOCUMENT] 
     XNode.document()
     {
         type = DOCUMENT;
         name = DOCTYPE_NAME;
     }
 
+    /// Constructor <body> element 
     XNode.body()
     {
         type = ELEMENT;
         name = 'body';
     }
 
+    /// Constructor [COMMENT] element 
     XNode.comment(this.text)
     {
         type = COMMENT;
@@ -112,6 +133,35 @@ class XNode implements InterfaceToDynamic
         _fromHtmlNode(node);
     }
 
+    /// Constructor - deep copy from another XNode object
+    factory XNode.fromXNode(XNode node)
+    {
+        XNode result = XNode(name: node.name,text: node.text, type: node.type,attributes: node.attributes);
+
+        result.addChildrenFrom(node);
+        result.addLinkedDataFrom(node);
+
+        return result;
+    }
+
+    void addLinkedDataFrom(XNode node)
+    {
+        for (final data in node.linkedData.entries)
+        {
+            final value = data.value;
+            linkedData[data.key] = value is ICloneable ?
+                                            (value as ICloneable).clone() : value;
+        }
+    }
+
+    void addChildrenFrom(XNode node)
+    {
+        for(final child in node.children)
+        {
+            children.add(child.clone());
+        }
+    }
+
     XmlDocument toXmlDocument()
     {
         var builder = XmlBuilder();
@@ -119,6 +169,13 @@ class XNode implements InterfaceToDynamic
 
         return builder.buildDocument();
     }
+
+    @override
+    XNode clone()
+    {
+        return XNode.fromXNode(this);
+    }
+
 
     Document toHtmlDocument()
     {
@@ -516,6 +573,7 @@ class XNode implements InterfaceToDynamic
     }
 
     static final _nullNode = XNode();
+
 }
 
 /// The XNode tree representation.
@@ -535,9 +593,17 @@ class TreeNode
     }
 
 
-    TreeNode.fromXNode(this.node)
+    TreeNode.fromXNode(XNode srcNode)
     {
         TreeNode? _prevChild;
+
+        final node = XNode(type: srcNode.type, 
+                           text: srcNode.text, 
+                           name: srcNode.name, 
+                           attributes: srcNode.attributes);
+        node.addLinkedDataFrom(srcNode);
+
+        this.node = node;
 
         for (var child in node.children)
         {

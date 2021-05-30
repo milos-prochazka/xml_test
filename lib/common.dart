@@ -186,3 +186,20 @@ extension StringFunctions on String
     }
 
 }
+
+
+/// Cloneable interface
+/// Abstract interface for deep object cloning.
+/// 
+/// Using: 
+/// ```dart
+/// class foo ICloneable<XNode> 
+/// {
+///   @override
+///   foo clone() { ... }
+/// }
+/// ```
+abstract class ICloneable<T>
+{
+    T clone();
+}
