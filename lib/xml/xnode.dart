@@ -6,7 +6,7 @@ import 'package:xml_test/common.dart';
 // ignore_for_file: omit_local_variable_types
 // ignore_for_file: unnecessary_cast
 
-class XNode implements InterfaceToDynamic , ICloneable<XNode> 
+class XNode implements InterfaceToDynamic , ICloneable<XNode>
 {
     static const TEXT_NAME = r'$TEXT$';
     static const COMMENT_NAME = r'$COMMENT$';
@@ -16,20 +16,20 @@ class XNode implements InterfaceToDynamic , ICloneable<XNode>
     static const CDATA_NAME = r'$CDATA$';
 
     /// Unknown node type
-    static const UNKNOWN = 0;   
-    /// Text node type      
+    static const UNKNOWN = 0;
+    /// Text node type
     static const TEXT = 1;
-    /// Element node type <div>     
+    /// Element node type <div>
     static const ELEMENT = 2;
-    /// Comment node type <!-- -->     
+    /// Comment node type <!-- -->
     static const COMMENT = 3;
-    /// Doctype node type <!DOCTYPE>     
+    /// Doctype node type <!DOCTYPE>
     static const DOCTYPE = 4;
-    /// Document node type     
+    /// Document node type
     static const DOCUMENT = 5;
-    /// document declaration node type     
+    /// document declaration node type
     static const DECLARATION = 6;
-    /// CDATA node type     
+    /// CDATA node type
     static const CDATA = 7;
 
 
@@ -50,7 +50,7 @@ class XNode implements InterfaceToDynamic , ICloneable<XNode>
     /// Constructor
     /// [type] - Node type eg. TEXT, ELEMENT
     /// [name] - Node name eg. div
-    /// [text] - Node text 
+    /// [text] - Node text
     /// [attributes] - Map of attributes <element attr1='val1'  attr2='val2' ... >
     /// [children] - List of child nodes
     XNode({int? type, String? name, String? text, Map<String,String>? attributes, List<XNode>? children })
@@ -85,21 +85,21 @@ class XNode implements InterfaceToDynamic , ICloneable<XNode>
         }
     }
 
-    /// Constructor [DOCUMENT] 
+    /// Constructor [DOCUMENT]
     XNode.document()
     {
         type = DOCUMENT;
         name = DOCTYPE_NAME;
     }
 
-    /// Constructor <body> element 
+    /// Constructor <body> element
     XNode.body()
     {
         type = ELEMENT;
         name = 'body';
     }
 
-    /// Constructor [COMMENT] element 
+    /// Constructor [COMMENT] element
     XNode.comment(this.text)
     {
         type = COMMENT;
@@ -597,9 +597,9 @@ class TreeNode
     {
         TreeNode? _prevChild;
 
-        final node = XNode(type: srcNode.type, 
-                           text: srcNode.text, 
-                           name: srcNode.name, 
+        final node = XNode(type: srcNode.type,
+                           text: srcNode.text,
+                           name: srcNode.name,
                            attributes: srcNode.attributes);
         node.addLinkedDataFrom(srcNode);
 

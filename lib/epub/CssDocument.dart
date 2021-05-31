@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:csslib/parser.dart' as css;
 import 'package:csslib/visitor.dart';
 import 'package:xml_test/common.dart';
+import 'package:xml_test/xml/xnode.dart';
 
 // ignore_for_file: unnecessary_cast
 // ignore_for_file: unnecessary_this
@@ -28,6 +29,12 @@ class CssDocument extends Visitor
         var stylesheet = css.parse(cssText);
 
         stylesheet.visit(this);
+    }
+
+
+    CssDeclaration? findDeclaration(TreeNode node,String propetyName)
+    {
+
     }
 
     @override
@@ -347,7 +354,7 @@ class CssDocument extends Visitor
   }
 
   @override
-  void visitMediaDirective(MediaDirective node) 
+  void visitMediaDirective(MediaDirective node)
   {
 //#debug
       print('Media  (ignored)');
@@ -355,7 +362,7 @@ class CssDocument extends Visitor
   }
 
   @override
-  void visitKeyFrameDirective(KeyFrameDirective node) 
+  void visitKeyFrameDirective(KeyFrameDirective node)
   {
 //#debug
       print('Keyframes  (ignored)');
@@ -472,6 +479,18 @@ class CssSelector extends CssTreeItem
     var selectors = <CssSimpleSelector>[];
 
     CssSelector(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+
+    int get specificity
+    {
+        int result = 0;
+
+        for (final selector in selectors)
+        {
+            result += selector.specificity;
+        }
+
+        return result;
+    }
 
     @override
     void insert(Object child)
@@ -840,7 +859,7 @@ class CssSimpleSelector
         type = SELECTOR_PAGE;
     }
 
-    int specificity()
+    int get specificity
     {
         switch (type)
         {

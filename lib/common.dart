@@ -190,10 +190,10 @@ extension StringFunctions on String
 
 /// Cloneable interface
 /// Abstract interface for deep object cloning.
-/// 
-/// Using: 
+///
+/// Using:
 /// ```dart
-/// class foo ICloneable<XNode> 
+/// class foo ICloneable<XNode>
 /// {
 ///   @override
 ///   foo clone() { ... }
