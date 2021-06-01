@@ -1,6 +1,8 @@
 import 'package:path/path.dart' as p;
 import 'package:path/path.dart' as p;
 
+// ignore_for_file: unnecessary_this
+
 /// Converts an instance to the requested nullable type
 /// - Returns an object of the desired type, or null if type conversion is not possible
 T? toNullableType<T>(Object instance)
@@ -180,9 +182,58 @@ class FileUtils
 
 extension StringFunctions on String
 {
+    /// Clone string to code units
+    /// - You can add and remove code units to the returned list.
     List<int> copyToCodeUnits()
     {
         return List<int>.from(codeUnits);
+    }
+
+    /// Splits the string at matches of [patterns] and returns a list of substrings.
+    /// - [noEmpy] - if true, empty strings (between two patterns) are not added to the list.
+    /// - [trim] - if true, trims the returned strings
+    ///
+    /// Finds all the matches of `patterns` in this string,
+    /// and returns the list of the substrings between the matches.
+    /// ```dart
+    /// var string = "Hello blue\r\nworld!";
+    /// string.split([" ","\t","\r","\n"]);                      // ['Hello', 'blue' , 'world!'];
+    /// ```
+    List<String> splitEx(List<Pattern> patterns, {bool noEmpty = true, bool trim=true})
+    {
+        var pos = 0;
+        var result = <String>[];
+
+        while (pos < this.length)
+        {
+            var minPos = this.length;
+
+            for (var pattern in patterns)
+            {
+                var p = this.indexOf(pattern,pos);
+                if (p>=0 && p < minPos)
+                {
+                    minPos = p;
+                }
+            }
+
+            if (minPos>pos)
+            {
+                var item = this.substring(pos,minPos);
+                result.add(trim ? item.trim() : item);
+            }
+            else
+            {
+                if (!noEmpty)
+                {
+                    result.add('');
+                }
+            }
+
+            pos = minPos+1;
+        }
+
+        return result;
     }
 
 }

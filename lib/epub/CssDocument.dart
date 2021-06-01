@@ -4,7 +4,7 @@ import 'dart:collection';
 import 'package:csslib/parser.dart' as css;
 import 'package:csslib/visitor.dart';
 import 'package:xml_test/common.dart';
-import 'package:xml_test/xml/xnode.dart';
+import 'package:xml_test/xml/xnode.dart' as xnode;
 
 // ignore_for_file: unnecessary_cast
 // ignore_for_file: unnecessary_this
@@ -32,9 +32,31 @@ class CssDocument extends Visitor
     }
 
 
-    CssDeclaration? findDeclaration(TreeNode node,String propetyName)
+    CssDeclarationResult findDeclaration(xnode.TreeNode node,String propetyName,[CssDeclarationResult? resultHolder])
     {
+        final result = resultHolder!;
 
+        for(final ruleset in rules)
+        {
+            final property = ruleset.declarationByName(propetyName);
+
+            if (property != null)
+            {
+                for (final selector in ruleset.selectors)
+                {
+                    if (selector.specificity >= resultHolder.specificity)
+                    {
+                        if (selector.checkNode(node))
+                        {
+                            result.declaration = property;
+                            result.specificity = selector.specificity;
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     @override
@@ -402,6 +424,7 @@ class CssRuleSet extends CssTreeItem
 {
     var selectors = <CssSelector>[];
     var declarations = <CssDeclaration>[];
+    Map<String,CssDeclaration>? declarationIndex;
 
 
     CssRuleSet(CssDocument decoder,Queue<CssTreeItem> treeStack) : super(decoder,treeStack);
@@ -416,8 +439,30 @@ class CssRuleSet extends CssTreeItem
         else if (child is CssDeclaration)
         {
           declarations.add(child as CssDeclaration);
+          declarationIndex = null;
         }
     }
+
+    CssDeclaration? declarationByName(String name)
+    {
+        CssDeclaration? result;
+
+        if (declarationIndex == null)
+        {
+            for(final declaration in declarations)
+            {
+                if (declaration.name != '')
+                {
+                    declarationIndex![declaration.name] = declaration;
+                }
+            }
+        }
+
+        result = declarationIndex![name] ;
+
+        return result;
+    }
+
 
     @override
     String toString()
@@ -491,6 +536,22 @@ class CssSelector extends CssTreeItem
 
         return result;
     }
+
+
+    bool checkNode(xnode.TreeNode node)
+    {
+        bool result = false;
+        var selector = first;
+
+        if (selector != null)
+        {
+            result = selector.check(node);
+        }
+
+
+        return result;
+    }
+
 
     @override
     void insert(Object child)
@@ -909,6 +970,27 @@ class CssSimpleSelector
         }
     }
 
+    bool check (xnode.TreeNode node)
+    {
+        bool result = false;
+
+        switch (type)
+        {
+            case SELECTOR_ELEMENT:
+                result = node.xnode.name == text;
+                break;
+            case SELECTOR_CLASS:
+                result = node.classes.contains(text);
+                break;
+            case SELECTOR_ID:
+                result = node.id == text;
+                break;
+
+        }
+
+        return result;
+    }
+
     @override
     String toString()
     {
@@ -969,6 +1051,14 @@ class CssOperatorComma extends CssValue
     }
 }
 
+class CssDeclarationResult
+{
+    CssDeclaration? declaration;
+    int specificity = -1;
+
+    CssDeclarationResult();
+}
+
 CssValue? _rgbFunction (CssFunction function)
 {
     try
@@ -998,6 +1088,7 @@ CssValue? _rgbaFunction (CssFunction function)
         return CssColor.fromRgba(0, 0, 0, 255);
     }
 }
+
 
 CssValue? _hslaFunction (CssFunction function)
 {

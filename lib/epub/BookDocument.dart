@@ -1,6 +1,6 @@
 import 'package:archive/src/archive.dart';
 import 'package:xml_test/epub/epub.dart';
-import 'package:xml_test/xml/xnode.dart';
+import 'package:xml_test/xml/XNode.dart';
 import 'package:xml_test/common.dart';
 
 class BookDocument extends Epub

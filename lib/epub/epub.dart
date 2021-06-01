@@ -10,7 +10,7 @@ import 'package:csslib/visitor.dart';
 
 import 'package:xml/xml.dart';
 import 'package:xml_test/epub/CssDocument.dart';
-import 'package:xml_test/xml/xnode.dart';
+import 'package:xml_test/xml/XNode.dart' as xnode;
 import 'package:xml_test/common.dart';
 
 import 'CssDocument.dart';
@@ -33,10 +33,10 @@ class Epub
     var spineList = <ManifestItem>[];
 
     // Document List (HTML/XHTML from .opf file)
-    var documents = <XNode>[];
+    var documents = <xnode.XNode>[];
 
     /// Big docucument (merged documents)
-    var bigDocument = XNode.body();
+    var bigDocument = xnode.XNode.body();
 
     /// Navigation points (short names)
     var shortNavigation = <String,NavigationPoint>{};
@@ -93,7 +93,7 @@ class Epub
     void _loadOpf(String xmlText)
     {
         var doc = XmlDocument.parse(xmlText);
-        var opf = XNode.fromXmlDocument(doc);
+        var opf = xnode.XNode.fromXmlDocument(doc);
 
         // Load manifest
         var manifestNodes = opf.getChildren(['package','manifest'],childNames:  {'item'});
@@ -130,7 +130,7 @@ class Epub
     {
         for(var item in spineList)
         {
-            bigDocument.children.add(XNode.comment('\r\n --- ${item.id} (${item.file.name}) --\r\n'));
+            bigDocument.children.add(xnode.XNode.comment('\r\n --- ${item.id} (${item.file.name}) --\r\n'));
             var node = item.xmlNode;
             var body = node.getChildren(['html','body']);
             var first = true;
@@ -147,7 +147,7 @@ class Epub
 
 
 
-    void _navigation(String docId,XNode node,bool firstNode)
+    void _navigation(String docId,xnode.XNode node,bool firstNode)
     {
         node.linkedData['docId'] = docId;
 
@@ -168,7 +168,7 @@ class Epub
         }
     }
 
-    void _addNavigationPoint(XNode node,NavigationPoint navPoint)
+    void _addNavigationPoint(xnode.XNode node,NavigationPoint navPoint)
     {
         node.linkedData['longNavigation'] = navPoint;
         if (navPoint.id != '')
@@ -192,7 +192,7 @@ class ManifestItem
     late String media_type;
     late ArchiveFile file;
 
-    XNode? _xmlNode;
+    xnode.XNode? _xmlNode;
     List<int>? _bytes;
     CssDocument? _cssDocument;
 
@@ -200,7 +200,7 @@ class ManifestItem
 
     static final mimeRegex = RegExp(r'(?<=[\/\+])[\w\-\.]+');
 
-    ManifestItem(XNode item,Map<String,ArchiveFile> files)
+    ManifestItem(xnode.XNode item,Map<String,ArchiveFile> files)
     {
         final _href = item.attributes['href'];
         final _id = item.attributes['id'];
@@ -249,7 +249,7 @@ class ManifestItem
         return _bytes as List<int>;
     }
 
-    XNode get xmlNode
+    xnode.XNode get xmlNode
     {
         var mime = mimeTypes;
 
@@ -258,21 +258,21 @@ class ManifestItem
             if (mime.containsAll(['html','xhtml']))
             {
                 var strText = utf8.decode(bytes);
-                _xmlNode = XNode.fromHtmlDocument(html.parse(strText));
+                _xmlNode = xnode.XNode.fromHtmlDocument(html.parse(strText));
             }
             else if (mime.contains('xml'))
             {
                 var strText = utf8.decode(bytes);
-                _xmlNode = XNode.fromXmlDocument(XmlDocument.parse(strText));
+                _xmlNode = xnode.XNode.fromXmlDocument(XmlDocument.parse(strText));
             }
             else
             {
-                _xmlNode = XNode();
+                _xmlNode = xnode.XNode();
             }
 
         }
 
-        return _xmlNode as XNode;
+        return _xmlNode as xnode.XNode;
     }
 
     CssDocument? get CSS
@@ -300,7 +300,7 @@ class ManifestItem
         return result;
     }
 
-    void _addCSS(XNode node, List<CssDocument>cssList,Epub epub)
+    void _addCSS(xnode.XNode node, List<CssDocument>cssList,Epub epub)
     {
         if (node.name == 'link' &&
             (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css')))
@@ -379,7 +379,8 @@ class ManifestItem
         else if (mime.contains('html')||mime.contains('xhtml'))
         {
             var styles = getCssDocuments(epub);
-            styles = styles;
+            xnode.TreeNode tnode = xnode.TreeNode.fromXNode(xmlNode);
+            tnode = tnode;
         }
 
     }
@@ -399,7 +400,7 @@ class NavigationPoint
 {
     late String id;
     late String file;
-    late XNode  node;
+    late xnode.XNode  node;
     bool    reference = false;
     var     linkedData = <String,dynamic>{};
 

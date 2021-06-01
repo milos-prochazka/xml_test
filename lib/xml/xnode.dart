@@ -5,6 +5,7 @@ import 'package:xml_test/common.dart';
 
 // ignore_for_file: omit_local_variable_types
 // ignore_for_file: unnecessary_cast
+// ignore_for_file: unnecessary_this
 
 class XNode implements InterfaceToDynamic , ICloneable<XNode>
 {
@@ -585,27 +586,45 @@ class TreeNode
     TreeNode? prev;
     TreeNode? next;
 
-    late XNode    node;
+    // List of classes (<element class="class1 class2">)
+    var classes = <String>[];
 
+    // Element id
+    var id = '';
+
+    /// Embedded XNode element
+    late XNode    xnode;
+
+    /// Construcor - empty object
     TreeNode()
     {
-        node = XNode();
+        xnode = XNode();
     }
 
-
+    /// Contructor - form XNode
+    /// - Clone of an XNode object without children
     TreeNode.fromXNode(XNode srcNode)
     {
         TreeNode? _prevChild;
 
+        // Clone of an srcNode (withoud childred)
         final node = XNode(type: srcNode.type,
                            text: srcNode.text,
                            name: srcNode.name,
                            attributes: srcNode.attributes);
         node.addLinkedDataFrom(srcNode);
 
-        this.node = node;
+        this.xnode = node;
 
-        for (var child in node.children)
+        final clsAttr = node.attributes['class'];
+        if (clsAttr!=null)
+        {
+            this.classes = clsAttr.splitEx([' ','\t']);
+        }
+
+        this.id = node.attributes['id'] ?? '';
+
+        for (var child in srcNode.children)
         {
             final  _treeChild = TreeNode.fromXNode(child);
             _treeChild.parent = this;
