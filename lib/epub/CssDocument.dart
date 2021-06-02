@@ -34,7 +34,7 @@ class CssDocument extends Visitor
 
     CssDeclarationResult findDeclaration(xnode.TreeNode node,String propetyName,[CssDeclarationResult? resultHolder])
     {
-        final result = resultHolder!;
+        final result = (resultHolder ?? CssDeclarationResult());
 
         for(final ruleset in rules)
         {
@@ -44,7 +44,7 @@ class CssDocument extends Visitor
             {
                 for (final selector in ruleset.selectors)
                 {
-                    if (selector.specificity >= resultHolder.specificity)
+                    if (selector.specificity >= result.specificity)
                     {
                         if (selector.checkNode(node))
                         {
@@ -449,13 +449,18 @@ class CssRuleSet extends CssTreeItem
 
         if (declarationIndex == null)
         {
+            final index = <String,CssDeclaration>{};
+
             for(final declaration in declarations)
             {
                 if (declaration.name != '')
                 {
-                    declarationIndex![declaration.name] = declaration;
+                    index[declaration.name] = declaration;
                 }
+
             }
+
+            declarationIndex = index;
         }
 
         result = declarationIndex![name] ;

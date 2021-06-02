@@ -10,7 +10,7 @@ import 'package:csslib/visitor.dart';
 
 import 'package:xml/xml.dart';
 import 'package:xml_test/epub/CssDocument.dart';
-import 'package:xml_test/xml/XNode.dart' as xnode;
+import 'package:xml_test/xml/xnode.dart' as xnode;
 import 'package:xml_test/common.dart';
 
 import 'CssDocument.dart';
@@ -380,12 +380,31 @@ class ManifestItem
         {
             var styles = getCssDocuments(epub);
             xnode.TreeNode tnode = xnode.TreeNode.fromXNode(xmlNode);
-            tnode = tnode;
+            $$$testTNode(styles,tnode);
         }
 
     }
 
+    void $$$testTNode(List<CssDocument> css,xnode.TreeNode node)
+    {
+        for(final doc in css)
+        {
+            var decl = doc.findDeclaration(node, 'color');
+            if (decl.declaration != null)
+            {
+                final brk = 1;
+            }
+        }
 
+        var child = node.firstChild;
+
+        while (child != null)
+        {
+             $$$testTNode(css,child);
+            child = child.next;
+        }
+
+    }
 
     @override
     String toString()
