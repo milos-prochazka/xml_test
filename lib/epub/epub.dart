@@ -20,14 +20,13 @@ import 'DefaultCss.dart';
 class Epub
 {
     /// Dictionary of files in the archive
-    var files = <String,ArchiveFile>{};
+    var files = <String, ArchiveFile>{};
 
     /// Manifest dictionary, index Id (from .opf file)
-    var manifest = <String,ManifestItem>{};
+    var manifest = <String, ManifestItem>{};
 
     /// Manifest dictionary, index href (from .opf file)
-    var manifestHref = <String,ManifestItem>{};
-
+    var manifestHref = <String, ManifestItem>{};
 
     // Spine List (from .opf file)
     var spineList = <ManifestItem>[];
@@ -39,10 +38,10 @@ class Epub
     var bigDocument = xnode.XNode.body();
 
     /// Navigation points (short names)
-    var shortNavigation = <String,NavigationPoint>{};
+    var shortNavigation = <String, NavigationPoint>{};
 
     /// Navigation points (long names)
-    var longNavigation = <String,NavigationPoint>{};
+    var longNavigation = <String, NavigationPoint>{};
 
     /// Constructor (form [Archive])
     Epub(Archive archive)
@@ -55,14 +54,13 @@ class Epub
     {
         for (final file in archive)
         {
-            print (file.name);
+            print(file.name);
             if (file.name.contains('page_styles.css'))
             {
                 var brk = 1;
             }
             final filename = file.name;
             files[filename] = file;
-
         }
 
         for (var file in files.values)
@@ -79,7 +77,7 @@ class Epub
 
 //#debug
 // Test code
-        for(var cs in manifest.values)
+        for (var cs in manifest.values)
         {
             cs.$$$(this);
         }
@@ -96,22 +94,22 @@ class Epub
         var opf = xnode.XNode.fromXmlDocument(doc);
 
         // Load manifest
-        var manifestNodes = opf.getChildren(['package','manifest'],childNames:  {'item'});
+        var manifestNodes = opf.getChildren(['package', 'manifest'], childNames: {'item'});
 
-        for(var item in manifestNodes)
+        for (var item in manifestNodes)
         {
-            var manfestItem = ManifestItem(item,files);
+            var manfestItem = ManifestItem(item, files);
             if (manfestItem.valid)
             {
                 manifest[manfestItem.id] = manfestItem;
-                manifestHref [manfestItem.href] = manfestItem;
+                manifestHref[manfestItem.href] = manfestItem;
             }
 
-            print (manfestItem.toString());
+            print(manfestItem.toString());
         }
 
         // Load spine
-        var spineNodes = opf.getChildren(['package','spine'],childNames:  {'itemref'});
+        var spineNodes = opf.getChildren(['package', 'spine'], childNames: {'itemref'});
 
         for (var itemref in spineNodes)
         {
@@ -128,11 +126,11 @@ class Epub
     /// - Loads files in the smineList and adds them to the document list.
     void _loadDocumentFiles()
     {
-        for(var item in spineList)
+        for (var item in spineList)
         {
             bigDocument.children.add(xnode.XNode.comment('\r\n --- ${item.id} (${item.file.name}) --\r\n'));
             var node = item.xmlNode;
-            var body = node.getChildren(['html','body']);
+            var body = node.getChildren(['html', 'body']);
             var first = true;
 
             for (var node in body)
@@ -145,44 +143,41 @@ class Epub
         }
     }
 
-
-
-    void _navigation(String docId,xnode.XNode node,bool firstNode)
+    void _navigation(String docId, xnode.XNode node, bool firstNode)
     {
         node.linkedData['docId'] = docId;
 
         if (firstNode)
         {
-            _addNavigationPoint(node,NavigationPoint('', docId, node));
+            _addNavigationPoint(node, NavigationPoint('', docId, node));
         }
 
         var id = node.attributes['id'];
         if (id != null)
         {
-            _addNavigationPoint(node,NavigationPoint(id, docId, node));
+            _addNavigationPoint(node, NavigationPoint(id, docId, node));
         }
 
-        for(var child in node.children)
+        for (var child in node.children)
         {
             _navigation(docId, child, false);
         }
     }
 
-    void _addNavigationPoint(xnode.XNode node,NavigationPoint navPoint)
+    void _addNavigationPoint(xnode.XNode node, NavigationPoint navPoint)
     {
         node.linkedData['longNavigation'] = navPoint;
         if (navPoint.id != '')
         {
             node.linkedData['shortNavigation'] = navPoint;
-            shortNavigation['#'+navPoint.id] = navPoint;
-            longNavigation[navPoint.file+'#'+navPoint.id] = navPoint;
+            shortNavigation['#' + navPoint.id] = navPoint;
+            longNavigation[navPoint.file + '#' + navPoint.id] = navPoint;
         }
         else
         {
-          longNavigation[navPoint.file] = navPoint;
+            longNavigation[navPoint.file] = navPoint;
         }
     }
-
 }
 
 class ManifestItem
@@ -195,12 +190,13 @@ class ManifestItem
     xnode.XNode? _xmlNode;
     List<int>? _bytes;
     CssDocument? _cssDocument;
+    String? _text;
 
     bool valid = false;
 
     static final mimeRegex = RegExp(r'(?<=[\/\+])[\w\-\.]+');
 
-    ManifestItem(xnode.XNode item,Map<String,ArchiveFile> files)
+    ManifestItem(xnode.XNode item, Map<String, ArchiveFile> files)
     {
         final _href = item.attributes['href'];
         final _id = item.attributes['id'];
@@ -215,13 +211,13 @@ class ManifestItem
         {
             if (files.containsKey(_href))
             {
-              href = _href;
-              id = _id;
-              media_type = _media_type;
-              file = files[_href]!;
-              valid = true;
+                href = _href;
+                id = _id;
+                media_type = _media_type;
+                file = files[_href]!;
+                valid = true;
 
-              var types = mimeTypes;
+                var types = mimeTypes;
             }
         }
     }
@@ -234,7 +230,7 @@ class ManifestItem
 
         for (var match in matches)
         {
-            var str = match.input.substring(match.start,match.end);
+            var str = match.input.substring(match.start, match.end);
             if (!result.contains(str))
             {
                 result.add(str);
@@ -249,13 +245,18 @@ class ManifestItem
         return _bytes as List<int>;
     }
 
+    String get text
+    {
+        return utf8.decode(bytes, allowMalformed: true);
+    }
+
     xnode.XNode get xmlNode
     {
         var mime = mimeTypes;
 
         if (_xmlNode == null)
         {
-            if (mime.containsAll(['html','xhtml']))
+            if (mime.containsAll(['html', 'xhtml']))
             {
                 var strText = utf8.decode(bytes);
                 _xmlNode = xnode.XNode.fromHtmlDocument(html.parse(strText));
@@ -269,7 +270,6 @@ class ManifestItem
             {
                 _xmlNode = xnode.XNode();
             }
-
         }
 
         return _xmlNode as xnode.XNode;
@@ -288,7 +288,6 @@ class ManifestItem
         }
 
         return _cssDocument;
-
     }
 
     List<CssDocument> getCssDocuments(Epub epub)
@@ -300,10 +299,10 @@ class ManifestItem
         return result;
     }
 
-    void _addCSS(xnode.XNode node, List<CssDocument>cssList,Epub epub)
+    void _addCSS(xnode.XNode node, List<CssDocument> cssList, Epub epub)
     {
         if (node.name == 'link' &&
-            (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css')))
+                (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css')))
         {
             var cssPath = FileUtils.relativePathFromFile(href, node.attributes['href']!);
             var cssManifest = epub.manifestHref[cssPath];
@@ -326,7 +325,7 @@ class ManifestItem
         }
     }
 
-    void $$$ (Epub epub)
+    void $$$(Epub epub)
     {
         var mime = mimeTypes;
 
@@ -356,6 +355,7 @@ class ManifestItem
   }
 }
 ''';
+            strText = this.text;
             var stylesheet = css.parse(strText);
             var qq = stylesheet.topLevels[0];
             var debug = stylesheet.toDebugString();
@@ -367,7 +367,7 @@ class ManifestItem
 
             print(jj.toString());
 
-            print ('--------------------------------------------');
+            print('--------------------------------------------');
             var cs = CssDocument(strText);
             //print (cs.toString());
             File('out/decoded.css')
@@ -376,18 +376,17 @@ class ManifestItem
 
             var brk = 1;
         }
-        else if (mime.contains('html')||mime.contains('xhtml'))
+        else if (mime.contains('html') || mime.contains('xhtml'))
         {
             var styles = getCssDocuments(epub);
             xnode.TreeNode tnode = xnode.TreeNode.fromXNode(xmlNode);
-            $$$testTNode(styles,tnode);
+            $$$testTNode(styles, tnode);
         }
-
     }
 
-    void $$$testTNode(List<CssDocument> css,xnode.TreeNode node)
+    void $$$testTNode(List<CssDocument> css, xnode.TreeNode node)
     {
-        for(final doc in css)
+        for (final doc in css)
         {
             var decl = doc.findDeclaration(node, 'color');
             if (decl.declaration != null)
@@ -400,18 +399,15 @@ class ManifestItem
 
         while (child != null)
         {
-             $$$testTNode(css,child);
+            $$$testTNode(css, child);
             child = child.next;
         }
-
     }
 
     @override
     String toString()
     {
-        return (valid) ?
-                  'id:$id media-type:$media_type href:$href' :
-                  'invalid';
+        return (valid) ? 'id:$id media-type:$media_type href:$href' : 'invalid';
     }
 }
 
@@ -419,11 +415,11 @@ class NavigationPoint
 {
     late String id;
     late String file;
-    late xnode.XNode  node;
-    bool    reference = false;
-    var     linkedData = <String,dynamic>{};
+    late xnode.XNode node;
+    bool reference = false;
+    var linkedData = <String, dynamic>{};
 
-    NavigationPoint(this.id,this.file,this.node);
+    NavigationPoint(this.id, this.file, this.node);
 
     @override
     String toString()

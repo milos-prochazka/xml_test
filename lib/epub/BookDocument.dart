@@ -12,13 +12,13 @@ class BookDocument extends Epub
 
     static final tagDef =
     {
-        'div' : _TagDef('div',_TagDef.BLOCK_TAG),
-        'p' :   _TagDef('p',_TagDef.BLOCK_TAG),
-        'h1' :  _TagDef('h1',_TagDef.BLOCK_TAG),
-        'h2' :  _TagDef('h2',_TagDef.BLOCK_TAG),
-        'h3' :  _TagDef('h3',_TagDef.BLOCK_TAG),
-        'h4' :  _TagDef('h4',_TagDef.BLOCK_TAG),
-        'li':   _TagDef('li'),
+    'div': _TagDef('div', _TagDef.BLOCK_TAG),
+    'p': _TagDef('p', _TagDef.BLOCK_TAG),
+    'h1': _TagDef('h1', _TagDef.BLOCK_TAG),
+    'h2': _TagDef('h2', _TagDef.BLOCK_TAG),
+    'h3': _TagDef('h3', _TagDef.BLOCK_TAG),
+    'h4': _TagDef('h4', _TagDef.BLOCK_TAG),
+    'li': _TagDef('li'),
     };
 
     BookDocument(Archive archive) : super(archive);
@@ -37,7 +37,7 @@ class BookDocument extends Epub
 
     void _makeTag(XNode node)
     {
-        switch  (node.type)
+        switch (node.type)
         {
             case XNode.TEXT:
                 if (textWriter.isEmpty || !isBlankOrNull(node.text))
@@ -47,8 +47,7 @@ class BookDocument extends Epub
                 break;
 
             case XNode.ELEMENT:
-
-                var  tag = tagDef[node.name];
+                var tag = tagDef[node.name];
 
                 if (tag == null)
                 {
@@ -56,7 +55,6 @@ class BookDocument extends Epub
                     {
                         _makeTag(child);
                     }
-
                 }
                 else
                 {
@@ -68,10 +66,7 @@ class BookDocument extends Epub
                     }
 
                     _writeTag(tag.isBlockTag);
-
-
                 }
-
         }
     }
 
@@ -82,7 +77,7 @@ class BookDocument extends Epub
             XNode para;
             if (block || bookDocument.children.isEmpty)
             {
-                para = XNode(type:XNode.ELEMENT,name:'div');
+                para = XNode(type: XNode.ELEMENT, name: 'div');
                 bookDocument.children.add(para);
             }
             else
@@ -90,24 +85,22 @@ class BookDocument extends Epub
                 para = bookDocument.children.last;
             }
 
-            var span = XNode(type:XNode.ELEMENT,name:'span',
-                            children: [XNode.text(textWriter.toString().trim())]);
+            var span = XNode(type: XNode.ELEMENT, name: 'span', children: [XNode.text(textWriter.toString().trim())]);
             para.children.add(span);
             textWriter.clear();
         }
-
     }
 }
 
 class _TagDef
 {
-    static const INLINE_TAG   = 0;
-    static const BLOCK_TAG    = 1;
+    static const INLINE_TAG = 0;
+    static const BLOCK_TAG = 1;
 
     final String name;
     final int type;
 
-    _TagDef(this.name,[this.type = INLINE_TAG]);
+    _TagDef(this.name, [this.type = INLINE_TAG]);
 
     XNode getXNode()
     {
@@ -117,7 +110,7 @@ class _TagDef
                 return XNode(name: name, type: XNode.ELEMENT);
 
             default:
-                return XNode(name: 'span', type: XNode.ELEMENT, attributes: { 'class' : name});
+                return XNode(name: 'span', type: XNode.ELEMENT, attributes: {'class': name});
         }
     }
 

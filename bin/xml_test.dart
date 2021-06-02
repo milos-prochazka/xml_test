@@ -40,7 +40,7 @@ void test1(List<String> arguments)
 {
     var blank = isBlankOrNull('     \r\n\u200F');
 
-  var htmlDoc = html.parse(
+    var htmlDoc = html.parse(
       '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><BOdy><!-- komentar --> Hello &amp; a&#768; world! <hr><a href="www.html5rocks.com">HTML5 rocks!</a><h1>HEAD1');
 
     htmlDoc.body!.children.insert(1, Element.tag('br'));
@@ -122,7 +122,6 @@ void test1(List<String> arguments)
     print('----------------------------------------------');
 }
 
-
 void main(List<String> arguments)
 {
     final bytes = File('test.epub').readAsBytesSync();
@@ -131,20 +130,19 @@ void main(List<String> arguments)
     //print(path);
     //final pathComp = p.split(path);
 
-
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
 
     var epub = BookDocument(archive);
-    epub.bigDocument.comressHtmlText(nested: true,removeBlankText: true,truncate: true);
+    epub.bigDocument.comressHtmlText(nested: true, removeBlankText: true, truncate: true);
     //var doc = epub.bigDocument.toHtmlDocument().outerHtml;
     epub.makeDocument();
     var doc = epub.bookDocument.toHtmlDocument().outerHtml;
 
     var data = utf8.encode(doc);
     File('out/bigdocument.html')
-      ..createSync(recursive: true)
-      ..writeAsBytesSync(data);
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(data);
 
     // Extract the contents of the Zip archive to disk.
     for (final file in archive)

@@ -1,6 +1,5 @@
-
 import 'dart:collection';
-
+import 'dart:math' as math;
 import 'package:csslib/parser.dart' as css;
 import 'package:csslib/visitor.dart';
 import 'package:xml_test/common.dart';
@@ -10,33 +9,57 @@ import 'package:xml_test/xml/xnode.dart' as xnode;
 // ignore_for_file: unnecessary_this
 // ignore_for_file: omit_local_variable_types
 
-typedef CssFunctionHandler = CssValue? Function (CssFunction function);
+typedef CssFunctionHandler = CssValue? Function(CssFunction function);
+typedef CssDeclarationHandler = bool Function(CssRuleSet ruleset, CssDeclaration declaration);
 
 class CssDocument extends Visitor
 {
-    static final functions = <String,CssFunctionHandler>
-    { 'rgb':_rgbFunction,
-      'rgba':_rgbaFunction,
-      'hsl': _hslaFunction,
-      'hsla': _hslaFunction,
+    static final functions = <String, CssFunctionHandler>
+    {
+    'rgb': _rgbFunction,
+    'rgba': _rgbaFunction,
+    'hsl': _hslaFunction,
+    'hsla': _hslaFunction,
     };
+
+    static final declarationMappers = <String, CssDeclarationHandler>
+    {
+    'margin': _delarationMargin,
+    'padding': _delarationMargin,
+    };
+
     final _treeStack = Queue<CssTreeItem>();
     final rules = <CssRuleSet>[];
-
 
     CssDocument(String cssText)
     {
         var stylesheet = css.parse(cssText);
 
         stylesheet.visit(this);
+        _expandDeclarations();
     }
 
+    void _expandDeclarations()
+    {
+        for (final ruleset in rules)
+        {
+            for (final declaration in ruleset.declarations.toList())
+            {
+                bool remove = declarationMappers[declaration.name]?.call(ruleset, declaration) ?? false;
+                if (remove)
+                {
+                    ruleset.declarations.removeWhere((item) => item.name == declaration.name);
+                    ruleset.declarationIndex = null;
+                }
+            }
+        }
+    }
 
-    CssDeclarationResult findDeclaration(xnode.TreeNode node,String propetyName,[CssDeclarationResult? resultHolder])
+    CssDeclarationResult findDeclaration(xnode.TreeNode node, String propetyName, [CssDeclarationResult? resultHolder])
     {
         final result = (resultHolder ?? CssDeclarationResult());
 
-        for(final ruleset in rules)
+        for (final ruleset in rules)
         {
             final property = ruleset.declarationByName(propetyName);
 
@@ -64,7 +87,7 @@ class CssDocument extends Visitor
     {
         final builder = StringBuffer();
 
-        for(var rule in rules)
+        for (var rule in rules)
         {
             builder.write(rule.toString());
         }
@@ -75,41 +98,38 @@ class CssDocument extends Visitor
     @override
     void visitRuleSet(RuleSet node)
     {
-  //#debug
-        print ('Ruleset');
-  //#end
+        //#debug
+        print('Ruleset');
+        //#end
 
         if (_treeStack.isNotEmpty)
         {
             throw Exception('Tree stack must be empty');
         }
 
-        final ruleSet = CssRuleSet(this,_treeStack);
+        final ruleSet = CssRuleSet(this, _treeStack);
         _treeStack.add(ruleSet);
         rules.add(ruleSet);
         super.visitRuleSet(node);
         _treeStack.removeLast();
-
     }
-
 
     @override
     void visitSelectorGroup(SelectorGroup node)
     {
-  //#debug
-        print ('SelectorGroup ${node.span!.text}');
-  //#end
+        //#debug
+        print('SelectorGroup ${node.span!.text}');
+        //#end
 
         super.visitSelectorGroup(node);
     }
 
-
     @override
     void visitSelector(Selector node)
     {
-  //#debug
-      print('  Selector:${node.span!.text}');
-  //#end
+        //#debug
+        print('  Selector:${node.span!.text}');
+        //#end
 
         var selector = CssSelector(this, _treeStack);
         _treeStack.last.insert(selector);
@@ -118,16 +138,14 @@ class CssDocument extends Visitor
         super.visitSelector(node);
 
         _treeStack.removeLast();
-
-  }
-
+    }
 
     @override
     void visitSimpleSelectorSequence(SimpleSelectorSequence node)
     {
 //#debug
         var s = node.span!.text;
-        print ('SimpleSelectorSequence $s');
+        print('SimpleSelectorSequence $s');
 //#end
         _treeStack.last.insert(node);
         super.visitSimpleSelectorSequence(node);
@@ -137,16 +155,16 @@ class CssDocument extends Visitor
     void visitAttributeSelector(AttributeSelector node)
     {
 //#debug
-      print('AttributeSelector');
+        print('AttributeSelector');
 //#end
-      super.visitAttributeSelector(node);
+        super.visitAttributeSelector(node);
 
-      _treeStack.last.insert(node);
+        _treeStack.last.insert(node);
 //#debug
-      final tokenStr = node.matchOperatorAsTokenString();
-      final value = node.valueToString();
-      print('operator: ${node.matchOperator()} ($tokenStr)');
-      print('value $value');
+        final tokenStr = node.matchOperatorAsTokenString();
+        final value = node.valueToString();
+        print('operator: ${node.matchOperator()} ($tokenStr)');
+        print('value $value');
 //#end
     }
 
@@ -154,19 +172,18 @@ class CssDocument extends Visitor
     void visitClassSelector(ClassSelector node)
     {
 //#debug
-      print('Class Selector');
+        print('Class Selector');
 //#end
 
         (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_CLASS;
         super.visitClassSelector(node);
     }
 
-
     @override
     void visitPseudoClassSelector(PseudoClassSelector node)
     {
 //#debug
-      print('Pseudo Class Selector');
+        print('Pseudo Class Selector');
 //#end
         (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_CLASS;
         super.visitPseudoClassSelector(node);
@@ -176,12 +193,11 @@ class CssDocument extends Visitor
     void visitPseudoElementSelector(PseudoElementSelector node)
     {
 //#debug
-      print('Pseudo Element Selector');
+        print('Pseudo Element Selector');
 //#end
         (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_ELEMENT;
         super.visitPseudoElementSelector(node);
     }
-
 
     @override
     void visitIdSelector(IdSelector node)
@@ -194,21 +210,20 @@ class CssDocument extends Visitor
         super.visitIdSelector(node);
     }
 
-
-  @override
-  void visitElementSelector(ElementSelector node)
-  {
+    @override
+    void visitElementSelector(ElementSelector node)
+    {
 //#debug
         print('Element Selector');
 //#end
 
         (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ELEMENT;
         super.visitElementSelector(node);
-  }
+    }
 
-  @override
-  void visitDeclaration(Declaration node)
-  {
+    @override
+    void visitDeclaration(Declaration node)
+    {
 //#debug
         print('Declaration');
 //#end
@@ -218,31 +233,28 @@ class CssDocument extends Visitor
         _treeStack.add(declaration);
         super.visitDeclaration(node);
         _treeStack.removeLast();
-  }
-
+    }
 
     @override
     void visitIdentifier(Identifier node)
     {
 //#debug
-      print ('Identifier: ${node.name}');
+        print('Identifier: ${node.name}');
 //#end
-      _treeStack.last.insert(node);
-      super.visitIdentifier(node);
+        _treeStack.last.insert(node);
+        super.visitIdentifier(node);
     }
 
     @override
     void visitLengthTerm(LengthTerm node)
     {
 //#debug
-      print('  Length:${node.value} ${node.unitToString()}');
+        print('  Length:${node.value} ${node.unitToString()}');
 //#end
 
-      _treeStack.last.insert(CssNumber.fromUnitTherm(node));
-      //super.visitLengthTerm(node);
+        _treeStack.last.insert(CssNumber.fromUnitTherm(node));
+        //super.visitLengthTerm(node);
     }
-
-
 
     @override
     void visitEmTerm(EmTerm node)
@@ -259,37 +271,34 @@ class CssDocument extends Visitor
     void visitNumberTerm(NumberTerm node)
     {
 //#debug
-      print('  Length:${node.value}');
+        print('  Length:${node.value}');
 //#end
 
-      _treeStack.last.insert(CssValue.fromNode(node));
-      super.visitNumberTerm(node);
+        _treeStack.last.insert(CssValue.fromNode(node));
+        super.visitNumberTerm(node);
     }
 
     @override
     void visitLiteralTerm(LiteralTerm node)
     {
 //#debug
-      print('  Literal:${node.text}');
+        print('  Literal:${node.text}');
 //#end
 
-      _treeStack.last.insert(CssValue.fromNode(node));
-      super.visitLiteralTerm(node);
+        _treeStack.last.insert(CssValue.fromNode(node));
+        super.visitLiteralTerm(node);
     }
 
     @override
     void visitHexColorTerm(HexColorTerm node)
     {
-
-
 //#debug
-      print('  HexColor:${node.text}');
+        print('  HexColor:${node.text}');
 //#end
 
-      _treeStack.last.insert(CssColor.fromHex(node.text));
-      super.visitHexColorTerm(node);
+        _treeStack.last.insert(CssColor.fromHex(node.text));
+        super.visitHexColorTerm(node);
     }
-
 
     @override
     void visitUnitTerm(UnitTerm node)
@@ -313,8 +322,6 @@ class CssDocument extends Visitor
         super.visitOperatorComma(node);
     }
 
-
-
     @override
     void visitFunctionTerm(FunctionTerm node)
     {
@@ -334,7 +341,7 @@ class CssDocument extends Visitor
         {
             var f = functions[name];
 
-            var result = ( f != null ) ?f(cssFunction) : null;
+            var result = (f != null) ? f(cssFunction) : null;
 
             if (result != null)
             {
@@ -343,14 +350,13 @@ class CssDocument extends Visitor
         }
     }
 
-
     @override
     dynamic visitFontFaceDirective(FontFaceDirective node)
     {
 //#debug
         print('Font face');
 //#end
-        final fontFace = CssFontFace(this,_treeStack);
+        final fontFace = CssFontFace(this, _treeStack);
         _treeStack.add(fontFace);
         rules.add(fontFace);
 
@@ -360,52 +366,46 @@ class CssDocument extends Visitor
     }
 
     @override
-  void visitPageDirective(PageDirective node) {
+    void visitPageDirective(PageDirective node)
+    {
 //#debug
         print('Page');
 //#end
 
-        final page = CssPage(this,_treeStack);
+        final page = CssPage(this, _treeStack);
         _treeStack.add(page);
         rules.add(page);
 
         super.visitPageDirective(node);
 
         _treeStack.removeLast();
+    }
 
-  }
-
-  @override
-  void visitMediaDirective(MediaDirective node)
-  {
+    @override
+    void visitMediaDirective(MediaDirective node)
+    {
 //#debug
-      print('Media  (ignored)');
+        print('Media  (ignored)');
 //#end
-  }
+    }
 
-  @override
-  void visitKeyFrameDirective(KeyFrameDirective node)
-  {
+    @override
+    void visitKeyFrameDirective(KeyFrameDirective node)
+    {
 //#debug
-      print('Keyframes  (ignored)');
+        print('Keyframes  (ignored)');
 //#end
-  }
-
+    }
 }
-
-
 
 class CssTreeItem
 {
     late final Queue<CssTreeItem> _treeStack;
     late final CssDocument decoder;
 
-    CssTreeItem(this.decoder,this._treeStack);
+    CssTreeItem(this.decoder, this._treeStack);
 
-    void insert(Object child)
-    {
-
-    }
+    void insert(Object child) {}
 
     void push(CssTreeItem item)
     {
@@ -424,22 +424,21 @@ class CssRuleSet extends CssTreeItem
 {
     var selectors = <CssSelector>[];
     var declarations = <CssDeclaration>[];
-    Map<String,CssDeclaration>? declarationIndex;
+    Map<String, CssDeclaration>? declarationIndex;
 
-
-    CssRuleSet(CssDocument decoder,Queue<CssTreeItem> treeStack) : super(decoder,treeStack);
+    CssRuleSet(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
 
     @override
     void insert(Object child)
     {
         if (child is CssSelector)
         {
-          selectors.add(child as CssSelector);
+            selectors.add(child as CssSelector);
         }
         else if (child is CssDeclaration)
         {
-          declarations.add(child as CssDeclaration);
-          declarationIndex = null;
+            declarations.add(child as CssDeclaration);
+            declarationIndex = null;
         }
     }
 
@@ -449,25 +448,23 @@ class CssRuleSet extends CssTreeItem
 
         if (declarationIndex == null)
         {
-            final index = <String,CssDeclaration>{};
+            final index = <String, CssDeclaration>{};
 
-            for(final declaration in declarations)
+            for (final declaration in declarations)
             {
                 if (declaration.name != '')
                 {
                     index[declaration.name] = declaration;
                 }
-
             }
 
             declarationIndex = index;
         }
 
-        result = declarationIndex![name] ;
+        result = declarationIndex![name];
 
         return result;
     }
-
 
     @override
     String toString()
@@ -475,7 +472,7 @@ class CssRuleSet extends CssTreeItem
         final builder = StringBuffer();
         var firstSelector = true;
 
-        for(var selector in selectors)
+        for (var selector in selectors)
         {
             if (!firstSelector)
             {
@@ -495,10 +492,8 @@ class CssRuleSet extends CssTreeItem
         }
         builder.write('}\r\n');
 
-
         return builder.toString();
     }
-
 }
 
 class CssFontFace extends CssRuleSet
@@ -509,7 +504,6 @@ class CssFontFace extends CssRuleSet
         selector.selectors.add(CssSimpleSelector.asFontFace());
         this.selectors.add(selector);
     }
-
 }
 
 class CssPage extends CssRuleSet
@@ -520,7 +514,6 @@ class CssPage extends CssRuleSet
         selector.selectors.add(CssSimpleSelector.asPage());
         this.selectors.add(selector);
     }
-
 }
 
 class CssSelector extends CssTreeItem
@@ -542,7 +535,6 @@ class CssSelector extends CssTreeItem
         return result;
     }
 
-
     bool checkNode(xnode.TreeNode node)
     {
         bool result = false;
@@ -553,43 +545,41 @@ class CssSelector extends CssTreeItem
             result = selector.check(node);
         }
 
-
         return result;
     }
-
 
     @override
     void insert(Object child)
     {
         if (child is SimpleSelectorSequence)
         {
-          var selector = CssSimpleSelector();
-          var node = child as SimpleSelectorSequence;
+            var selector = CssSimpleSelector();
+            var node = child as SimpleSelectorSequence;
 
-          if (node.isCombinatorDescendant)
-          {
-              selector.type = CssSimpleSelector.COMBINATOR_DESCENDANT;
-          }
-          else if (node.isCombinatorGreater)
-          {
-              selector.type = CssSimpleSelector.COMBINATOR_GREATER;
-          }
-          else if (node.isCombinatorPlus)
-          {
-              selector.type = CssSimpleSelector.COMBINATOR_PLUS;
-          }
-          else if (node.isCombinatorTilde)
-          {
-              selector.type = CssSimpleSelector.COMBINATOR_TILDE;
-          }
-          else
-          {
-              selector.type = CssSimpleSelector.COMBINATOR_NONE;
-          }
+            if (node.isCombinatorDescendant)
+            {
+                selector.type = CssSimpleSelector.COMBINATOR_DESCENDANT;
+            }
+            else if (node.isCombinatorGreater)
+            {
+                selector.type = CssSimpleSelector.COMBINATOR_GREATER;
+            }
+            else if (node.isCombinatorPlus)
+            {
+                selector.type = CssSimpleSelector.COMBINATOR_PLUS;
+            }
+            else if (node.isCombinatorTilde)
+            {
+                selector.type = CssSimpleSelector.COMBINATOR_TILDE;
+            }
+            else
+            {
+                selector.type = CssSimpleSelector.COMBINATOR_NONE;
+            }
 
-          selector.next = first;
-          first = selector;
-          selectors.add(selector);
+            selector.next = first;
+            first = selector;
+            selectors.add(selector);
         }
         else if (child is Identifier)
         {
@@ -597,7 +587,6 @@ class CssSelector extends CssTreeItem
         }
         else if (child is AttributeSelector)
         {
-
             selectors.last.setOperation(child as AttributeSelector);
         }
     }
@@ -614,7 +603,6 @@ class CssSelector extends CssTreeItem
 
         return builder.toString();
     }
-
 }
 
 class CssDeclaration extends CssTreeItem
@@ -628,10 +616,14 @@ class CssDeclaration extends CssTreeItem
         _ruleSet = treeStack.last as CssRuleSet;
     }
 
+    CssDeclaration.fromValues(CssRuleSet ruleset, this.name, this.values) : super(ruleset.decoder, ruleset._treeStack)
+    {
+        _ruleSet = ruleset;
+    }
+
     @override
     void insert(Object child)
     {
-
         if (child is Identifier)
         {
             name = (child as Identifier).name;
@@ -685,7 +677,7 @@ class CssFunction extends CssTreeItem
     }
 }
 
-class CssValue
+abstract class CssValue
 {
     static CssValue fromNode(Object node)
     {
@@ -710,83 +702,88 @@ class CssValue
             return CssOperatorComma();
         }
 
-        return CssValue();
+        return CssInherited();
     }
-
 }
 
 class CssNumber extends CssValue
 {
-      double value = 0.0;
-      String unit = '';
+    double value = 0.0;
+    String unit = '';
 
-      CssNumber.fromNumberTherm(NumberTerm number)
-      {
-          try
-          {
-              var val = double.tryParse(number.text);
-              if (val != null)
-              {
-                  this.value = val;
-              }
-          }
-          catch (ex)
-          {
-              value = 0.0;
-          }
-      }
+    CssNumber.fromNumberTherm(NumberTerm number)
+    {
+        try
+        {
+            var val = double.tryParse(number.text);
+            if (val != null)
+            {
+                this.value = val;
+            }
+        }
+        catch (ex)
+        {
+            value = 0.0;
+        }
+    }
 
-      CssNumber.fromUnitTherm(UnitTerm unit)
-      {
-          this.value = dynamicToDouble(unit.value);
-          this.unit = unit.unitToString() ?? '';
-      }
+    CssNumber.fromUnitTherm(UnitTerm unit)
+    {
+        this.value = dynamicToDouble(unit.value);
+        this.unit = unit.unitToString() ?? '';
+    }
 
-      CssNumber.fromEmTherm(EmTerm number)
-      {
-          try
-          {
-              var val = double.tryParse(number.text);
-              if (val != null)
-              {
-                  this.value = val;
-              }
-          }
-          catch (ex)
-          {
-              value = 0.0;
-          }
+    CssNumber.fromCssNumber(CssNumber src)
+    {
+        value = src.value;
+        unit = src.unit;
+    }
 
-          unit  = 'em';
-      }
+    CssNumber.fromEmTherm(EmTerm number)
+    {
+        try
+        {
+            var val = double.tryParse(number.text);
+            if (val != null)
+            {
+                this.value = val;
+            }
+        }
+        catch (ex)
+        {
+            value = 0.0;
+        }
 
+        unit = 'em';
+    }
 
-      double valueSat(double min, double max)
-      {
-          return value<min ? min : value>max ? max : value;
-      }
+    double valueSat(double min, double max)
+    {
+        return value < min
+                ? min
+                : value > max
+                        ? max
+                        : value;
+    }
 
-      int valueInt(int min,int max)
-      {
-          return valueSat(min.toDouble(),max.toDouble()).toInt();
-      }
+    int valueInt(int min, int max)
+    {
+        return valueSat(min.toDouble(), max.toDouble()).toInt();
+    }
 
-      String valueString()
-      {
-          return (value == value.ceil()) ? value.toStringAsFixed(0) : value.toString();
-      }
+    String valueString()
+    {
+        return (value == value.ceil()) ? value.toStringAsFixed(0) : value.toString();
+    }
 
-      @override
-      String toString()
-      {
-          return '${valueString()}$unit';
-      }
+    @override
+    String toString()
+    {
+        return '${valueString()}$unit';
+    }
 }
 
-class CssInherited extends CssValue
-{
-
-}
+class CssInherited extends CssValue {}
 
 class CssLiteral extends CssValue
 {
@@ -801,7 +798,6 @@ class CssLiteral extends CssValue
     }
 }
 
-
 class CssColor extends CssValue
 {
     int red = 0;
@@ -809,62 +805,73 @@ class CssColor extends CssValue
     int blue = 0;
     int alpha = 255;
 
-    CssColor.fromRgba(int red,int green,int blue,int alpha)
+    CssColor.fromRgba(int red, int green, int blue, int alpha)
     {
-        this.red = saturateInt(red,0,255);
-        this.green = saturateInt(green,0,255);
-        this.blue = saturateInt(blue,0,255);
-        this.alpha = saturateInt(alpha,0,255);
+        this.red = saturateInt(red, 0, 255);
+        this.green = saturateInt(green, 0, 255);
+        this.blue = saturateInt(blue, 0, 255);
+        this.alpha = saturateInt(alpha, 0, 255);
     }
 
     CssColor.fromRgbaInt(int color)
     {
-        this.red = 0xff & (color>>24);
-        this.green = 0xff & (color>>16);
-        this.blue = 0xff & (color>>8);
+        this.red = 0xff & (color >> 24);
+        this.green = 0xff & (color >> 16);
+        this.blue = 0xff & (color >> 8);
         this.alpha = 0xff & color;
     }
 
-
     CssColor.fromHex(String hexColor)
     {
-      var t = hexColor;
+        var t = hexColor;
 
-      switch (t.length)
-      {
-          case 3:
-            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+'ff';
-            break;
-          case 4:
-            t = t.substring(0,1)+t.substring(0,1)+t.substring(1,2)+t.substring(1,2)+t.substring(2,3)+t.substring(2,3)+
-                t.substring(3,4)+t.substring(3,4);
-            break;
-          case 6:
-            t = t+'ff';
-            break;
-          case 8:
-            break;
-          default:
-            t = '000000ff';
-      }
+        switch (t.length)
+        {
+            case 3:
+                t = t.substring(0, 1) +
+                        t.substring(0, 1) +
+                        t.substring(1, 2) +
+                        t.substring(1, 2) +
+                        t.substring(2, 3) +
+                        t.substring(2, 3) +
+            'ff';
+                break;
+            case 4:
+                t = t.substring(0, 1) +
+                        t.substring(0, 1) +
+                        t.substring(1, 2) +
+                        t.substring(1, 2) +
+                        t.substring(2, 3) +
+                        t.substring(2, 3) +
+                        t.substring(3, 4) +
+                        t.substring(3, 4);
+                break;
+            case 6:
+                t = t + 'ff';
+                break;
+            case 8:
+                break;
+            default:
+                t = '000000ff';
+        }
 
-        red = int.parse(t.substring(0,2),radix: 16);
-        green = int.parse(t.substring(2,4),radix: 16);
-        blue = int.parse(t.substring(4,6),radix: 16);
-        alpha =  int.parse(t.substring(6,8),radix: 16);
+        red = int.parse(t.substring(0, 2), radix: 16);
+        green = int.parse(t.substring(2, 4), radix: 16);
+        blue = int.parse(t.substring(4, 6), radix: 16);
+        alpha = int.parse(t.substring(6, 8), radix: 16);
     }
 
     @override
     String toString()
     {
-        var result = '#'
-            + red.toRadixString(16).padLeft(2,'0')
-            + green.toRadixString(16).padLeft(2,'0')
-            + blue.toRadixString(16).padLeft(2,'0');
+        var result = '#' +
+                red.toRadixString(16).padLeft(2, '0') +
+                green.toRadixString(16).padLeft(2, '0') +
+                blue.toRadixString(16).padLeft(2, '0');
 
         if (alpha != 0xff)
         {
-            result += alpha.toRadixString(16).padLeft(2,'0');
+            result += alpha.toRadixString(16).padLeft(2, '0');
         }
 
         return result;
@@ -872,9 +879,8 @@ class CssColor extends CssValue
 
     int get rgbaInt
     {
-        return ((red&0xff)<<24)|((green&0xff)<<16)|((blue&0xff)<<8)|(alpha&0xff);
+        return ((red & 0xff) << 24) | ((green & 0xff) << 16) | ((blue & 0xff) << 8) | (alpha & 0xff);
     }
-
 }
 
 class CssSimpleSelector
@@ -902,13 +908,12 @@ class CssSimpleSelector
     static const OPERATION_SUFFIX_MATCH = 4;
     static const OPERATION_SUBSTRING_MATCH = 5;
 
-
     CssSimpleSelector? next;
-    String text ='';
-    int    type = SELECTOR_ELEMENT;
-    int    combinator = COMBINATOR_NONE;
-    int    operation = OPERATION_NONE;
-    String operationString =  '';
+    String text = '';
+    int type = SELECTOR_ELEMENT;
+    int combinator = COMBINATOR_NONE;
+    int operation = OPERATION_NONE;
+    String operationString = '';
     String value = '';
 
     CssSimpleSelector();
@@ -930,21 +935,22 @@ class CssSimpleSelector
         switch (type)
         {
             case SELECTOR_ID:
-              return 100;
+                return 100;
 
             case SELECTOR_CLASS:
             case SELECTOR_PSEUDO_CLASS:
             case SELECTOR_ATTRIBUTE:
-              return 10;
+                return 10;
 
             default:
-              return 1;
+                return 1;
         }
     }
 
     void setOperation(AttributeSelector selector)
     {
-        operationString = selector.matchOperator() ?? '';;
+        operationString = selector.matchOperator() ?? '';
+        ;
         value = selector.valueToString();
 
         type = SELECTOR_ATTRIBUTE;
@@ -952,30 +958,30 @@ class CssSimpleSelector
         switch (operationString)
         {
             case '=':
-              operation = OPERATION_EQUAL;
-              break;
-            case  '~=':
-              operation = OPERATION_INCLUDES;
-              break;
-            case  '|=':
-              operation = OPERATION_DASH_MATCH;
-              break;
-            case  '^=':
-              operation = OPERATION_PREFIX_MATCH;
-              break;
-            case  '\$=':
-              operation = OPERATION_SUFFIX_MATCH;
-              break;
-            case  '*=':
-              operation = OPERATION_SUBSTRING_MATCH;
-              break;
+                operation = OPERATION_EQUAL;
+                break;
+            case '~=':
+                operation = OPERATION_INCLUDES;
+                break;
+            case '|=':
+                operation = OPERATION_DASH_MATCH;
+                break;
+            case '^=':
+                operation = OPERATION_PREFIX_MATCH;
+                break;
+            case '\$=':
+                operation = OPERATION_SUFFIX_MATCH;
+                break;
+            case '*=':
+                operation = OPERATION_SUBSTRING_MATCH;
+                break;
             default:
-              operation = OPERATION_NONE;
-              operationString = '';
+                operation = OPERATION_NONE;
+                operationString = '';
         }
     }
 
-    bool check (xnode.TreeNode node)
+    bool check(xnode.TreeNode node)
     {
         bool result = false;
 
@@ -990,7 +996,6 @@ class CssSimpleSelector
             case SELECTOR_ID:
                 result = node.id == text;
                 break;
-
         }
 
         return result;
@@ -1005,46 +1010,44 @@ class CssSimpleSelector
         switch (combinator)
         {
             case COMBINATOR_DESCENDANT:
-              comb = ' ';
-              break;
+                comb = ' ';
+                break;
             case COMBINATOR_PLUS:
-              comb = '+';
-              break;
+                comb = '+';
+                break;
             case COMBINATOR_GREATER:
-              comb = '>';
-              break;
+                comb = '>';
+                break;
             case COMBINATOR_TILDE:
-              comb = '~';
-              break;
+                comb = '~';
+                break;
         }
 
-        switch(type)
+        switch (type)
         {
             case SELECTOR_ID:
-              tp = '#';
-              break;
+                tp = '#';
+                break;
             case SELECTOR_CLASS:
-              tp = '.';
-              break;
+                tp = '.';
+                break;
             case SELECTOR_PSEUDO_CLASS:
-              tp = ':';
-              break;
+                tp = ':';
+                break;
             case SELECTOR_PSEUDO_ELEMENT:
-              tp = '::';
-              break;
+                tp = '::';
+                break;
         }
 
         switch (type)
         {
             case SELECTOR_ATTRIBUTE:
-              return (operation == OPERATION_NONE) ? '[$text]' : '[$text$operationString$value]';
+                return (operation == OPERATION_NONE) ? '[$text]' : '[$text$operationString$value]';
 
             default:
-              return '$comb$tp$text';
+                return '$comb$tp$text';
         }
     }
-
-
 }
 
 class CssOperatorComma extends CssValue
@@ -1064,14 +1067,12 @@ class CssDeclarationResult
     CssDeclarationResult();
 }
 
-CssValue? _rgbFunction (CssFunction function)
+CssValue? _rgbFunction(CssFunction function)
 {
     try
     {
-      return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
-                              (function.params[1] as CssNumber).valueInt(0,255),
-                              (function.params[2] as CssNumber).valueInt(0,255),
-                              255);
+        return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0, 255),
+                (function.params[1] as CssNumber).valueInt(0, 255), (function.params[2] as CssNumber).valueInt(0, 255), 255);
     }
     catch (e)
     {
@@ -1079,14 +1080,15 @@ CssValue? _rgbFunction (CssFunction function)
     }
 }
 
-CssValue? _rgbaFunction (CssFunction function)
+CssValue? _rgbaFunction(CssFunction function)
 {
     try
     {
-      return CssColor.fromRgba((function.params[0] as CssNumber).valueInt(0,255),
-                              (function.params[1] as CssNumber).valueInt(0,255),
-                              (function.params[2] as CssNumber).valueInt(0,255),
-                              ((function.params[3] as CssNumber).valueSat(0,1)*255).toInt());
+        return CssColor.fromRgba(
+                (function.params[0] as CssNumber).valueInt(0, 255),
+                (function.params[1] as CssNumber).valueInt(0, 255),
+                (function.params[2] as CssNumber).valueInt(0, 255),
+                ((function.params[3] as CssNumber).valueSat(0, 1) * 255).toInt());
     }
     catch (e)
     {
@@ -1094,22 +1096,19 @@ CssValue? _rgbaFunction (CssFunction function)
     }
 }
 
-
-CssValue? _hslaFunction (CssFunction function)
+CssValue? _hslaFunction(CssFunction function)
 {
     try
     {
         double a = 1.0;
 
-        if (function.params.length>=4)
+        if (function.params.length >= 4)
         {
-            a = (function.params[3] as CssNumber).valueSat(0,1);
+            a = (function.params[3] as CssNumber).valueSat(0, 1);
         }
 
-      return _hslaToRgba((function.params[0] as CssNumber).value,
-                         (function.params[1] as CssNumber).value,
-                         (function.params[2] as CssNumber).value,
-                         a);
+        return _hslaToRgba((function.params[0] as CssNumber).value, (function.params[1] as CssNumber).value,
+                (function.params[2] as CssNumber).value, a);
     }
     catch (e)
     {
@@ -1117,15 +1116,15 @@ CssValue? _hslaFunction (CssFunction function)
     }
 }
 
-CssValue? _hslaToRgba(double h,double s,double l,double a)
+CssValue? _hslaToRgba(double h, double s, double l, double a)
 {
     var r = 0;
     var g = 0;
     var b = 0;
 
-    h = saturate(h,0,360);
-    s = saturate(s,0,1);
-    l = saturate(s,0,1);
+    h = saturate(h, 0, 360);
+    s = saturate(s, 0, 1);
+    l = saturate(s, 0, 1);
 
     if (s == 0)
     {
@@ -1144,35 +1143,73 @@ CssValue? _hslaToRgba(double h,double s,double l,double a)
         b = (255 * _hueToRGB(v1, v2, hue - (1.0 / 3))).toInt();
     }
 
-    return CssColor.fromRgba(r, g, b, (a*255).toInt());
+    return CssColor.fromRgba(r, g, b, (a * 255).toInt());
 }
 
 double _hueToRGB(double v1, double v2, double vH)
 {
-	if (vH < 0)
-  {
-	  vH += 1;
-	}
+    if (vH < 0)
+    {
+        vH += 1;
+    }
 
-	if (vH > 1)
-  {
-	  vH -= 1;
-	}
+    if (vH > 1)
+    {
+        vH -= 1;
+    }
 
-	if ((6 * vH) < 1)
-  {
-	  return (v1 + (v2 - v1) * 6 * vH);
-	}
-	else if ((2 * vH) < 1)
-  {
-	  return v2;
-	}
-  else if ((3 * vH) < 2)
-  {
-	  return (v1 + (v2 - v1) * ((2.0 / 3) - vH) * 6);
-	}
-  else
-  {
-	  return v1;
-  }
+    if ((6 * vH) < 1)
+    {
+        return (v1 + (v2 - v1) * 6 * vH);
+    }
+    else if ((2 * vH) < 1)
+    {
+        return v2;
+    }
+    else if ((3 * vH) < 2)
+    {
+        return (v1 + (v2 - v1) * ((2.0 / 3) - vH) * 6);
+    }
+    else
+    {
+        return v1;
+    }
+}
+
+bool _delarationMargin(CssRuleSet ruleset, CssDeclaration decl)
+{
+    bool remove = false;
+
+    final name = decl.name;
+    final count = math.min(decl.values.length, 4);
+    int left = 0, top = 0, right = 0, bottom = 0;
+
+    switch (count)
+    {
+        case 2:
+            left = 1;
+            right = 1;
+            break;
+        case 3:
+            left = 1;
+            right = 1;
+            bottom = 2;
+            break;
+        case 4:
+            left = 3;
+            right = 1;
+            bottom = 2;
+            break;
+    }
+
+    if (count > 0)
+    {
+        ruleset.declarations.add(CssDeclaration.fromValues(ruleset, name + '-left', [decl.values[left]]));
+        ruleset.declarations.add(CssDeclaration.fromValues(ruleset, name + '-right', [decl.values[right]]));
+        ruleset.declarations.add(CssDeclaration.fromValues(ruleset, name + '-top', [decl.values[top]]));
+        ruleset.declarations.add(CssDeclaration.fromValues(ruleset, name + '-bottom', [decl.values[bottom]]));
+        remove = true;
+    }
+
+    return remove;
 }

@@ -77,7 +77,7 @@ var numberFromText = RegExp(r'(\-?\d+(\.\d+)?([eE]\-?\d+)?)|(\-?\.?\d+)');
 /// - int returns int converted to double
 /// - string parse to a double or use [numberFromText] for a match number.
 /// - returns defNumber if it fails.
-double dynamicToDouble(dynamic value,[double defValue=0.0])
+double dynamicToDouble(dynamic value, [double defValue = 0.0])
 {
     if (value is double)
     {
@@ -97,16 +97,16 @@ double dynamicToDouble(dynamic value,[double defValue=0.0])
             var match = numberFromText.firstMatch(valStr);
             if (match != null)
             {
-                valStr = match.input.substring(match.start,match.end);
+                valStr = match.input.substring(match.start, match.end);
 
                 if (valStr.startsWith('.'))
                 {
-                  valStr = '0'+valStr;
+                    valStr = '0' + valStr;
                 }
 
                 if (valStr.startsWith('-.'))
                 {
-                  valStr = '-0'+valStr.substring(1);
+                    valStr = '-0' + valStr.substring(1);
                 }
 
                 res = double.tryParse(valStr);
@@ -119,7 +119,7 @@ double dynamicToDouble(dynamic value,[double defValue=0.0])
 
 double saturate(double value, double min, double max)
 {
-    if (value<min)
+    if (value < min)
     {
         return min;
     }
@@ -135,7 +135,7 @@ double saturate(double value, double min, double max)
 
 int saturateInt(int value, int min, int max)
 {
-    if (value<min)
+    if (value < min)
     {
         return min;
     }
@@ -149,20 +149,19 @@ int saturateInt(int value, int min, int max)
     }
 }
 
-
 class FileUtils
 {
     /// Path combination
     ///
     /// Returns a path that is a combination of an absolutely specified file ([filePath]) path
     /// and a relative path ([relativePath])
-    static String relativePathFromFile(String filePath,String relativePath)
+    static String relativePathFromFile(String filePath, String relativePath)
     {
-        final path = p.join(p.dirname(filePath),relativePath);
+        final path = p.join(p.dirname(filePath), relativePath);
         final pathComp = p.split(path);
         final filteredPath = <String>[];
 
-        for(var comp in pathComp)
+        for (var comp in pathComp)
         {
             if (comp == '..' && filteredPath.isNotEmpty)
             {
@@ -175,10 +174,8 @@ class FileUtils
         }
 
         return p.joinAll(filteredPath);
-
     }
 }
-
 
 extension StringFunctions on String
 {
@@ -199,7 +196,7 @@ extension StringFunctions on String
     /// var string = "Hello blue\r\nworld!";
     /// string.split([" ","\t","\r","\n"]);                      // ['Hello', 'blue' , 'world!'];
     /// ```
-    List<String> splitEx(List<Pattern> patterns, {bool noEmpty = true, bool trim=true})
+    List<String> splitEx(List<Pattern> patterns, {bool noEmpty = true, bool trim = true})
     {
         var pos = 0;
         var result = <String>[];
@@ -210,16 +207,16 @@ extension StringFunctions on String
 
             for (var pattern in patterns)
             {
-                var p = this.indexOf(pattern,pos);
-                if (p>=0 && p < minPos)
+                var p = this.indexOf(pattern, pos);
+                if (p >= 0 && p < minPos)
                 {
                     minPos = p;
                 }
             }
 
-            if (minPos>pos)
+            if (minPos > pos)
             {
-                var item = this.substring(pos,minPos);
+                var item = this.substring(pos, minPos);
                 result.add(trim ? item.trim() : item);
             }
             else
@@ -230,14 +227,12 @@ extension StringFunctions on String
                 }
             }
 
-            pos = minPos+1;
+            pos = minPos + 1;
         }
 
         return result;
     }
-
 }
-
 
 /// Cloneable interface
 /// Abstract interface for deep object cloning.
