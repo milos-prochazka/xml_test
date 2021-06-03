@@ -1,0 +1,2976 @@
+mimetype
+META-INF/
+META-INF/container.xml
+OPS/
+OPS/s002-Copyright-01.xhtml
+OPS/s008-Chapter-005.xhtml
+OPS/s012-Chapter-009.xhtml
+OPS/s018-Chapter-015.xhtml
+OPS/s022-Chapter-019.xhtml
+OPS/s027-Chapter-024.xhtml
+OPS/s001-BookTitlePage-01.xhtml
+OPS/s010-Chapter-007.xhtml
+OPS/s011-Chapter-008.xhtml
+OPS/s017-Chapter-014.xhtml
+OPS/s013-Chapter-010.xhtml
+OPS/s030-Chapter-027.xhtml
+OPS/s028-Chapter-025.xhtml
+OPS/s016-Chapter-013.xhtml
+OPS/s025-Chapter-022.xhtml
+OPS/s021-Chapter-018.xhtml
+OPS/s024-Chapter-021.xhtml
+OPS/s007-Chapter-004.xhtml
+OPS/s005-Chapter-002.xhtml
+OPS/images/
+OPS/images/igpn-28languages-01.jpg
+OPS/images/aroundtheworldtitletexture_online.jpg
+OPS/images/igp_logo_300_online.png
+OPS/s004-Chapter-001.xhtml
+OPS/s009-Chapter-006.xhtml
+OPS/fonts/
+OPS/fonts/DejaVuSansCondensed-BoldOblique.ttf
+OPS/fonts/DejaVuSerif-Bold.ttf
+OPS/fonts/DejaVuSerifCondensed.ttf
+OPS/fonts/DejaVuSansCondensed-Oblique.ttf
+OPS/fonts/DejaVuSansMono.ttf
+OPS/fonts/DejaVuSansMono-BoldOblique.ttf
+OPS/fonts/DejaVuSerifCondensed-Italic.ttf
+OPS/fonts/DejaVuSerif.ttf
+OPS/fonts/DejaVuSerifCondensed-Bold.ttf
+OPS/fonts/DejaVuSansCondensed-Bold.ttf
+OPS/fonts/DejaVuSerif-Oblique.ttf
+OPS/fonts/DejaVuSerifCondensed-BoldItalic.ttf
+OPS/fonts/DejaVuSerif-BoldOblique.ttf
+OPS/fonts/DejaVuSansCondensed.ttf
+OPS/fonts/DejaVuSansMono-Bold.ttf
+OPS/s014-Chapter-011.xhtml
+OPS/s006-Chapter-003.xhtml
+OPS/s003-Introduction-01.xhtml
+OPS/s015-Chapter-012.xhtml
+OPS/s019-Chapter-016.xhtml
+OPS/s026-Chapter-023.xhtml
+OPS/s029-Chapter-026.xhtml
+OPS/s031-Chapter-028.xhtml
+OPS/s020-Chapter-017.xhtml
+OPS/s023-Chapter-020.xhtml
+titlepage.xhtml
+stylesheet.css
+content.opf
+toc.ncx
+page_styles.css
+id:cover media-type:image/jpeg href:OPS/images/igpn-28languages-01.jpg
+id:fonts-005 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSansCondensed-Bold.ttf
+id:fonts-002 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSansCondensed-BoldOblique.ttf
+id:fonts-006 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSansCondensed-Oblique.ttf
+id:fonts-010 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSansCondensed.ttf
+id:fonts-015 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSansMono-Bold.ttf
+id:fonts-004 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSansMono-BoldOblique.ttf
+id:fonts-007 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSansMono.ttf
+id:fonts-011 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerif-Bold.ttf
+id:fonts-014 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerif-BoldOblique.ttf
+id:fonts-009 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerif-Oblique.ttf
+id:fonts-008 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerif.ttf
+id:fonts-001 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerifCondensed-Bold.ttf
+id:fonts-013 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerifCondensed-BoldItalic.ttf
+id:fonts-003 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerifCondensed-Italic.ttf
+id:fonts-012 media-type:application/vnd.ms-opentype href:OPS/fonts/DejaVuSerifCondensed.ttf
+id:images-002 media-type:image/jpeg href:OPS/images/aroundtheworldtitletexture_online.jpg
+id:images-001 media-type:image/png href:OPS/images/igp_logo_300_online.png
+id:s001 media-type:application/xhtml+xml href:OPS/s001-BookTitlePage-01.xhtml
+id:s002 media-type:application/xhtml+xml href:OPS/s002-Copyright-01.xhtml
+id:s003 media-type:application/xhtml+xml href:OPS/s003-Introduction-01.xhtml
+id:s004 media-type:application/xhtml+xml href:OPS/s004-Chapter-001.xhtml
+id:s005 media-type:application/xhtml+xml href:OPS/s005-Chapter-002.xhtml
+id:s006 media-type:application/xhtml+xml href:OPS/s006-Chapter-003.xhtml
+id:s007 media-type:application/xhtml+xml href:OPS/s007-Chapter-004.xhtml
+id:s008 media-type:application/xhtml+xml href:OPS/s008-Chapter-005.xhtml
+id:s009 media-type:application/xhtml+xml href:OPS/s009-Chapter-006.xhtml
+id:s010 media-type:application/xhtml+xml href:OPS/s010-Chapter-007.xhtml
+id:s011 media-type:application/xhtml+xml href:OPS/s011-Chapter-008.xhtml
+id:s012 media-type:application/xhtml+xml href:OPS/s012-Chapter-009.xhtml
+id:s013 media-type:application/xhtml+xml href:OPS/s013-Chapter-010.xhtml
+id:s014 media-type:application/xhtml+xml href:OPS/s014-Chapter-011.xhtml
+id:s015 media-type:application/xhtml+xml href:OPS/s015-Chapter-012.xhtml
+id:s016 media-type:application/xhtml+xml href:OPS/s016-Chapter-013.xhtml
+id:s017 media-type:application/xhtml+xml href:OPS/s017-Chapter-014.xhtml
+id:s018 media-type:application/xhtml+xml href:OPS/s018-Chapter-015.xhtml
+id:s019 media-type:application/xhtml+xml href:OPS/s019-Chapter-016.xhtml
+id:s020 media-type:application/xhtml+xml href:OPS/s020-Chapter-017.xhtml
+id:s021 media-type:application/xhtml+xml href:OPS/s021-Chapter-018.xhtml
+id:s022 media-type:application/xhtml+xml href:OPS/s022-Chapter-019.xhtml
+id:s023 media-type:application/xhtml+xml href:OPS/s023-Chapter-020.xhtml
+id:s024 media-type:application/xhtml+xml href:OPS/s024-Chapter-021.xhtml
+id:s025 media-type:application/xhtml+xml href:OPS/s025-Chapter-022.xhtml
+id:s026 media-type:application/xhtml+xml href:OPS/s026-Chapter-023.xhtml
+id:s027 media-type:application/xhtml+xml href:OPS/s027-Chapter-024.xhtml
+id:s028 media-type:application/xhtml+xml href:OPS/s028-Chapter-025.xhtml
+id:s029 media-type:application/xhtml+xml href:OPS/s029-Chapter-026.xhtml
+id:s030 media-type:application/xhtml+xml href:OPS/s030-Chapter-027.xhtml
+id:s031 media-type:application/xhtml+xml href:OPS/s031-Chapter-028.xhtml
+id:page_css media-type:text/css href:page_styles.css
+id:css media-type:text/css href:stylesheet.css
+id:titlepage media-type:application/xhtml+xml href:titlepage.xhtml
+id:ncx media-type:application/x-dtbncx+xml href:toc.ncx
+Ruleset
+SelectorGroup .block-rw
+  Selector:.block-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: block-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:1 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.3 em
+Declaration
+Identifier: text-align
+  Literal:left
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:2 em
+  Length:0
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.27 em
+  Length:0
+Ruleset
+SelectorGroup .body-rw
+  Selector:.body-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:justify
+Ruleset
+SelectorGroup .body-rw1
+  Selector:.body-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw1
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Ruleset
+SelectorGroup .body-rw2
+  Selector:.body-rw2
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw2
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:left
+Ruleset
+SelectorGroup .body-rw3
+  Selector:.body-rw3
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw3
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .body-rw4
+  Selector:.body-rw4
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw4
+Declaration
+Identifier: -moz-hyphens
+  Literal:auto
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:justify
+Ruleset
+SelectorGroup .calibre
+  Selector:.calibre
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:1 em
+Declaration
+Identifier: padding-left
+  Length:0
+Declaration
+Identifier: padding-right
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:5 pt
+Ruleset
+SelectorGroup .calibre1
+  Selector:.calibre1
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre1
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:2 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-shadow
+  Length:2 px
+  Length:2 px
+  Length:5 px
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:1
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre2
+  Selector:.calibre2
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre2
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .calibre3
+  Selector:.calibre3
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre3
+Declaration
+Identifier: height
+  Literal:auto
+Declaration
+Identifier: width
+  Literal:100
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Literal:auto
+Ruleset
+SelectorGroup .calibre4
+  Selector:.calibre4
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre4
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.45 em
+Ruleset
+SelectorGroup .calibre5
+  Selector:.calibre5
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre5
+Declaration
+Identifier: font-weight
+  Literal:bold
+Ruleset
+SelectorGroup .calibre6
+  Selector:.calibre6
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre6
+Declaration
+Identifier: display
+  Literal:block
+Ruleset
+SelectorGroup .calibre7
+  Selector:.calibre7
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre7
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.66667 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:1 em
+  Length:0
+  Length:0.5 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre8
+  Selector:.calibre8
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre8
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre9
+  Selector:.calibre9
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre9
+Declaration
+Identifier: font-style
+  Literal:italic
+Ruleset
+SelectorGroup .calibre10
+  Selector:.calibre10
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre10
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre11
+  Selector:.calibre11
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre11
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:150
+  Operator comma
+  Length:100
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: text-align
+  Literal:left
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.5 em
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre12
+  Selector:.calibre12
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre12
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: list-style-type
+  Literal:decimal
+Declaration
+Identifier: margin-bottom
+  Length:1.27 em
+Declaration
+Identifier: margin-right
+  Length:0
+Declaration
+Identifier: margin-top
+  Length:1.27 em
+Declaration
+Identifier: padding-bottom
+  Length:0
+Declaration
+Identifier: padding-right
+  Length:0
+Declaration
+Identifier: padding-top
+  Length:0
+Ruleset
+SelectorGroup .calibre13
+  Selector:.calibre13
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre13
+Declaration
+Identifier: display
+  Literal:list-item
+Declaration
+Identifier: list-style-image
+  Literal:none
+Declaration
+Identifier: list-style-position
+  Literal:outside
+Declaration
+Identifier: list-style-type
+  Literal:decimal
+Declaration
+Identifier: padding-bottom
+  Length:0
+Declaration
+Identifier: padding-top
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre14
+  Selector:.calibre14
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre14
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .calibre15
+  Selector:.calibre15
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre15
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .calibre16
+  Selector:.calibre16
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre16
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0.75 em
+  Length:0
+  Length:0.25 em
+Ruleset
+SelectorGroup .calibre17
+  Selector:.calibre17
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre17
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.41667 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.5 em
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre18
+  Selector:.calibre18
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre18
+Declaration
+Identifier: color
+  HexColor:808080
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: height
+  Length:2 px
+Declaration
+Identifier: border
+  Literal:currentColor
+  Literal:inset
+  Length:1 px
+Declaration
+Identifier: margin
+  Length:0.5 em
+  Literal:auto
+Ruleset
+SelectorGroup .calibre19
+  Selector:.calibre19
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre19
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.62963 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:1 em
+  Length:0
+  Length:0.5 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre20
+  Selector:.calibre20
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre20
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre21
+  Selector:.calibre21
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre21
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.25926 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0.75 em
+  Length:0
+  Length:0.25 em
+Ruleset
+SelectorGroup .calibre22
+  Selector:.calibre22
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre22
+Declaration
+Identifier: color
+  HexColor:808080
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: height
+  Length:2 px
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: border
+  Literal:currentColor
+  Literal:inset
+  Length:1 px
+Declaration
+Identifier: margin
+  Length:0.5 em
+  Literal:auto
+Ruleset
+SelectorGroup .ctarget
+  Selector:.ctarget
+SimpleSelectorSequence .
+Class Selector
+Identifier: ctarget
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:0.75 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.1 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .fp-rw
+  Selector:.fp-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: fp-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .frontmatter-rw
+  Selector:.frontmatter-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: frontmatter-rw
+Declaration
+Identifier: background-image
+  Uri:OPS/images/aroundtheworldtitletexture_online.jpg
+Declaration
+Identifier: background-position
+  Literal:center
+  Literal:center
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .frontmatter-rw1
+  Selector:.frontmatter-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: frontmatter-rw1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:0.75 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.3 em
+Declaration
+Identifier: text-align
+  Literal:left
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:2 em
+  Length:0
+  Length:0
+Ruleset
+SelectorGroup .frontmatter-rw2
+  Selector:.frontmatter-rw2
+SimpleSelectorSequence .
+Class Selector
+Identifier: frontmatter-rw2
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:justify
+Ruleset
+SelectorGroup .galley-rw
+  Selector:.galley-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: galley-rw
+Declaration
+Identifier: color
+  Function:rgb
+  Literal:rgb
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:0
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+  Operator comma
+  Literal:serif
+Declaration
+Identifier: font-size
+  Length:1 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: letter-spacing
+  Length:0
+Declaration
+Identifier: line-height
+  Length:1.3 em
+Declaration
+Identifier: word-spacing
+  Length:0
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .imprint-rw
+  Selector:.imprint-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: imprint-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: float
+  Literal:bottom
+Declaration
+Identifier: font-size
+  Length:0.75 em
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: margin-top
+  Length:2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:0
+  Length:0
+Ruleset
+SelectorGroup .media-rw
+  Selector:.media-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: media-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:0.77778 em
+Declaration
+Identifier: page-break-inside
+  Literal:avoid
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: width
+  Literal:20
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.27 em
+  Literal:auto
+Ruleset
+SelectorGroup .pc-rw
+  Selector:.pc-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: pc-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Literal:auto
+Ruleset
+SelectorGroup .title-block-book-rw
+  Selector:.title-block-book-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-block-book-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:1 em
+  Length:2 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-block-rw
+  Selector:.title-block-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-block-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-block-rw1
+  Selector:.title-block-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-block-rw1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-other-rw
+  Selector:.title-other-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-other-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:0.88889 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-sub-rw
+  Selector:.title-sub-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-sub-rw
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-size
+  Length:2 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-shadow
+  Length:2 px
+  Length:2 px
+  Length:5 px
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:1
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-sub-rw1
+  Selector:.title-sub-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-sub-rw1
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:150
+  Operator comma
+  Length:100
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1.5 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-sub-rw2
+  Selector:.title-sub-rw2
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-sub-rw2
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:150
+  Operator comma
+  Length:100
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.25926 em
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1.5 em
+Declaration
+Identifier: margin
+  Length:0
+Page
+Declaration
+Identifier: margin-bottom
+  Length:5 pt
+Declaration
+Identifier: margin-top
+  Length:5 pt
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed-BoldItalic.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed-Italic.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed-BoldOblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed-Oblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif-BoldOblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif-Oblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"code"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansMono.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"code"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansMono-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"code"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansMono-BoldOblique.ttf
+<_FileSpan: from <FileLocation: 1 unknown source:1:2> to <FileLocation: 57 unknown source:4:6> "page {
+    margin-bottom: 5pt;
+    margin-top: 5pt
+    }">
+--------------------------------------------
+Page
+Declaration
+Identifier: margin-bottom
+  Length:5 pt
+Declaration
+Identifier: margin-top
+  Length:5 pt
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed-BoldItalic.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerifCondensed-Italic.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed-BoldOblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansCondensed-Oblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif-BoldOblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSerif-Oblique.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"code"
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansMono.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"code"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansMono-Bold.ttf
+Font face
+Declaration
+Identifier: font-family
+  Literal:"code"
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: src
+  Uri:OPS/fonts/DejaVuSansMono-BoldOblique.ttf
+<_FileSpan: from <FileLocation: 0 unknown source:1:1> to <FileLocation: 9 unknown source:1:10> ".block-rw">
+--------------------------------------------
+Ruleset
+SelectorGroup .block-rw
+  Selector:.block-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: block-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:1 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.3 em
+Declaration
+Identifier: text-align
+  Literal:left
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:2 em
+  Length:0
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.27 em
+  Length:0
+Ruleset
+SelectorGroup .body-rw
+  Selector:.body-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:justify
+Ruleset
+SelectorGroup .body-rw1
+  Selector:.body-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw1
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Ruleset
+SelectorGroup .body-rw2
+  Selector:.body-rw2
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw2
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:left
+Ruleset
+SelectorGroup .body-rw3
+  Selector:.body-rw3
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw3
+Declaration
+Identifier: -moz-hyphens
+  Literal:none
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .body-rw4
+  Selector:.body-rw4
+SimpleSelectorSequence .
+Class Selector
+Identifier: body-rw4
+Declaration
+Identifier: -moz-hyphens
+  Literal:auto
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:justify
+Ruleset
+SelectorGroup .calibre
+  Selector:.calibre
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:1 em
+Declaration
+Identifier: padding-left
+  Length:0
+Declaration
+Identifier: padding-right
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:5 pt
+Ruleset
+SelectorGroup .calibre1
+  Selector:.calibre1
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre1
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:2 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-shadow
+  Length:2 px
+  Length:2 px
+  Length:5 px
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:1
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre2
+  Selector:.calibre2
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre2
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .calibre3
+  Selector:.calibre3
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre3
+Declaration
+Identifier: height
+  Literal:auto
+Declaration
+Identifier: width
+  Literal:100
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Literal:auto
+Ruleset
+SelectorGroup .calibre4
+  Selector:.calibre4
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre4
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.45 em
+Ruleset
+SelectorGroup .calibre5
+  Selector:.calibre5
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre5
+Declaration
+Identifier: font-weight
+  Literal:bold
+Ruleset
+SelectorGroup .calibre6
+  Selector:.calibre6
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre6
+Declaration
+Identifier: display
+  Literal:block
+Ruleset
+SelectorGroup .calibre7
+  Selector:.calibre7
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre7
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.66667 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:1 em
+  Length:0
+  Length:0.5 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre8
+  Selector:.calibre8
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre8
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre9
+  Selector:.calibre9
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre9
+Declaration
+Identifier: font-style
+  Literal:italic
+Ruleset
+SelectorGroup .calibre10
+  Selector:.calibre10
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre10
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre11
+  Selector:.calibre11
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre11
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:150
+  Operator comma
+  Length:100
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: text-align
+  Literal:left
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.5 em
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre12
+  Selector:.calibre12
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre12
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: list-style-type
+  Literal:decimal
+Declaration
+Identifier: margin-bottom
+  Length:1.27 em
+Declaration
+Identifier: margin-right
+  Length:0
+Declaration
+Identifier: margin-top
+  Length:1.27 em
+Declaration
+Identifier: padding-bottom
+  Length:0
+Declaration
+Identifier: padding-right
+  Length:0
+Declaration
+Identifier: padding-top
+  Length:0
+Ruleset
+SelectorGroup .calibre13
+  Selector:.calibre13
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre13
+Declaration
+Identifier: display
+  Literal:list-item
+Declaration
+Identifier: list-style-image
+  Literal:none
+Declaration
+Identifier: list-style-position
+  Literal:outside
+Declaration
+Identifier: list-style-type
+  Literal:decimal
+Declaration
+Identifier: padding-bottom
+  Length:0
+Declaration
+Identifier: padding-top
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre14
+  Selector:.calibre14
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre14
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .calibre15
+  Selector:.calibre15
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre15
+Declaration
+Identifier: font-style
+  Literal:italic
+Declaration
+Identifier: line-height
+  Length:1.2
+Ruleset
+SelectorGroup .calibre16
+  Selector:.calibre16
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre16
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0.75 em
+  Length:0
+  Length:0.25 em
+Ruleset
+SelectorGroup .calibre17
+  Selector:.calibre17
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre17
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.41667 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.5 em
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre18
+  Selector:.calibre18
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre18
+Declaration
+Identifier: color
+  HexColor:808080
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: height
+  Length:2 px
+Declaration
+Identifier: border
+  Literal:currentColor
+  Literal:inset
+  Length:1 px
+Declaration
+Identifier: margin
+  Length:0.5 em
+  Literal:auto
+Ruleset
+SelectorGroup .calibre19
+  Selector:.calibre19
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre19
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.62963 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:1 em
+  Length:0
+  Length:0.5 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .calibre20
+  Selector:.calibre20
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre20
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .calibre21
+  Selector:.calibre21
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre21
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:100
+  Operator comma
+  Length:150
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:1.25926 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: page-break-after
+  Literal:avoid
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0.75 em
+  Length:0
+  Length:0.25 em
+Ruleset
+SelectorGroup .calibre22
+  Selector:.calibre22
+SimpleSelectorSequence .
+Class Selector
+Identifier: calibre22
+Declaration
+Identifier: color
+  HexColor:808080
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: height
+  Length:2 px
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: border
+  Literal:currentColor
+  Literal:inset
+  Length:1 px
+Declaration
+Identifier: margin
+  Length:0.5 em
+  Literal:auto
+Ruleset
+SelectorGroup .ctarget
+  Selector:.ctarget
+SimpleSelectorSequence .
+Class Selector
+Identifier: ctarget
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:0.75 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.1 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .fp-rw
+  Selector:.fp-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: fp-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Length:0
+  Length:0.5 em
+Ruleset
+SelectorGroup .frontmatter-rw
+  Selector:.frontmatter-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: frontmatter-rw
+Declaration
+Identifier: background-image
+  Uri:OPS/images/aroundtheworldtitletexture_online.jpg
+Declaration
+Identifier: background-position
+  Literal:center
+  Literal:center
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .frontmatter-rw1
+  Selector:.frontmatter-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: frontmatter-rw1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:0.75 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.3 em
+Declaration
+Identifier: text-align
+  Literal:left
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:2 em
+  Length:0
+  Length:0
+Ruleset
+SelectorGroup .frontmatter-rw2
+  Selector:.frontmatter-rw2
+SimpleSelectorSequence .
+Class Selector
+Identifier: frontmatter-rw2
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: text-align
+  Literal:justify
+Ruleset
+SelectorGroup .galley-rw
+  Selector:.galley-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: galley-rw
+Declaration
+Identifier: color
+  Function:rgb
+  Literal:rgb
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:0
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSerifCondensed"
+  Operator comma
+  Literal:serif
+Declaration
+Identifier: font-size
+  Length:1 em
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: letter-spacing
+  Length:0
+Declaration
+Identifier: line-height
+  Length:1.3 em
+Declaration
+Identifier: word-spacing
+  Length:0
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .imprint-rw
+  Selector:.imprint-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: imprint-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: float
+  Literal:bottom
+Declaration
+Identifier: font-size
+  Length:0.75 em
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: margin-top
+  Length:2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:0
+  Length:0
+Ruleset
+SelectorGroup .media-rw
+  Selector:.media-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: media-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-size
+  Length:0.77778 em
+Declaration
+Identifier: page-break-inside
+  Literal:avoid
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: width
+  Literal:20
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:1.27 em
+  Literal:auto
+Ruleset
+SelectorGroup .pc-rw
+  Selector:.pc-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: pc-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: padding
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+  Literal:auto
+Ruleset
+SelectorGroup .title-block-book-rw
+  Selector:.title-block-book-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-block-book-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:1 em
+  Length:2 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-block-rw
+  Selector:.title-block-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-block-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-block-rw1
+  Selector:.title-block-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-block-rw1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: min-height
+  Length:2 em
+Declaration
+Identifier: padding
+  Length:2 em
+  Length:0
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-other-rw
+  Selector:.title-other-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-other-rw
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:inherit
+Declaration
+Identifier: font-size
+  Length:0.88889 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:normal
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-sub-rw
+  Selector:.title-sub-rw
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-sub-rw
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:255
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVuSansCondensed"
+Declaration
+Identifier: font-size
+  Length:2 em
+Declaration
+Identifier: font-style
+  Literal:normal
+Declaration
+Identifier: font-weight
+  Literal:bold
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-shadow
+  Length:2 px
+  Length:2 px
+  Length:5 px
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:0
+  Operator comma
+  Length:1
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-sub-rw1
+  Selector:.title-sub-rw1
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-sub-rw1
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:150
+  Operator comma
+  Length:100
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.125 em
+Declaration
+Identifier: line-height
+  Length:1.2 em
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1.5 em
+Declaration
+Identifier: margin
+  Length:0
+Ruleset
+SelectorGroup .title-sub-rw2
+  Selector:.title-sub-rw2
+SimpleSelectorSequence .
+Class Selector
+Identifier: title-sub-rw2
+Declaration
+Identifier: color
+  Function:rgba
+  Literal:rgba
+  Length:0
+  Operator comma
+  Length:150
+  Operator comma
+  Length:100
+  Operator comma
+  Length:1
+Declaration
+Identifier: display
+  Literal:block
+Declaration
+Identifier: font-family
+  Literal:"DejaVu Serif"
+Declaration
+Identifier: font-size
+  Length:1.25926 em
+Declaration
+Identifier: line-height
+  Length:1.2
+Declaration
+Identifier: text-align
+  Literal:center
+Declaration
+Identifier: text-indent
+  Length:0
+Declaration
+Identifier: text-transform
+  Literal:none
+Declaration
+Identifier: padding
+  Length:0
+  Length:0
+  Length:1.5 em
+Declaration
+Identifier: margin
+  Length:0

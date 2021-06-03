@@ -379,7 +379,7 @@ class ManifestItem
         else if (mime.contains('html') || mime.contains('xhtml'))
         {
             var styles = getCssDocuments(epub);
-            xnode.TreeNode tnode = xnode.TreeNode.fromXNode(xmlNode);
+            var tnode = xnode.TreeNode.fromXNode(xmlNode);
             $$$testTNode(styles, tnode);
         }
     }

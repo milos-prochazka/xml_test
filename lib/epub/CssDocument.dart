@@ -351,6 +351,16 @@ class CssDocument extends Visitor
     }
 
     @override
+    void visitUriTerm(UriTerm node)
+    {
+//#debug
+        print('  Uri:${node.text}');
+//#end
+        _treeStack.last.insert(CssUri(node.text));
+  }
+
+
+    @override
     dynamic visitFontFaceDirective(FontFaceDirective node)
     {
 //#debug
@@ -798,6 +808,17 @@ class CssLiteral extends CssValue
     }
 }
 
+class CssUri extends CssLiteral
+{
+  CssUri(String text) : super(text);
+
+    @override
+    String toString()
+    {
+        return 'url($text)';
+    }
+}
+
 class CssColor extends CssValue
 {
     int red = 0;
@@ -1096,6 +1117,7 @@ CssValue? _rgbaFunction(CssFunction function)
     }
 }
 
+
 CssValue? _hslaFunction(CssFunction function)
 {
     try
@@ -1175,6 +1197,8 @@ double _hueToRGB(double v1, double v2, double vH)
         return v1;
     }
 }
+
+
 
 bool _delarationMargin(CssRuleSet ruleset, CssDeclaration decl)
 {
