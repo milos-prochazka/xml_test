@@ -7,7 +7,7 @@ import 'package:xml_test/common.dart';
 // ignore_for_file: unnecessary_cast
 // ignore_for_file: unnecessary_this
 
-class XNode implements InterfaceToDynamic, ICloneable<XNode>
+class XNode implements InterfaceToDynamic, ICloneable<XNode> 
 {
     static const TEXT_NAME = r'$TEXT$';
     static const COMMENT_NAME = r'$COMMENT$';
@@ -57,32 +57,32 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
     /// [text] - Node text
     /// [attributes] - Map of attributes <element attr1='val1'  attr2='val2' ... >
     /// [children] - List of child nodes
-    XNode({int? type, String? name, String? text, Map<String, String>? attributes, List<XNode>? children})
+    XNode({int? type, String? name, String? text, Map<String, String>? attributes, List<XNode>? children}) 
     {
-        if (type != null)
+        if (type != null) 
         {
             this.type = type;
         }
-        if (name != null)
+        if (name != null) 
         {
             this.name = name;
         }
-        if (text != null)
+        if (text != null) 
         {
             this.text = text;
         }
 
-        if (attributes != null)
+        if (attributes != null) 
         {
-            for (var attr in attributes.entries)
+            for (var attr in attributes.entries) 
             {
                 this.attributes[attr.key] = attr.value;
             }
         }
 
-        if (children != null)
+        if (children != null) 
         {
-            for (var child in children)
+            for (var child in children) 
             {
                 this.children.add(child);
             }
@@ -90,54 +90,54 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
     }
 
     /// Constructor [DOCUMENT]
-    XNode.document()
+    XNode.document() 
     {
         type = DOCUMENT;
         name = DOCTYPE_NAME;
     }
 
     /// Constructor <body> element
-    XNode.body()
+    XNode.body() 
     {
         type = ELEMENT;
         name = 'body';
     }
 
     /// Constructor [COMMENT] element
-    XNode.comment(this.text)
+    XNode.comment(this.text) 
     {
         type = COMMENT;
         name = COMMENT_NAME;
     }
 
-    XNode.text(this.text)
+    XNode.text(this.text) 
     {
         type = TEXT;
         name = TEXT_NAME;
     }
 
-    XNode.fromXmlNode(XmlNode node)
+    XNode.fromXmlNode(XmlNode node) 
     {
         _fromXmlNode(node);
     }
 
-    XNode.fromXmlDocument(XmlDocument document)
+    XNode.fromXmlDocument(XmlDocument document) 
     {
         _fromXmlNode(document.root);
     }
 
-    XNode.fromHtmlDocument(Document document)
+    XNode.fromHtmlDocument(Document document) 
     {
         _fromHtmlNode(document);
     }
 
-    XNode.fromHtmlNode(Node node)
+    XNode.fromHtmlNode(Node node) 
     {
         _fromHtmlNode(node);
     }
 
     /// Constructor - deep copy from another XNode object
-    factory XNode.fromXNode(XNode node)
+    factory XNode.fromXNode(XNode node) 
     {
         XNode result = XNode(name: node.name, text: node.text, type: node.type, attributes: node.attributes);
 
@@ -147,24 +147,24 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         return result;
     }
 
-    void addLinkedDataFrom(XNode node)
+    void addLinkedDataFrom(XNode node) 
     {
-        for (final data in node.linkedData.entries)
+        for (final data in node.linkedData.entries) 
         {
             final value = data.value;
             linkedData[data.key] = value is ICloneable ? (value as ICloneable).clone() : value;
         }
     }
 
-    void addChildrenFrom(XNode node)
+    void addChildrenFrom(XNode node) 
     {
-        for (final child in node.children)
+        for (final child in node.children) 
         {
             children.add(child.clone());
         }
     }
 
-    XmlDocument toXmlDocument()
+    XmlDocument toXmlDocument() 
     {
         var builder = XmlBuilder();
         _buildXmlNode(builder);
@@ -173,16 +173,16 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
     }
 
     @override
-    XNode clone()
+    XNode clone() 
     {
         return XNode.fromXNode(this);
     }
 
-    Document toHtmlDocument()
+    Document toHtmlDocument() 
     {
         XNode node = this;
 
-        switch (node.type)
+        switch (node.type) 
         {
             case DOCUMENT:
             case DOCTYPE:
@@ -195,7 +195,7 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
 
             default:
                 // TODO: Dodelat pro jine nez body
-                var document = XNode(type: DOCUMENT, name: DOCTYPE_NAME, children:
+                var document = XNode(type: DOCUMENT, name: DOCTYPE_NAME, children: 
                 [
                     XNode(type: ELEMENT, name: 'html', children: [node]),
                 ]);
@@ -206,16 +206,16 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         return node._buildHtmlNode() as Document;
     }
 
-    List<XNode> getChildren(List<String> childPath, {Set<String>? childNames})
+    List<XNode> getChildren(List<String> childPath, {Set<String>? childNames}) 
     {
         var result = <XNode>[];
         var parentNode = _findNode(childPath);
 
-        if (parentNode != null)
+        if (parentNode != null) 
         {
-            for (var child in parentNode.children)
+            for (var child in parentNode.children) 
             {
-                if (childNames == null || childNames.contains(child.name))
+                if (childNames == null || childNames.contains(child.name)) 
                 {
                     result.add(child);
                 }
@@ -225,7 +225,7 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         return result;
     }
 
-    bool attributeContains(String name, String pattern, [bool caseSensitive = false])
+    bool attributeContains(String name, String pattern, [bool caseSensitive = false]) 
     {
         final attrText = attributes[name];
 
@@ -237,29 +237,29 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
     }
 
     @override
-    dynamic toDynamic(bool embeded)
+    dynamic toDynamic(bool embeded) 
     {
         var attr = <String, String>{};
 
-        for (var item in attributes.entries)
+        for (var item in attributes.entries) 
         {
             attr[item.key] = item.value;
         }
 
         var chlist = <dynamic>[];
-        for (var item in children)
+        for (var item in children) 
         {
             chlist.add(item.toDynamic(embeded));
         }
 
         var result = <String, dynamic>{'type': type, 'name': name, 'text': text, 'attributes': attr, 'children': chlist};
 
-        if (embeded)
+        if (embeded) 
         {
             var linkedMap = <String, dynamic>{};
-            for (var item in linkedData.entries)
+            for (var item in linkedData.entries) 
             {
-                if (item.value is InterfaceToDynamic)
+                if (item.value is InterfaceToDynamic) 
                 {
                     linkedMap[item.key] = (item.value as InterfaceToDynamic).toDynamic(embeded);
                 }
@@ -271,17 +271,17 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         return result;
     }
 
-    void comressHtmlText({bool nested = false, bool truncate = false, bool removeBlankText = false})
+    void comressHtmlText({bool nested = false, bool truncate = false, bool removeBlankText = false}) 
     {
-        if (type == TEXT && text != '')
+        if (type == TEXT && text != '') 
         {
             var codeUnits = text.codeUnits;
             var chars = <int>[];
 
-            for (var ch in codeUnits)
+            for (var ch in codeUnits) 
             {
                 var conv = htmlSpacesConversionMap[ch] ?? -1;
-                switch (conv)
+                switch (conv) 
                 {
                     case -1:
                         chars.add(ch);
@@ -297,7 +297,7 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
             int start = 0;
             int end = chars.length;
 
-            if (truncate)
+            if (truncate) 
             {
                 while (start < end && chars[start] == 0x20) start++;
                 while (end > start && chars[end - 1] == 0x20) end--;
@@ -306,17 +306,17 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
             text = (end > start) ? String.fromCharCodes(chars, start, end) : '';
         }
 
-        if (nested)
+        if (nested) 
         {
-            for (int i = 0; i < children.length;)
+            for (int i = 0; i < children.length;) 
             {
                 var child = children[i];
                 child.comressHtmlText(nested: nested, truncate: truncate, removeBlankText: removeBlankText);
-                if (removeBlankText && child.type == TEXT && child.text == '')
+                if (removeBlankText && child.type == TEXT && child.text == '') 
                 {
                     children.removeAt(i);
-                }
-                else
+                } 
+                else 
                 {
                     i++;
                 }
@@ -324,17 +324,17 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         }
     }
 
-    XNode? _findNode(List<String> childPath)
+    XNode? _findNode(List<String> childPath) 
     {
         XNode node = this;
 
-        for (int i = 0; i < childPath.length; i++)
+        for (int i = 0; i < childPath.length; i++) 
         {
             var name = childPath[i];
 
             node = node.children.firstWhere((element) => element.name == name, orElse: () => _nullNode);
 
-            if (node == _nullNode)
+            if (node == _nullNode) 
             {
                 return null;
             }
@@ -343,11 +343,11 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         return node;
     }
 
-    Node? _buildHtmlNode()
+    Node? _buildHtmlNode() 
     {
         Node? node;
 
-        switch (type)
+        switch (type) 
         {
             case ELEMENT:
                 node = Element.tag(name);
@@ -371,14 +371,14 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
                 break;
         }
 
-        if (node != null)
+        if (node != null) 
         {
             node.attributes.addAll(attributes);
 
-            for (var child in children)
+            for (var child in children) 
             {
                 var childNode = child._buildHtmlNode();
-                if (childNode != null)
+                if (childNode != null) 
                 {
                     node.append(childNode);
                 }
@@ -388,22 +388,22 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         return node;
     }
 
-    void _buildXmlNode(XmlBuilder builder)
+    void _buildXmlNode(XmlBuilder builder) 
     {
-        var buildChild = ()
+        var buildChild = () 
         {
-            for (var attribute in attributes.entries)
+            for (var attribute in attributes.entries) 
             {
                 builder.attribute(attribute.key, attribute.value);
             }
 
-            for (var childNode in children)
+            for (var childNode in children) 
             {
                 childNode._buildXmlNode(builder);
             }
         };
 
-        switch (type)
+        switch (type) 
         {
             case ELEMENT:
                 builder.element(name, nest: buildChild);
@@ -427,9 +427,9 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         }
     }
 
-    void _fromHtmlNode(Node node)
+    void _fromHtmlNode(Node node) 
     {
-        switch (node.nodeType)
+        switch (node.nodeType) 
         {
             case Node.ELEMENT_NODE:
                 type = ELEMENT;
@@ -467,82 +467,82 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
                 break;
         }
 
-        if (type != UNKNOWN)
+        if (type != UNKNOWN) 
         {
-            for (var attribute in node.attributes.entries)
+            for (var attribute in node.attributes.entries) 
             {
                 this.attributes[attribute.key.toString()] = attribute.value;
             }
 
-            for (var childNode in node.nodes)
+            for (var childNode in node.nodes) 
             {
                 children.add(XNode.fromHtmlNode(childNode));
             }
         }
     }
 
-    void _fromXmlNode(XmlNode node)
+    void _fromXmlNode(XmlNode node) 
     {
-        if (node is XmlElement)
+        if (node is XmlElement) 
         {
             var element = node as XmlElement;
             name = element.name.local;
             type = ELEMENT;
-        }
-        else if (node is XmlText)
+        } 
+        else if (node is XmlText) 
         {
             var txt = node as XmlText;
             name = TEXT_NAME;
             text = txt.text;
             type = TEXT;
-        }
-        else if (node is XmlComment)
+        } 
+        else if (node is XmlComment) 
         {
             var comment = node as XmlComment;
             name = COMMENT_NAME;
             text = comment.text;
             type = COMMENT;
-        }
-        else if (node is XmlDocument)
+        } 
+        else if (node is XmlDocument) 
         {
             name = DOCUMENT_NAME;
             type = DOCUMENT;
-        }
-        else if (node is XmlDeclaration)
+        } 
+        else if (node is XmlDeclaration) 
         {
             name = DECLARATION_NAME;
             type = DECLARATION;
-        }
-        else if (node is XmlCDATA)
+        } 
+        else if (node is XmlCDATA) 
         {
             var cdata = node as XmlCDATA;
             name = CDATA_NAME;
             text = cdata.text;
             type = CDATA;
-        }
-        else if (node is XmlDoctype)
+        } 
+        else if (node is XmlDoctype) 
         {
             var doctype = node as XmlDoctype;
             name = DOCTYPE_NAME;
             text = doctype.text;
             type = DOCTYPE;
-        }
-        else
+        } 
+        else 
         {
             type = UNKNOWN;
         }
 
-        if (type != UNKNOWN)
+        if (type != UNKNOWN) 
         {
-            for (var attribute in node.attributes)
+            for (var attribute in node.attributes) 
             {
                 attributes[attribute.name.local] = attribute.value;
             }
 
-            for (var child in node.children)
+            for (var child in node.children) 
             {
                 var childNode = XNode.fromXmlNode(child);
-                if (childNode.type != UNKNOWN)
+                if (childNode.type != UNKNOWN) 
                 {
                     children.add(childNode);
                 }
@@ -550,11 +550,11 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         }
     }
 
-    static String? _emptyNull(String? value)
+    static String? _emptyNull(String? value) 
     {
-        if (value != null)
+        if (value != null) 
         {
-            if (value.isEmpty)
+            if (value.isEmpty) 
             {
                 value = null;
             }
@@ -567,7 +567,7 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
 }
 
 /// The XNode tree representation.
-class TreeNode
+class TreeNode 
 {
     TreeNode? parent;
     TreeNode? firstChild;
@@ -585,14 +585,14 @@ class TreeNode
     late XNode xnode;
 
     /// Construcor - empty object
-    TreeNode()
+    TreeNode() 
     {
         xnode = XNode();
     }
 
     /// Contructor - form XNode
     /// - Clone of an XNode object without children
-    TreeNode.fromXNode(XNode srcNode)
+    TreeNode.fromXNode(XNode srcNode) 
     {
         TreeNode? _prevChild;
 
@@ -603,23 +603,23 @@ class TreeNode
         this.xnode = node;
 
         final clsAttr = node.attributes['class'];
-        if (clsAttr != null)
+        if (clsAttr != null) 
         {
             this.classes = clsAttr.splitEx([' ', '\t']);
         }
 
         this.id = node.attributes['id'] ?? '';
 
-        for (var child in srcNode.children)
+        for (var child in srcNode.children) 
         {
             final _treeChild = TreeNode.fromXNode(child);
             _treeChild.parent = this;
 
-            if (_prevChild == null)
+            if (_prevChild == null) 
             {
                 firstChild = _treeChild;
-            }
-            else
+            } 
+            else 
             {
                 _prevChild.next = _treeChild;
                 _treeChild.prev = _prevChild;
@@ -631,19 +631,19 @@ class TreeNode
     }
 
     /// Adds a child TreeNode
-    void addChild(TreeNode treeNode)
+    void addChild(TreeNode treeNode) 
     {
         treeNode.parent = this;
         treeNode.next = null;
 
-        if (firstChild == null)
+        if (firstChild == null) 
         {
             // First child
             firstChild = treeNode;
             lastChild = treeNode;
             treeNode.prev = null;
-        }
-        else
+        } 
+        else 
         {
             // Second and other children.
             lastChild!.next = treeNode;
@@ -653,7 +653,7 @@ class TreeNode
     }
 }
 
-abstract class InterfaceToDynamic
+abstract class InterfaceToDynamic 
 {
     dynamic toDynamic(bool embeded);
 }

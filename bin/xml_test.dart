@@ -36,7 +36,7 @@ final bookshelfXml = '''<?xml version="1.0"?>
       <!-- comment -->
     </bookshelf>''';
 
-void test1(List<String> arguments)
+void test1(List<String> arguments) 
 {
     var blank = isBlankOrNull('     \r\n\u200F');
 
@@ -72,24 +72,24 @@ void test1(List<String> arguments)
     final builder = XmlBuilder();
     //builder.processing('xml', 'version="1.0"');
     builder.declaration(attributes: {'ajaa': 'paja'});
-    builder.element('bookshelf', nest: ()
+    builder.element('bookshelf', nest: () 
     {
         builder.cdata('32723237832787');
         builder.namespace('http://qqqq.qaqa');
         builder.namespace('http://zozo.xul', 'dx');
         builder.attribute('horkol', 'makovitec');
-        builder.element('book', nest: ()
+        builder.element('book', nest: () 
         {
-            builder.element('title', nest: ()
+            builder.element('title', nest: () 
             {
                 builder.attribute('lang', 'en');
                 builder.text('Growing a Language');
             });
             builder.element('price', nest: 29.99);
         });
-        builder.element('book', nest: ()
+        builder.element('book', nest: () 
         {
-            builder.element('title', nest: ()
+            builder.element('title', nest: () 
             {
                 builder.attribute('lang', 'en');
                 builder.text('Learning XML');
@@ -104,16 +104,16 @@ void test1(List<String> arguments)
 
     print('----------------------------------------------');
     print(bookXml.toXmlString(pretty: true, indent: '   '));
-    for (var ch in document.rootElement.children)
+    for (var ch in document.rootElement.children) 
     {
         var named = toNullableType<XmlHasName>(ch);
         var text = toNullableType<XmlText>(ch);
 
-        if (named != null)
+        if (named != null) 
         {
             print(named.name.local);
         }
-        if (text != null && text.text != '')
+        if (text != null && text.text != '') 
         {
             print('"${text.text.replaceAll('\r', '').replaceAll('\n', '').trim()}"');
         }
@@ -122,7 +122,7 @@ void test1(List<String> arguments)
     print('----------------------------------------------');
 }
 
-void main(List<String> arguments)
+void main(List<String> arguments) 
 {
     final bytes = File('test.epub').readAsBytesSync();
 
@@ -145,25 +145,25 @@ void main(List<String> arguments)
         ..writeAsBytesSync(data);
 
     // Extract the contents of the Zip archive to disk.
-    for (final file in archive)
+    for (final file in archive) 
     {
         final filename = file.name;
 
-        if (file.isFile)
+        if (file.isFile) 
         {
             final data = file.content as List<int>;
             File('out/' + filename)
                 ..createSync(recursive: true)
                 ..writeAsBytesSync(data);
 
-            if (filename.endsWith('.opf'))
+            if (filename.endsWith('.opf')) 
             {
                 var strText = utf8.decode(data, allowMalformed: true);
                 var doc = XmlDocument.parse(strText);
                 var xn = XNode.fromXmlDocument(doc);
             }
-        }
-        else
+        } 
+        else 
         {
             Directory('out/' + filename)..create(recursive: true);
         }
