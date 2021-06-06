@@ -85,7 +85,8 @@ class CssDocument extends Visitor
         return result;
     }
 
-    Map<String, CssDeclarationResult> getNodeStyle(xnode.TreeNode node, [Map<String, CssDeclarationResult>? resultHolder])
+    Map<String, CssDeclarationResult> getNodeStyle(xnode.TreeNode node,
+            [Map<String, CssDeclarationResult>? resultHolder])
     {
         final result = resultHolder ?? <String, CssDeclarationResult>{};
 
@@ -101,8 +102,7 @@ class CssDocument extends Visitor
 
                         if (declInfo == null)
                         {
-                            result[declaration.name] =
-                                CssDeclarationResult.fromDeclaration(declaration,selector.specificity);
+                            result[declaration.name] = CssDeclarationResult.fromDeclaration(declaration, selector.specificity);
                         }
                         else if (selector.specificity >= declInfo.specificity)
                         {
@@ -977,7 +977,6 @@ class CssSimpleSelector
     String operationString = '';
     String value = '';
 
-
     CssSimpleSelector();
 
     CssSimpleSelector.asFontFace()
@@ -1134,8 +1133,7 @@ class CssDeclarationResult
 
     CssDeclarationResult();
 
-    CssDeclarationResult.fromDeclaration(this.declaration,this.specificity);
-
+    CssDeclarationResult.fromDeclaration(this.declaration, this.specificity);
 }
 
 CssValue? _rgbFunction(CssFunction function)

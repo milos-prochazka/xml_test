@@ -288,10 +288,9 @@ class ManifestItem
 
     List<CssDocument> getCssDocuments(Epub epub)
     {
-
         if (_containedCss == null)
         {
-            _containedCss  = <CssDocument>[];
+            _containedCss = <CssDocument>[];
 
             _addCSS(xmlNode, _containedCss!, epub);
         }
@@ -299,13 +298,13 @@ class ManifestItem
         return _containedCss!;
     }
 
-    Map<String, CssDeclarationResult> getNodeStyle(Epub epub,xnode.TreeNode node)
+    Map<String, CssDeclarationResult> getNodeStyle(Epub epub, xnode.TreeNode node)
     {
         var resultHolder = <String, CssDeclarationResult>{};
 
-        for(final css in getCssDocuments(epub))
+        for (final css in getCssDocuments(epub))
         {
-            css.getNodeStyle(node,resultHolder);
+            css.getNodeStyle(node, resultHolder);
         }
 
         node.style = 'color: #cdea';
@@ -321,7 +320,6 @@ class ManifestItem
 
         return resultHolder;
     }
-
 
     void _addCSS(xnode.XNode node, List<CssDocument> cssList, Epub epub)
     {
@@ -404,11 +402,11 @@ class ManifestItem
         {
             var styles = getCssDocuments(epub);
             var tnode = xnode.TreeNode.fromXNode(xmlNode);
-            $$$testTNode(epub,styles, tnode);
+            $$$testTNode(epub, styles, tnode);
         }
     }
 
-    void $$$testTNode(Epub epub,List<CssDocument> css, xnode.TreeNode node)
+    void $$$testTNode(Epub epub, List<CssDocument> css, xnode.TreeNode node)
     {
         for (final doc in css)
         {
@@ -423,9 +421,9 @@ class ManifestItem
             if (style.isNotEmpty)
             {
                 var list = style.entries.toList();
-                list.sort((a,b) => a.key.compareTo(b.key));
+                list.sort((a, b) => a.key.compareTo(b.key));
 
-                print (CssRuleSet.fromDeclarationResult(list).toString());
+                print(CssRuleSet.fromDeclarationResult(list).toString());
                 final brk = 1;
             }
         }
@@ -434,7 +432,7 @@ class ManifestItem
 
         while (child != null)
         {
-            $$$testTNode(epub,css, child);
+            $$$testTNode(epub, css, child);
             child = child.next;
         }
     }
