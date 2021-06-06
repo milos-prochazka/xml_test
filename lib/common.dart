@@ -5,13 +5,13 @@ import 'package:path/path.dart' as p;
 
 /// Converts an instance to the requested nullable type
 /// - Returns an object of the desired type, or null if type conversion is not possible
-T? toNullableType<T>(Object instance) 
+T? toNullableType<T>(Object instance)
 {
-    if (instance is T) 
+    if (instance is T)
     {
         return instance as T;
-    } 
-    else 
+    }
+    else
     {
         return null;
     }
@@ -49,17 +49,17 @@ const whiteCharacters = <int>
 };
 
 /// Returns true if the string is contains only whitespace characters or the string is null
-bool isBlankOrNull(String? value) 
+bool isBlankOrNull(String? value)
 {
-    if (value == null) 
+    if (value == null)
     {
         return true;
-    } 
-    else 
+    }
+    else
     {
-        for (var i = 0; i < value.length; i++) 
+        for (var i = 0; i < value.length; i++)
         {
-            if (!whiteCharacters.contains(value.codeUnitAt(i))) 
+            if (!whiteCharacters.contains(value.codeUnitAt(i)))
             {
                 return false;
             }
@@ -77,34 +77,34 @@ var numberFromText = RegExp(r'(\-?\d+(\.\d+)?([eE]\-?\d+)?)|(\-?\.?\d+)');
 /// - int returns int converted to double
 /// - string parse to a double or use [numberFromText] for a match number.
 /// - returns defNumber if it fails.
-double dynamicToDouble(dynamic value, [double defValue = 0.0]) 
+double dynamicToDouble(dynamic value, [double defValue = 0.0])
 {
-    if (value is double) 
+    if (value is double)
     {
         return value;
-    } 
-    else if (value is int) 
+    }
+    else if (value is int)
     {
         return value.toDouble();
-    } 
-    else 
+    }
+    else
     {
         var valStr = value.toString().trim().replaceAll(',', '.');
         var res = double.tryParse(valStr);
 
-        if (res == null) 
+        if (res == null)
         {
             var match = numberFromText.firstMatch(valStr);
-            if (match != null) 
+            if (match != null)
             {
                 valStr = match.input.substring(match.start, match.end);
 
-                if (valStr.startsWith('.')) 
+                if (valStr.startsWith('.'))
                 {
                     valStr = '0' + valStr;
                 }
 
-                if (valStr.startsWith('-.')) 
+                if (valStr.startsWith('-.'))
                 {
                     valStr = '-0' + valStr.substring(1);
                 }
@@ -117,57 +117,57 @@ double dynamicToDouble(dynamic value, [double defValue = 0.0])
     }
 }
 
-double saturate(double value, double min, double max) 
+double saturate(double value, double min, double max)
 {
-    if (value < min) 
+    if (value < min)
     {
         return min;
-    } 
-    else if (value > max) 
+    }
+    else if (value > max)
     {
         return max;
-    } 
-    else 
+    }
+    else
     {
         return value;
     }
 }
 
-int saturateInt(int value, int min, int max) 
+int saturateInt(int value, int min, int max)
 {
-    if (value < min) 
+    if (value < min)
     {
         return min;
-    } 
-    else if (value > max) 
+    }
+    else if (value > max)
     {
         return max;
-    } 
-    else 
+    }
+    else
     {
         return value;
     }
 }
 
-class FileUtils 
+class FileUtils
 {
     /// Path combination
     ///
     /// Returns a path that is a combination of an absolutely specified file ([filePath]) path
     /// and a relative path ([relativePath])
-    static String relativePathFromFile(String filePath, String relativePath) 
+    static String relativePathFromFile(String filePath, String relativePath)
     {
         final path = p.join(p.dirname(filePath), relativePath);
         final pathComp = p.split(path);
         final filteredPath = <String>[];
 
-        for (var comp in pathComp) 
+        for (var comp in pathComp)
         {
-            if (comp == '..' && filteredPath.isNotEmpty) 
+            if (comp == '..' && filteredPath.isNotEmpty)
             {
                 filteredPath.removeLast();
-            } 
-            else if (comp != '.') 
+            }
+            else if (comp != '.')
             {
                 filteredPath.add(comp);
             }
@@ -177,11 +177,11 @@ class FileUtils
     }
 }
 
-extension StringFunctions on String 
+extension StringFunctions on String
 {
     /// Clone string to code units
     /// - You can add and remove code units to the returned list.
-    List<int> copyToCodeUnits() 
+    List<int> copyToCodeUnits()
     {
         return List<int>.from(codeUnits);
     }
@@ -196,32 +196,32 @@ extension StringFunctions on String
     /// var string = "Hello blue\r\nworld!";
     /// string.split([" ","\t","\r","\n"]);                      // ['Hello', 'blue' , 'world!'];
     /// ```
-    List<String> splitEx(List<Pattern> patterns, {bool noEmpty = true, bool trim = true}) 
+    List<String> splitEx(List<Pattern> patterns, {bool noEmpty = true, bool trim = true})
     {
         var pos = 0;
         var result = <String>[];
 
-        while (pos < this.length) 
+        while (pos < this.length)
         {
             var minPos = this.length;
 
-            for (var pattern in patterns) 
+            for (var pattern in patterns)
             {
                 var p = this.indexOf(pattern, pos);
-                if (p >= 0 && p < minPos) 
+                if (p >= 0 && p < minPos)
                 {
                     minPos = p;
                 }
             }
 
-            if (minPos > pos) 
+            if (minPos > pos)
             {
                 var item = this.substring(pos, minPos);
                 result.add(trim ? item.trim() : item);
-            } 
-            else 
+            }
+            else
             {
-                if (!noEmpty) 
+                if (!noEmpty)
                 {
                     result.add('');
                 }
@@ -245,7 +245,7 @@ extension StringFunctions on String
 ///   foo clone() { ... }
 /// }
 /// ```
-abstract class ICloneable<T> 
+abstract class ICloneable<T>
 {
     T clone();
 }

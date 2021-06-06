@@ -17,7 +17,7 @@ import 'CssDocument.dart';
 import 'DefaultCss.dart';
 
 /// Loading and working with epub files
-class Epub 
+class Epub
 {
     /// Dictionary of files in the archive
     var files = <String, ArchiveFile>{};
@@ -44,18 +44,18 @@ class Epub
     var longNavigation = <String, NavigationPoint>{};
 
     /// Constructor (form [Archive])
-    Epub(Archive archive) 
+    Epub(Archive archive)
     {
         _loadArchive(archive);
     }
 
     /// Load the archive contents
-    void _loadArchive(Archive archive) 
+    void _loadArchive(Archive archive)
     {
-        for (final file in archive) 
+        for (final file in archive)
         {
             print(file.name);
-            if (file.name.contains('page_styles.css')) 
+            if (file.name.contains('page_styles.css'))
             {
                 var brk = 1;
             }
@@ -63,11 +63,11 @@ class Epub
             files[filename] = file;
         }
 
-        for (var file in files.values) 
+        for (var file in files.values)
         {
-            if (file.isFile) 
+            if (file.isFile)
             {
-                if (file.name.endsWith('.opf')) 
+                if (file.name.endsWith('.opf'))
                 {
                     var strText = utf8.decode(file.content as List<int>, allowMalformed: true);
                     _loadOpf(strText);
@@ -77,7 +77,7 @@ class Epub
 
 //#debug
 // Test code
-        for (var cs in manifest.values) 
+        for (var cs in manifest.values)
         {
             cs.$$$(this);
         }
@@ -88,7 +88,7 @@ class Epub
     /// Loads opf file
     /// - Creates manifest
     /// - Creates spneList (list of document htmls)
-    void _loadOpf(String xmlText) 
+    void _loadOpf(String xmlText)
     {
         var doc = XmlDocument.parse(xmlText);
         var opf = xnode.XNode.fromXmlDocument(doc);
@@ -96,10 +96,10 @@ class Epub
         // Load manifest
         var manifestNodes = opf.getChildren(['package', 'manifest'], childNames: {'item'});
 
-        for (var item in manifestNodes) 
+        for (var item in manifestNodes)
         {
             var manfestItem = ManifestItem(item, files);
-            if (manfestItem.valid) 
+            if (manfestItem.valid)
             {
                 manifest[manfestItem.id] = manfestItem;
                 manifestHref[manfestItem.href] = manfestItem;
@@ -111,11 +111,11 @@ class Epub
         // Load spine
         var spineNodes = opf.getChildren(['package', 'spine'], childNames: {'itemref'});
 
-        for (var itemref in spineNodes) 
+        for (var itemref in spineNodes)
         {
             var idref = itemref.attributes['idref'];
 
-            if (idref != null && manifest.containsKey(idref)) 
+            if (idref != null && manifest.containsKey(idref))
             {
                 spineList.add(manifest[idref]!);
             }
@@ -124,16 +124,16 @@ class Epub
 
     /// Loads files in the spineList (document content)
     /// - Loads files in the smineList and adds them to the document list.
-    void _loadDocumentFiles() 
+    void _loadDocumentFiles()
     {
-        for (var item in spineList) 
+        for (var item in spineList)
         {
             bigDocument.children.add(xnode.XNode.comment('\r\n --- ${item.id} (${item.file.name}) --\r\n'));
             var node = item.xmlNode;
             var body = node.getChildren(['html', 'body']);
             var first = true;
 
-            for (var node in body) 
+            for (var node in body)
             {
                 _navigation(item.file.name, node, first);
                 first = false;
@@ -143,44 +143,44 @@ class Epub
         }
     }
 
-    void _navigation(String docId, xnode.XNode node, bool firstNode) 
+    void _navigation(String docId, xnode.XNode node, bool firstNode)
     {
         node.linkedData['docId'] = docId;
 
-        if (firstNode) 
+        if (firstNode)
         {
             _addNavigationPoint(node, NavigationPoint('', docId, node));
         }
 
         var id = node.attributes['id'];
-        if (id != null) 
+        if (id != null)
         {
             _addNavigationPoint(node, NavigationPoint(id, docId, node));
         }
 
-        for (var child in node.children) 
+        for (var child in node.children)
         {
             _navigation(docId, child, false);
         }
     }
 
-    void _addNavigationPoint(xnode.XNode node, NavigationPoint navPoint) 
+    void _addNavigationPoint(xnode.XNode node, NavigationPoint navPoint)
     {
         node.linkedData['longNavigation'] = navPoint;
-        if (navPoint.id != '') 
+        if (navPoint.id != '')
         {
             node.linkedData['shortNavigation'] = navPoint;
             shortNavigation['#' + navPoint.id] = navPoint;
             longNavigation[navPoint.file + '#' + navPoint.id] = navPoint;
-        } 
-        else 
+        }
+        else
         {
             longNavigation[navPoint.file] = navPoint;
         }
     }
 }
 
-class ManifestItem 
+class ManifestItem
 {
     late String href;
     late String id;
@@ -191,25 +191,26 @@ class ManifestItem
     List<int>? _bytes;
     CssDocument? _cssDocument;
     String? _text;
+    List<CssDocument>? _containedCss;
 
     bool valid = false;
 
     static final mimeRegex = RegExp(r'(?<=[\/\+])[\w\-\.]+');
 
-    ManifestItem(xnode.XNode item, Map<String, ArchiveFile> files) 
+    ManifestItem(xnode.XNode item, Map<String, ArchiveFile> files)
     {
         final _href = item.attributes['href'];
         final _id = item.attributes['id'];
         final _media_type = item.attributes['media-type'] ?? '';
 
-        if (_href!.contains("page_styles")) 
+        if (_href!.contains("page_styles"))
         {
             var brk = 1;
         }
 
-        if (_href != null && _id != null) 
+        if (_href != null && _id != null)
         {
-            if (files.containsKey(_href)) 
+            if (files.containsKey(_href))
             {
                 href = _href;
                 id = _id;
@@ -222,16 +223,16 @@ class ManifestItem
         }
     }
 
-    Set<String> get mimeTypes 
+    Set<String> get mimeTypes
     {
         var result = <String>{};
 
         var matches = mimeRegex.allMatches(media_type);
 
-        for (var match in matches) 
+        for (var match in matches)
         {
             var str = match.input.substring(match.start, match.end);
-            if (!result.contains(str)) 
+            if (!result.contains(str))
             {
                 result.add(str);
             }
@@ -239,34 +240,34 @@ class ManifestItem
         return result;
     }
 
-    List<int> get bytes 
+    List<int> get bytes
     {
         _bytes ??= file.content as List<int>;
         return _bytes as List<int>;
     }
 
-    String get text 
+    String get text
     {
         return utf8.decode(bytes, allowMalformed: true);
     }
 
-    xnode.XNode get xmlNode 
+    xnode.XNode get xmlNode
     {
         var mime = mimeTypes;
 
-        if (_xmlNode == null) 
+        if (_xmlNode == null)
         {
-            if (mime.containsAll(['html', 'xhtml'])) 
+            if (mime.containsAll(['html', 'xhtml']))
             {
                 var strText = utf8.decode(bytes);
                 _xmlNode = xnode.XNode.fromHtmlDocument(html.parse(strText));
-            } 
-            else if (mime.contains('xml')) 
+            }
+            else if (mime.contains('xml'))
             {
                 var strText = utf8.decode(bytes);
                 _xmlNode = xnode.XNode.fromXmlDocument(XmlDocument.parse(strText));
-            } 
-            else 
+            }
+            else
             {
                 _xmlNode = xnode.XNode();
             }
@@ -275,13 +276,13 @@ class ManifestItem
         return _xmlNode as xnode.XNode;
     }
 
-    CssDocument? get CSS 
+    CssDocument? get CSS
     {
         var mime = mimeTypes;
 
-        if (_cssDocument == null) 
+        if (_cssDocument == null)
         {
-            if (mime.contains('css')) 
+            if (mime.contains('css'))
             {
                 _cssDocument = CssDocument(utf8.decode(bytes));
             }
@@ -290,46 +291,74 @@ class ManifestItem
         return _cssDocument;
     }
 
-    List<CssDocument> getCssDocuments(Epub epub) 
+    List<CssDocument> getCssDocuments(Epub epub)
     {
-        final result = <CssDocument>[];
 
-        _addCSS(xmlNode, result, epub);
+        if (_containedCss == null)
+        {
+            _containedCss  = <CssDocument>[];
 
-        return result;
+            _addCSS(xmlNode, _containedCss!, epub);
+        }
+
+        return _containedCss!;
     }
 
-    void _addCSS(xnode.XNode node, List<CssDocument> cssList, Epub epub) 
+    Map<String, CssDeclarationResult> getNodeStyle(Epub epub,xnode.TreeNode node)
+    {
+        var resultHolder = <String, CssDeclarationResult>{};
+
+        for(final css in getCssDocuments(epub))
+        {
+            css.getNodeStyle(node,resultHolder);
+        }
+
+        node.style = 'color: #cdea';
+
+        if (node.style != '')
+        {
+            var style = '${CssDocument.INLINE_STYLE_SELECTOR} {${node.style}}';
+
+            var css = CssDocument(style);
+
+            css.getNodeStyle(node);
+        }
+
+        return resultHolder;
+    }
+
+
+    void _addCSS(xnode.XNode node, List<CssDocument> cssList, Epub epub)
     {
         if (node.name == 'link' &&
-                (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css'))) 
+                (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css')))
         {
             var cssPath = FileUtils.relativePathFromFile(href, node.attributes['href']!);
             var cssManifest = epub.manifestHref[cssPath];
 
-            if (cssManifest != null) 
+            if (cssManifest != null)
             {
                 var doc = cssManifest.CSS;
-                if (doc != null) 
+                if (doc != null)
                 {
                     cssList.add(doc);
                 }
             }
-        } 
-        else 
+        }
+        else
         {
-            for (final child in node.children) 
+            for (final child in node.children)
             {
                 _addCSS(child, cssList, epub);
             }
         }
     }
 
-    void $$$(Epub epub) 
+    void $$$(Epub epub)
     {
         var mime = mimeTypes;
 
-        if (mime.contains('css')) 
+        if (mime.contains('css'))
         {
             // var strText = utf8.decode(bytes).replaceAll('1em', '3.3mm');
             //var strText = 'h1,p.prvni.druha { color: rgb(12em,30,233,555,333); } div { animation: mymove 5s infinite; text-shadow: 2px 2px 5px red; } ';
@@ -375,26 +404,27 @@ class ManifestItem
                 ..writeAsBytesSync(utf8.encode(cs.toString()));
 
             var brk = 1;
-        } 
-        else if (mime.contains('html') || mime.contains('xhtml')) 
+        }
+        else if (mime.contains('html') || mime.contains('xhtml'))
         {
             var styles = getCssDocuments(epub);
             var tnode = xnode.TreeNode.fromXNode(xmlNode);
-            $$$testTNode(styles, tnode);
+            $$$testTNode(epub,styles, tnode);
         }
     }
 
-    void $$$testTNode(List<CssDocument> css, xnode.TreeNode node) 
+    void $$$testTNode(Epub epub,List<CssDocument> css, xnode.TreeNode node)
     {
-        for (final doc in css) 
+        for (final doc in css)
         {
             var decl = doc.findDeclaration(node, 'color');
-            if (decl.declaration != null) 
+            if (decl.declaration != null)
             {
                 final brk = 1;
             }
 
-            var style = doc.getNodeStyle(node);
+            var style = getNodeStyle(epub, node); //doc.getNodeStyle(node);
+
             if (style.isNotEmpty)
             {
                 var list = style.entries.toList();
@@ -405,21 +435,21 @@ class ManifestItem
 
         var child = node.firstChild;
 
-        while (child != null) 
+        while (child != null)
         {
-            $$$testTNode(css, child);
+            $$$testTNode(epub,css, child);
             child = child.next;
         }
     }
 
     @override
-    String toString() 
+    String toString()
     {
         return (valid) ? 'id:$id media-type:$media_type href:$href' : 'invalid';
     }
 }
 
-class NavigationPoint 
+class NavigationPoint
 {
     late String id;
     late String file;
@@ -430,7 +460,7 @@ class NavigationPoint
     NavigationPoint(this.id, this.file, this.node);
 
     @override
-    String toString() 
+    String toString()
     {
         return 'id:$id file:$file reference:$reference';
     }
