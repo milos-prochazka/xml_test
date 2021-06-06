@@ -203,11 +203,6 @@ class ManifestItem
         final _id = item.attributes['id'];
         final _media_type = item.attributes['media-type'] ?? '';
 
-        if (_href!.contains("page_styles"))
-        {
-            var brk = 1;
-        }
-
         if (_href != null && _id != null)
         {
             if (files.containsKey(_href))
@@ -429,6 +424,8 @@ class ManifestItem
             {
                 var list = style.entries.toList();
                 list.sort((a,b) => a.key.compareTo(b.key));
+
+                print (CssRuleSet.fromDeclarationResult(list).toString());
                 final brk = 1;
             }
         }
