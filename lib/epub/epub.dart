@@ -83,7 +83,7 @@ class Epub
         {
             cs.$$$(this);
         }
-//#end DEBUG line:71
+//#end DEBUG line:80
         _loadDocumentFiles();
     }
 
@@ -482,7 +482,7 @@ class ManifestItem
             child = child.next;
         }
     }
-//#end DEBUG line:343
+//#end DEBUG line:394
 
     @override
     String toString()
