@@ -1,5 +1,4 @@
 import 'package:path/path.dart' as p;
-import 'package:path/path.dart' as p;
 
 // ignore_for_file: unnecessary_this
 

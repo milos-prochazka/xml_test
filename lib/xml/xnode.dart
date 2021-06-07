@@ -1,5 +1,4 @@
 import 'package:xml/xml.dart';
-import 'package:html/parser.dart' as html;
 import 'package:html/dom.dart';
 import 'package:xml_test/common.dart';
 

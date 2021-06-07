@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:archive/archive.dart';
 import 'package:archive/archive_io.dart';
-import 'package:html/dom.dart';
 import 'dart:convert';
 import 'package:html/parser.dart' as html;
 import 'package:csslib/parser.dart' as css;
-import 'package:csslib/visitor.dart';
 
 import 'package:xml/xml.dart';
 import 'package:xml_test/epub/CssDocument.dart';
@@ -14,7 +12,6 @@ import 'package:xml_test/xml/xnode.dart' as xnode;
 import 'package:xml_test/common.dart';
 
 import 'CssDocument.dart';
-import 'DefaultCss.dart';
 
 /// Loading and working with epub files
 class Epub
@@ -55,10 +52,6 @@ class Epub
         for (final file in archive)
         {
             print(file.name);
-            if (file.name.contains('page_styles.css'))
-            {
-                var brk = 1;
-            }
             final filename = file.name;
             files[filename] = file;
         }
@@ -307,7 +300,7 @@ class ManifestItem
             css.getNodeStyle(node, resultHolder);
         }
 
-        node.style = 'color: #cdea';
+        //node.style = 'color: #cdea';
 
         if (node.style != '')
         {
@@ -408,7 +401,7 @@ class ManifestItem
 
     void $$$testTNode(Epub epub, List<CssDocument> css, xnode.TreeNode node)
     {
-        for (final doc in css)
+    /*for (final doc in css)
         {
             var decl = doc.findDeclaration(node, 'color');
             if (decl.declaration != null)
@@ -416,16 +409,17 @@ class ManifestItem
                 final brk = 1;
             }
 
-            var style = getNodeStyle(epub, node); //doc.getNodeStyle(node);
+        }*/
 
-            if (style.isNotEmpty)
-            {
-                var list = style.entries.toList();
-                list.sort((a, b) => a.key.compareTo(b.key));
+        var style = getNodeStyle(epub, node); //doc.getNodeStyle(node);
 
-                print(CssRuleSet.fromDeclarationResult(list).toString());
-                final brk = 1;
-            }
+        if (style.isNotEmpty)
+        {
+            var list = style.entries.toList();
+            list.sort((a, b) => a.key.compareTo(b.key));
+
+            print(CssRuleSet.fromDeclarationResult(CssDocument.empty, list).toString());
+            final brk = 1;
         }
 
         var child = node.firstChild;

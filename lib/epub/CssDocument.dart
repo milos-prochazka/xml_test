@@ -14,7 +14,9 @@ typedef CssDeclarationHandler = bool Function(CssRuleSet ruleset, CssDeclaration
 
 class CssDocument extends Visitor
 {
-    static final INLINE_STYLE_SELECTOR = '__x_element__';
+    static const INLINE_STYLE_SELECTOR = '__x_element__';
+
+    static final empty = CssDocument('');
 
     static final functions = <String, CssFunctionHandler>
     {
@@ -30,7 +32,7 @@ class CssDocument extends Visitor
     'padding': _delarationMargin,
     };
 
-    final _treeStack = Queue<CssTreeItem>();
+    final treeStack = Queue<CssTreeItem>();
     final rules = <CssRuleSet>[];
 
     CssDocument(String cssText)
@@ -137,16 +139,16 @@ class CssDocument extends Visitor
         print('Ruleset');
         //#end
 
-        if (_treeStack.isNotEmpty)
+        if (treeStack.isNotEmpty)
         {
             throw Exception('Tree stack must be empty');
         }
 
-        final ruleSet = CssRuleSet(this, _treeStack);
-        _treeStack.add(ruleSet);
+        final ruleSet = CssRuleSet(this);
+        treeStack.add(ruleSet);
         rules.add(ruleSet);
         super.visitRuleSet(node);
-        _treeStack.removeLast();
+        treeStack.removeLast();
     }
 
     @override
@@ -166,13 +168,13 @@ class CssDocument extends Visitor
         print('  Selector:${node.span!.text}');
         //#end
 
-        var selector = CssSelector(this, _treeStack);
-        _treeStack.last.insert(selector);
-        _treeStack.add(selector);
+        var selector = CssSelector(this);
+        treeStack.last.insert(selector);
+        treeStack.add(selector);
 
         super.visitSelector(node);
 
-        _treeStack.removeLast();
+        treeStack.removeLast();
     }
 
     @override
@@ -182,7 +184,7 @@ class CssDocument extends Visitor
         var s = node.span!.text;
         print('SimpleSelectorSequence $s');
 //#end
-        _treeStack.last.insert(node);
+        treeStack.last.insert(node);
         super.visitSimpleSelectorSequence(node);
     }
 
@@ -194,7 +196,7 @@ class CssDocument extends Visitor
 //#end
         super.visitAttributeSelector(node);
 
-        _treeStack.last.insert(node);
+        treeStack.last.insert(node);
 //#debug
         final tokenStr = node.matchOperatorAsTokenString();
         final value = node.valueToString();
@@ -210,7 +212,7 @@ class CssDocument extends Visitor
         print('Class Selector');
 //#end
 
-        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_CLASS;
+        (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_CLASS;
         super.visitClassSelector(node);
     }
 
@@ -220,7 +222,7 @@ class CssDocument extends Visitor
 //#debug
         print('Pseudo Class Selector');
 //#end
-        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_CLASS;
+        (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_CLASS;
         super.visitPseudoClassSelector(node);
     }
 
@@ -230,7 +232,7 @@ class CssDocument extends Visitor
 //#debug
         print('Pseudo Element Selector');
 //#end
-        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_ELEMENT;
+        (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_ELEMENT;
         super.visitPseudoElementSelector(node);
     }
 
@@ -241,7 +243,7 @@ class CssDocument extends Visitor
         print('Id Selector');
 //#end
 
-        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ID;
+        (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ID;
         super.visitIdSelector(node);
     }
 
@@ -252,7 +254,7 @@ class CssDocument extends Visitor
         print('Element Selector');
 //#end
 
-        (_treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ELEMENT;
+        (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ELEMENT;
         super.visitElementSelector(node);
     }
 
@@ -263,11 +265,11 @@ class CssDocument extends Visitor
         print('Declaration');
 //#end
 
-        var declaration = CssDeclaration(this, _treeStack);
-        _treeStack.last.insert(declaration);
-        _treeStack.add(declaration);
+        var declaration = CssDeclaration(this);
+        treeStack.last.insert(declaration);
+        treeStack.add(declaration);
         super.visitDeclaration(node);
-        _treeStack.removeLast();
+        treeStack.removeLast();
     }
 
     @override
@@ -276,7 +278,7 @@ class CssDocument extends Visitor
 //#debug
         print('Identifier: ${node.name}');
 //#end
-        _treeStack.last.insert(node);
+        treeStack.last.insert(node);
         super.visitIdentifier(node);
     }
 
@@ -287,7 +289,7 @@ class CssDocument extends Visitor
         print('  Length:${node.value} ${node.unitToString()}');
 //#end
 
-        _treeStack.last.insert(CssNumber.fromUnitTherm(node));
+        treeStack.last.insert(CssNumber.fromUnitTherm(node));
         //super.visitLengthTerm(node);
     }
 
@@ -298,7 +300,7 @@ class CssDocument extends Visitor
         print('  Length:${node.value} em');
 //#end
 
-        _treeStack.last.insert(CssNumber.fromEmTherm(node));
+        treeStack.last.insert(CssNumber.fromEmTherm(node));
         //super.visitEmTerm(node);
     }
 
@@ -309,7 +311,7 @@ class CssDocument extends Visitor
         print('  Length:${node.value}');
 //#end
 
-        _treeStack.last.insert(CssValue.fromNode(node));
+        treeStack.last.insert(CssValue.fromNode(node));
         super.visitNumberTerm(node);
     }
 
@@ -320,7 +322,7 @@ class CssDocument extends Visitor
         print('  Literal:${node.text}');
 //#end
 
-        _treeStack.last.insert(CssValue.fromNode(node));
+        treeStack.last.insert(CssValue.fromNode(node));
         super.visitLiteralTerm(node);
     }
 
@@ -331,7 +333,7 @@ class CssDocument extends Visitor
         print('  HexColor:${node.text}');
 //#end
 
-        _treeStack.last.insert(CssColor.fromHex(node.text));
+        treeStack.last.insert(CssColor.fromHex(node.text));
         super.visitHexColorTerm(node);
     }
 
@@ -342,7 +344,7 @@ class CssDocument extends Visitor
         print('  Unit:${node.text} ${node.unitToString()}');
 //#end
 
-        _treeStack.last.insert(CssNumber.fromUnitTherm(node));
+        treeStack.last.insert(CssNumber.fromUnitTherm(node));
         super.visitUnitTerm(node);
     }
 
@@ -353,7 +355,7 @@ class CssDocument extends Visitor
         print('  Operator comma');
 //#end
 
-        _treeStack.last.insert(CssValue.fromNode(node));
+        treeStack.last.insert(CssValue.fromNode(node));
         super.visitOperatorComma(node);
     }
 
@@ -364,11 +366,11 @@ class CssDocument extends Visitor
         print('  Function:${node.text}');
 //#end
 
-        var cssFunction = CssFunction(this, _treeStack);
+        var cssFunction = CssFunction(this);
 
-        _treeStack.add(cssFunction);
+        treeStack.add(cssFunction);
         super.visitFunctionTerm(node);
-        _treeStack.removeLast();
+        treeStack.removeLast();
 
         var name = cssFunction.name;
 
@@ -380,7 +382,7 @@ class CssDocument extends Visitor
 
             if (result != null)
             {
-                _treeStack.last.insert(result);
+                treeStack.last.insert(result);
             }
         }
     }
@@ -391,7 +393,7 @@ class CssDocument extends Visitor
 //#debug
         print('  Uri:${node.text}');
 //#end
-        _treeStack.last.insert(CssUri(node.text));
+        treeStack.last.insert(CssUri(node.text));
     }
 
     @override
@@ -400,13 +402,13 @@ class CssDocument extends Visitor
 //#debug
         print('Font face');
 //#end
-        final fontFace = CssFontFace(this, _treeStack);
-        _treeStack.add(fontFace);
+        final fontFace = CssFontFace(this);
+        treeStack.add(fontFace);
         rules.add(fontFace);
 
         super.visitFontFaceDirective(node);
 
-        _treeStack.removeLast();
+        treeStack.removeLast();
     }
 
     @override
@@ -416,13 +418,13 @@ class CssDocument extends Visitor
         print('Page');
 //#end
 
-        final page = CssPage(this, _treeStack);
-        _treeStack.add(page);
+        final page = CssPage(this);
+        treeStack.add(page);
         rules.add(page);
 
         super.visitPageDirective(node);
 
-        _treeStack.removeLast();
+        treeStack.removeLast();
     }
 
     @override
@@ -447,7 +449,10 @@ class CssTreeItem
     late final Queue<CssTreeItem> _treeStack;
     late final CssDocument decoder;
 
-    CssTreeItem(this.decoder, this._treeStack);
+    CssTreeItem(this.decoder)
+    {
+        _treeStack = decoder.treeStack;
+    }
 
     void insert(Object child) {}
 
@@ -470,7 +475,19 @@ class CssRuleSet extends CssTreeItem
     var declarations = <CssDeclaration>[];
     Map<String, CssDeclaration>? declarationIndex;
 
-    CssRuleSet(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+    CssRuleSet(CssDocument decoder) : super(decoder);
+
+    CssRuleSet.fromDeclarationResult(CssDocument decoder, List<MapEntry<String, CssDeclarationResult>> declResult)
+            : super(decoder)
+    {
+        for (final decl in declResult)
+        {
+            if (decl.value.declaration != null)
+            {
+                declarations.add(decl.value.declaration!);
+            }
+        }
+    }
 
     @override
     void insert(Object child)
@@ -516,25 +533,36 @@ class CssRuleSet extends CssTreeItem
         final builder = StringBuffer();
         var firstSelector = true;
 
-        for (var selector in selectors)
+        if (selectors.isNotEmpty)
         {
-            if (!firstSelector)
+            for (var selector in selectors)
             {
-                builder.write(',');
+                if (!firstSelector)
+                {
+                    builder.write(',');
+                }
+
+                firstSelector = false;
+                builder.write(selector.toString());
             }
 
-            firstSelector = false;
-            builder.write(selector.toString());
+            builder.write('{\r\n');
+            for (var declaration in declarations)
+            {
+                builder.write('   ');
+                builder.write(declaration.toString());
+                builder.write(';\r\n');
+            }
+            builder.write('}\r\n');
         }
-
-        builder.write('{\r\n');
-        for (var declaration in declarations)
+        else
         {
-            builder.write('   ');
-            builder.write(declaration.toString());
-            builder.write(';\r\n');
+            for (var declaration in declarations)
+            {
+                builder.write(declaration.toString());
+                builder.write('; ');
+            }
         }
-        builder.write('}\r\n');
 
         return builder.toString();
     }
@@ -542,9 +570,9 @@ class CssRuleSet extends CssTreeItem
 
 class CssFontFace extends CssRuleSet
 {
-    CssFontFace(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    CssFontFace(CssDocument decoder) : super(decoder)
     {
-        final selector = CssSelector(decoder, treeStack);
+        final selector = CssSelector(decoder);
         selector.selectors.add(CssSimpleSelector.asFontFace());
         this.selectors.add(selector);
     }
@@ -552,9 +580,9 @@ class CssFontFace extends CssRuleSet
 
 class CssPage extends CssRuleSet
 {
-    CssPage(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    CssPage(CssDocument decoder) : super(decoder)
     {
-        final selector = CssSelector(decoder, treeStack);
+        final selector = CssSelector(decoder);
         selector.selectors.add(CssSimpleSelector.asPage());
         this.selectors.add(selector);
     }
@@ -565,7 +593,7 @@ class CssSelector extends CssTreeItem
     CssSimpleSelector? first;
     var selectors = <CssSimpleSelector>[];
 
-    CssSelector(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+    CssSelector(CssDocument decoder) : super(decoder);
 
     int get specificity
     {
@@ -660,12 +688,12 @@ class CssDeclaration extends CssTreeItem
     String name = '';
     var values = <CssValue>[];
 
-    CssDeclaration(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack)
+    CssDeclaration(CssDocument decoder) : super(decoder)
     {
-        _ruleSet = treeStack.last as CssRuleSet;
+        _ruleSet = decoder.treeStack.last as CssRuleSet;
     }
 
-    CssDeclaration.fromValues(CssRuleSet ruleset, this.name, this.values) : super(ruleset.decoder, ruleset._treeStack)
+    CssDeclaration.fromValues(CssRuleSet ruleset, this.name, this.values) : super(ruleset.decoder)
     {
         _ruleSet = ruleset;
     }
@@ -710,7 +738,7 @@ class CssFunction extends CssTreeItem
     String name = '';
     var params = <CssValue>[];
 
-    CssFunction(CssDocument decoder, Queue<CssTreeItem> treeStack) : super(decoder, treeStack);
+    CssFunction(CssDocument decoder) : super(decoder);
 
     @override
     void insert(Object child)
