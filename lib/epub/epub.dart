@@ -40,6 +40,15 @@ class Epub
     /// Navigation points (long names)
     var longNavigation = <String, NavigationPoint>{};
 
+    /// CssRules (CSS styles in bigDocument)
+    var bigDocumentRules = <CssRuleSet>[];
+
+    /// CssRules indexed by class name (CSS styles in bigDocument)
+    var ruleByClass = <String, CssRuleSet>{};
+
+    /// CssRules indexed by style content (CSS styles in bigDocument)
+    var classByContent = <String, String>{};
+
     /// Constructor (form [Archive])
     Epub(Archive archive)
     {
@@ -74,7 +83,7 @@ class Epub
         {
             cs.$$$(this);
         }
-//#end
+//#end DEBUG line:71
         _loadDocumentFiles();
     }
 
@@ -119,20 +128,62 @@ class Epub
     /// - Loads files in the smineList and adds them to the document list.
     void _loadDocumentFiles()
     {
-        for (var item in spineList)
+        for (var htmlDocument in spineList)
         {
-            bigDocument.children.add(xnode.XNode.comment('\r\n --- ${item.id} (${item.file.name}) --\r\n'));
-            var node = item.xmlNode;
+            bigDocument.children.add(xnode.XNode.comment('\r\n --- ${htmlDocument.id} (${htmlDocument.file.name}) --\r\n'));
+
+            var node = htmlDocument.xmlNode;
             var body = node.getChildren(['html', 'body']);
             var first = true;
 
-            for (var node in body)
+            for (var srcNode in body)
             {
-                _navigation(item.file.name, node, first);
+                final tnode = xnode.TreeNode.fromXNode(srcNode);
+                _styles(htmlDocument, tnode);
+                final node = xnode.XNode.fromTreeNode(tnode);
+
+                _navigation(htmlDocument.file.name, node, first);
                 first = false;
                 bigDocument.children.add(node);
             }
             documents.add(node);
+        }
+    }
+
+    void _styles(ManifestItem htmlDocument, xnode.TreeNode node)
+    {
+        final css = htmlDocument.getNodeStyle(this, node);
+
+        if (css.isNotEmpty)
+        {
+            final list = css.entries.toList();
+            list.sort((a, b) => a.key.compareTo(b.key));
+
+            final rules = CssRuleSet.fromDeclarationResult(CssDocument.empty, list);
+            final content = rules.toString();
+
+            bigDocumentRules.add(rules);
+
+            var className = classByContent[content] ?? '';
+
+            if (className.isEmpty)
+            {
+                className = 'style${classByContent.length + 1}';
+                classByContent[content] = className;
+                ruleByClass[className] = rules;
+            }
+
+            print(className);
+            node.classes = [className];
+
+            rules.setSelectorClass(className);
+        }
+
+        var child = node.firstChild;
+        while (child != null)
+        {
+            _styles(htmlDocument, child);
+            child = child.next;
         }
     }
 
@@ -340,6 +391,7 @@ class ManifestItem
         }
     }
 
+//#debug
     void $$$(Epub epub)
     {
         var mime = mimeTypes;
@@ -418,7 +470,7 @@ class ManifestItem
             var list = style.entries.toList();
             list.sort((a, b) => a.key.compareTo(b.key));
 
-            print(CssRuleSet.fromDeclarationResult(CssDocument.empty, list).toString());
+            print(CssRuleSet.fromDeclarationResult(CssDocument.empty, list, className: 'jaja').toString());
             final brk = 1;
         }
 
@@ -430,6 +482,7 @@ class ManifestItem
             child = child.next;
         }
     }
+//#end DEBUG line:343
 
     @override
     String toString()

@@ -135,9 +135,9 @@ class CssDocument extends Visitor
     @override
     void visitRuleSet(RuleSet node)
     {
-        //#debug
+//#verbose
         print('Ruleset');
-        //#end
+//#end VERBOSE line:138
 
         if (treeStack.isNotEmpty)
         {
@@ -154,9 +154,9 @@ class CssDocument extends Visitor
     @override
     void visitSelectorGroup(SelectorGroup node)
     {
-        //#debug
+//#verbose
         print('SelectorGroup ${node.span!.text}');
-        //#end
+//#end VERBOSE line:157
 
         super.visitSelectorGroup(node);
     }
@@ -164,9 +164,9 @@ class CssDocument extends Visitor
     @override
     void visitSelector(Selector node)
     {
-        //#debug
+//#verbose
         print('  Selector:${node.span!.text}');
-        //#end
+//#end VERBOSE line:167
 
         var selector = CssSelector(this);
         treeStack.last.insert(selector);
@@ -180,10 +180,10 @@ class CssDocument extends Visitor
     @override
     void visitSimpleSelectorSequence(SimpleSelectorSequence node)
     {
-//#debug
+//#verbose
         var s = node.span!.text;
         print('SimpleSelectorSequence $s');
-//#end
+//#end VERBOSE line:183
         treeStack.last.insert(node);
         super.visitSimpleSelectorSequence(node);
     }
@@ -191,26 +191,26 @@ class CssDocument extends Visitor
     @override
     void visitAttributeSelector(AttributeSelector node)
     {
-//#debug
+//#verbose
         print('AttributeSelector');
-//#end
+//#end VERBOSE line:194
         super.visitAttributeSelector(node);
 
         treeStack.last.insert(node);
-//#debug
+//#verbose
         final tokenStr = node.matchOperatorAsTokenString();
         final value = node.valueToString();
         print('operator: ${node.matchOperator()} ($tokenStr)');
         print('value $value');
-//#end
+//#end VERBOSE line:200
     }
 
     @override
     void visitClassSelector(ClassSelector node)
     {
-//#debug
+//#verbose
         print('Class Selector');
-//#end
+//#end VERBOSE line:211
 
         (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_CLASS;
         super.visitClassSelector(node);
@@ -219,9 +219,9 @@ class CssDocument extends Visitor
     @override
     void visitPseudoClassSelector(PseudoClassSelector node)
     {
-//#debug
+//#verbose
         print('Pseudo Class Selector');
-//#end
+//#end VERBOSE line:222
         (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_CLASS;
         super.visitPseudoClassSelector(node);
     }
@@ -229,9 +229,9 @@ class CssDocument extends Visitor
     @override
     void visitPseudoElementSelector(PseudoElementSelector node)
     {
-//#debug
+//#verbose
         print('Pseudo Element Selector');
-//#end
+//#end VERBOSE line:232
         (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_PSEUDO_ELEMENT;
         super.visitPseudoElementSelector(node);
     }
@@ -239,9 +239,9 @@ class CssDocument extends Visitor
     @override
     void visitIdSelector(IdSelector node)
     {
-//#debug
+//#verbose
         print('Id Selector');
-//#end
+//#end VERBOSE line:242
 
         (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ID;
         super.visitIdSelector(node);
@@ -250,9 +250,9 @@ class CssDocument extends Visitor
     @override
     void visitElementSelector(ElementSelector node)
     {
-//#debug
+//#verbose
         print('Element Selector');
-//#end
+//#end VERBOSE line:253
 
         (treeStack.last as CssSelector).first!.type = CssSimpleSelector.SELECTOR_ELEMENT;
         super.visitElementSelector(node);
@@ -261,9 +261,9 @@ class CssDocument extends Visitor
     @override
     void visitDeclaration(Declaration node)
     {
-//#debug
+//#verbose
         print('Declaration');
-//#end
+//#end VERBOSE line:264
 
         var declaration = CssDeclaration(this);
         treeStack.last.insert(declaration);
@@ -275,9 +275,9 @@ class CssDocument extends Visitor
     @override
     void visitIdentifier(Identifier node)
     {
-//#debug
+//#verbose
         print('Identifier: ${node.name}');
-//#end
+//#end VERBOSE line:278
         treeStack.last.insert(node);
         super.visitIdentifier(node);
     }
@@ -285,9 +285,9 @@ class CssDocument extends Visitor
     @override
     void visitLengthTerm(LengthTerm node)
     {
-//#debug
+//#verbose
         print('  Length:${node.value} ${node.unitToString()}');
-//#end
+//#end VERBOSE line:288
 
         treeStack.last.insert(CssNumber.fromUnitTherm(node));
         //super.visitLengthTerm(node);
@@ -296,9 +296,9 @@ class CssDocument extends Visitor
     @override
     void visitEmTerm(EmTerm node)
     {
-//#debug
+//#verbose
         print('  Length:${node.value} em');
-//#end
+//#end VERBOSE line:299
 
         treeStack.last.insert(CssNumber.fromEmTherm(node));
         //super.visitEmTerm(node);
@@ -307,9 +307,9 @@ class CssDocument extends Visitor
     @override
     void visitNumberTerm(NumberTerm node)
     {
-//#debug
+//#verbose
         print('  Length:${node.value}');
-//#end
+//#end VERBOSE line:310
 
         treeStack.last.insert(CssValue.fromNode(node));
         super.visitNumberTerm(node);
@@ -318,9 +318,9 @@ class CssDocument extends Visitor
     @override
     void visitLiteralTerm(LiteralTerm node)
     {
-//#debug
+//#verbose
         print('  Literal:${node.text}');
-//#end
+//#end VERBOSE line:321
 
         treeStack.last.insert(CssValue.fromNode(node));
         super.visitLiteralTerm(node);
@@ -329,9 +329,9 @@ class CssDocument extends Visitor
     @override
     void visitHexColorTerm(HexColorTerm node)
     {
-//#debug
+//#verbose
         print('  HexColor:${node.text}');
-//#end
+//#end VERBOSE line:332
 
         treeStack.last.insert(CssColor.fromHex(node.text));
         super.visitHexColorTerm(node);
@@ -340,9 +340,9 @@ class CssDocument extends Visitor
     @override
     void visitUnitTerm(UnitTerm node)
     {
-//#debug
+//#verbose
         print('  Unit:${node.text} ${node.unitToString()}');
-//#end
+//#end VERBOSE line:343
 
         treeStack.last.insert(CssNumber.fromUnitTherm(node));
         super.visitUnitTerm(node);
@@ -351,9 +351,9 @@ class CssDocument extends Visitor
     @override
     void visitOperatorComma(OperatorComma node)
     {
-//#debug
+//#verbose
         print('  Operator comma');
-//#end
+//#end VERBOSE line:354
 
         treeStack.last.insert(CssValue.fromNode(node));
         super.visitOperatorComma(node);
@@ -362,9 +362,9 @@ class CssDocument extends Visitor
     @override
     void visitFunctionTerm(FunctionTerm node)
     {
-//#debug
+//#verbose
         print('  Function:${node.text}');
-//#end
+//#end VERBOSE line:365
 
         var cssFunction = CssFunction(this);
 
@@ -390,18 +390,18 @@ class CssDocument extends Visitor
     @override
     void visitUriTerm(UriTerm node)
     {
-//#debug
+//#verbose
         print('  Uri:${node.text}');
-//#end
+//#end VERBOSE line:393
         treeStack.last.insert(CssUri(node.text));
     }
 
     @override
     dynamic visitFontFaceDirective(FontFaceDirective node)
     {
-//#debug
+//#verbose
         print('Font face');
-//#end
+//#end VERBOSE line:402
         final fontFace = CssFontFace(this);
         treeStack.add(fontFace);
         rules.add(fontFace);
@@ -414,9 +414,9 @@ class CssDocument extends Visitor
     @override
     void visitPageDirective(PageDirective node)
     {
-//#debug
+//#verbose
         print('Page');
-//#end
+//#end VERBOSE line:417
 
         final page = CssPage(this);
         treeStack.add(page);
@@ -430,17 +430,17 @@ class CssDocument extends Visitor
     @override
     void visitMediaDirective(MediaDirective node)
     {
-//#debug
+//#verbose
         print('Media  (ignored)');
-//#end
+//#end VERBOSE line:433
     }
 
     @override
     void visitKeyFrameDirective(KeyFrameDirective node)
     {
-//#debug
+//#verbose
         print('Keyframes  (ignored)');
-//#end
+//#end VERBOSE line:441
     }
 }
 
@@ -477,9 +477,15 @@ class CssRuleSet extends CssTreeItem
 
     CssRuleSet(CssDocument decoder) : super(decoder);
 
-    CssRuleSet.fromDeclarationResult(CssDocument decoder, List<MapEntry<String, CssDeclarationResult>> declResult)
+    CssRuleSet.fromDeclarationResult(CssDocument decoder, List<MapEntry<String, CssDeclarationResult>> declResult,
+            {String? className})
             : super(decoder)
     {
+        if (className != null)
+        {
+            selectors.add(CssSelector.fromClassName(decoder, className));
+        }
+
         for (final decl in declResult)
         {
             if (decl.value.declaration != null)
@@ -487,6 +493,12 @@ class CssRuleSet extends CssTreeItem
                 declarations.add(decl.value.declaration!);
             }
         }
+    }
+
+    void setSelectorClass(String className)
+    {
+        selectors.clear();
+        selectors.add(CssSelector.fromClassName(decoder, className));
     }
 
     @override
@@ -605,6 +617,11 @@ class CssSelector extends CssTreeItem
         }
 
         return result;
+    }
+
+    CssSelector.fromClassName(CssDocument decoder, String className) : super(decoder)
+    {
+        selectors.add(CssSimpleSelector.fromClassName(className));
     }
 
     bool checkNode(xnode.TreeNode node)
@@ -1017,6 +1034,12 @@ class CssSimpleSelector
     {
         text = '@page';
         type = SELECTOR_PAGE;
+    }
+
+    CssSimpleSelector.fromClassName(String className)
+    {
+        text = className;
+        type = SELECTOR_CLASS;
     }
 
     int get specificity

@@ -124,6 +124,7 @@ void test1(List<String> arguments)
 
 void main(List<String> arguments)
 {
+    var a = /*$0*/0x30;
     final bytes = File('test.epub').readAsBytesSync();
 
     //final path = p.join(p.dirname("OPS/s026-Chapter-023.xhtml"),"../page_styles.css");

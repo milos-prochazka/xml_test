@@ -135,6 +135,21 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         _fromHtmlNode(node);
     }
 
+    factory XNode.fromTreeNode(TreeNode tnode)
+    {
+        final result = tnode.xnode;
+        var child = tnode.firstChild;
+
+        result.children.clear();
+        while (child != null)
+        {
+            result.children.add(XNode.fromTreeNode(child));
+            child = child.next;
+        }
+
+        return result;
+    }
+
     /// Constructor - deep copy from another XNode object
     factory XNode.fromXNode(XNode node)
     {
