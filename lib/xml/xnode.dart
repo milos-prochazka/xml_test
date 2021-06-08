@@ -140,6 +140,21 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
     factory XNode.fromTreeNode(TreeNode tnode)
     {
         final result = tnode.xnode;
+        if (tnode.style != '')
+        {
+            result.attributes['style'] = tnode.style;
+        }
+
+        if (tnode.id != '')
+        {
+            result.attributes['id'] = tnode.id;
+        }
+
+        if (tnode.classes.isNotEmpty)
+        {
+            result.attributes['class'] = tnode.classes.join(' ');
+        }
+
         var child = tnode.firstChild;
 
         result.children.clear();
@@ -674,7 +689,6 @@ class TreeNode
     }
 
     /// Returns Iterable for children nodes
-    //TreeNodeIterator get children => TreeNodeIterator(firstChild);
     Iterable<TreeNode> get children sync*
     {
         var child = firstChild;
