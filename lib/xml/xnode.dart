@@ -674,39 +674,15 @@ class TreeNode
     }
 
     /// Returns Iterable for children nodes
-    TreeNodeIterator get children => TreeNodeIterator(firstChild);
-}
-
-class TreeNodeIterator extends IterableBase<TreeNode> implements Iterator<TreeNode>
-{
-    TreeNode? _first;
-    TreeNode? _prev;
-    TreeNode? _current;
-
-    TreeNodeIterator(TreeNode? node)
+    //TreeNodeIterator get children => TreeNodeIterator(firstChild);
+    Iterable<TreeNode> get children sync*
     {
-        _prev = node;
-        _first = node;
-    }
+        var child = firstChild;
 
-    @override
-    TreeNode get current => _current!;
-
-    @override
-    Iterator<TreeNode> get iterator => TreeNodeIterator(_first);
-
-    @override
-    bool moveNext()
-    {
-        if (_prev != null)
+        while (child != null)
         {
-            _current = _prev;
-            _prev = _prev?.next;
-            return true;
-        }
-        else
-        {
-            return false;
+            yield child;
+            child = child.next;
         }
     }
 }
