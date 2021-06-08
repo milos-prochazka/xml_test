@@ -477,9 +477,8 @@ class CssRuleSet extends CssTreeItem
 
     CssRuleSet(CssDocument decoder) : super(decoder);
 
-    CssRuleSet.fromDeclarationResult(CssDocument decoder, List<MapEntry<String, CssDeclarationResult>> declResult,
-            {String? className})
-            : super(decoder)
+    CssRuleSet.fromDeclarationResult(List<MapEntry<String, CssDeclarationResult>> declResult, {String? className})
+            : super(CssDocument.empty)
     {
         if (className != null)
         {

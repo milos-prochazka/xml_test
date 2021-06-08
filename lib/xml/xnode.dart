@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:xml/xml.dart';
 import 'package:html/dom.dart';
 import 'package:xml_test/common.dart';
@@ -668,6 +670,43 @@ class TreeNode
             lastChild!.next = treeNode;
             treeNode.prev = lastChild;
             lastChild = treeNode;
+        }
+    }
+
+    /// Returns Iterable for children nodes
+    TreeNodeIterator get children => TreeNodeIterator(firstChild);
+}
+
+class TreeNodeIterator extends IterableBase<TreeNode> implements Iterator<TreeNode>
+{
+    TreeNode? _first;
+    TreeNode? _prev;
+    TreeNode? _current;
+
+    TreeNodeIterator(TreeNode? node)
+    {
+        _prev = node;
+        _first = node;
+    }
+
+    @override
+    TreeNode get current => _current!;
+
+    @override
+    Iterator<TreeNode> get iterator => TreeNodeIterator(_first);
+
+    @override
+    bool moveNext()
+    {
+        if (_prev != null)
+        {
+            _current = _prev;
+            _prev = _prev?.next;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

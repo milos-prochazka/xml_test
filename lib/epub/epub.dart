@@ -159,7 +159,7 @@ class Epub
             final list = css.entries.toList();
             list.sort((a, b) => a.key.compareTo(b.key));
 
-            final rules = CssRuleSet.fromDeclarationResult(CssDocument.empty, list);
+            final rules = CssRuleSet.fromDeclarationResult(list);
             final content = rules.toString();
 
             bigDocumentRules.add(rules);
@@ -470,16 +470,21 @@ class ManifestItem
             var list = style.entries.toList();
             list.sort((a, b) => a.key.compareTo(b.key));
 
-            print(CssRuleSet.fromDeclarationResult(CssDocument.empty, list, className: 'jaja').toString());
+            print(CssRuleSet.fromDeclarationResult(list, className: 'jaja').toString());
             final brk = 1;
         }
 
-        var child = node.firstChild;
+    /*var child = node.firstChild;
 
         while (child != null)
         {
             $$$testTNode(epub, css, child);
             child = child.next;
+        }*/
+
+        for (final child in node.children)
+        {
+            $$$testTNode(epub, css, child);
         }
     }
 //#end DEBUG line:394
