@@ -203,6 +203,30 @@ class XNode implements InterfaceToDynamic, ICloneable<XNode>
         return builder.buildDocument();
     }
 
+    String innerText(bool includeChildren)
+    {
+        final result = StringBuffer();
+
+        _innerText(includeChildren, result);
+
+        return result.toString();
+    }
+
+    void _innerText(bool includeChildren, StringBuffer buffer)
+    {
+        for (final child in children)
+        {
+            if (child.type == TEXT)
+            {
+                buffer.write(child.text);
+            }
+            else if (includeChildren)
+            {
+                child._innerText(includeChildren, buffer);
+            }
+        }
+    }
+
     @override
     XNode clone()
     {

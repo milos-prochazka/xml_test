@@ -1,3 +1,4 @@
+cd ..
 if .%1.==.. goto syntax
 dart-format .\ 4
 dart-prep --enable-all .\

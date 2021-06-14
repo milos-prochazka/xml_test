@@ -14,7 +14,8 @@ typedef CssDeclarationHandler = bool Function(CssRuleSet ruleset, CssDeclaration
 
 class CssDocument extends Visitor
 {
-    static const INLINE_STYLE_SELECTOR = '__x_element__';
+    static const INLINE_STYLE_SELECTOR = '--x-element--';
+    static const TAG_NAME_ATTRIBUTE = '--x-tag-name-';
 
     static final empty = CssDocument('');
 
@@ -700,19 +701,12 @@ class CssSelector extends CssTreeItem
 
 class CssDeclaration extends CssTreeItem
 {
-    late CssRuleSet _ruleSet;
     String name = '';
     var values = <CssValue>[];
 
-    CssDeclaration(CssDocument decoder) : super(decoder)
-    {
-        _ruleSet = decoder.treeStack.last as CssRuleSet;
-    }
+    CssDeclaration(CssDocument decoder) : super(decoder);
 
-    CssDeclaration.fromValues(CssRuleSet ruleset, this.name, this.values) : super(ruleset.decoder)
-    {
-        _ruleSet = ruleset;
-    }
+    CssDeclaration.fromValues(CssRuleSet ruleset, this.name, this.values) : super(ruleset.decoder);
 
     @override
     void insert(Object child)
@@ -1184,6 +1178,14 @@ class CssDeclarationResult
     CssDeclarationResult();
 
     CssDeclarationResult.fromDeclaration(this.declaration, this.specificity);
+
+    CssDeclarationResult.tagName(xnode.XNode node)
+    {
+        declaration = CssDeclaration(CssDocument.empty)
+            ..name = CssDocument.TAG_NAME_ATTRIBUTE
+            ..values.add(CssLiteral(node.name));
+        specificity = 1;
+    }
 }
 
 CssValue? _rgbFunction(CssFunction function)

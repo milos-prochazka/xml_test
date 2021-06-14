@@ -145,6 +145,11 @@ void main(List<String> arguments)
         ..createSync(recursive: true)
         ..writeAsBytesSync(data);
 
+    data = utf8.encode(epub.bigDocumentCSS.toString());
+    File('out/bigdocument.css')
+        ..createSync(recursive: true)
+        ..writeAsBytesSync(data);
+
     // Extract the contents of the Zip archive to disk.
     for (final file in archive)
     {

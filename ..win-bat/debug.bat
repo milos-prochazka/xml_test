@@ -1,1 +1,2 @@
+cd ..
 dart-prep +DEBUG .\ 

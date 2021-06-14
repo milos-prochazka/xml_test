@@ -55,6 +55,12 @@ class Epub
         _loadArchive(archive);
     }
 
+    /// Returns the generated stylesheet for bigDocument
+    CssDocument get bigDocumentCSS
+    {
+        return CssDocument('')..rules.addAll(bigDocumentRules);
+    }
+
     /// Load the archive contents
     void _loadArchive(Archive archive)
     {
@@ -152,17 +158,15 @@ class Epub
 
     void _styles(ManifestItem htmlDocument, xnode.TreeNode node)
     {
-        final css = htmlDocument.getNodeStyle(this, node);
+        final css = htmlDocument.getNodeStyle(this, node, includeTagName: true);
 
-        if (css.isNotEmpty)
+        if (css.length > 1)
         {
             final list = css.entries.toList();
             list.sort((a, b) => a.key.compareTo(b.key));
 
             final rules = CssRuleSet.fromDeclarationResult(list);
             final content = rules.toString();
-
-            bigDocumentRules.add(rules);
 
             var className = classByContent[content] ?? '';
 
@@ -171,6 +175,7 @@ class Epub
                 className = 'style${classByContent.length + 1}';
                 classByContent[content] = className;
                 ruleByClass[className] = rules;
+                bigDocumentRules.add(rules);
             }
 
             print(className);
@@ -342,7 +347,7 @@ class ManifestItem
         return _containedCss!;
     }
 
-    Map<String, CssDeclarationResult> getNodeStyle(Epub epub, xnode.TreeNode node)
+    Map<String, CssDeclarationResult> getNodeStyle(Epub epub, xnode.TreeNode node, {bool includeTagName = false})
     {
         var resultHolder = <String, CssDeclarationResult>{};
 
@@ -350,8 +355,6 @@ class ManifestItem
         {
             css.getNodeStyle(node, resultHolder);
         }
-
-        //node.style = 'color: #cdea';
 
         if (node.style != '')
         {
@@ -362,6 +365,13 @@ class ManifestItem
             css.getNodeStyle(node);
         }
 
+        if (includeTagName)
+        {
+            final tagName = CssDeclarationResult.tagName(node.xnode);
+
+            resultHolder[tagName.declaration!.name] = tagName;
+        }
+
         return resultHolder;
     }
 
@@ -370,17 +380,22 @@ class ManifestItem
         if (node.name == 'link' &&
                 (node.attributeContains('link', 'stylesheet') || node.attributeContains('type', 'css')))
         {
-            var cssPath = FileUtils.relativePathFromFile(href, node.attributes['href']!);
-            var cssManifest = epub.manifestHref[cssPath];
+            final cssPath = FileUtils.relativePathFromFile(href, node.attributes['href']!);
+            final cssManifest = epub.manifestHref[cssPath];
 
             if (cssManifest != null)
             {
-                var doc = cssManifest.CSS;
+                final doc = cssManifest.CSS;
                 if (doc != null)
                 {
                     cssList.add(doc);
                 }
             }
+        }
+        else if (node.name == 'style')
+        {
+            final text = node.innerText(true);
+            cssList.add(CssDocument(text));
         }
         else
         {
